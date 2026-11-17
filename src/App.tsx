@@ -8,6 +8,7 @@ import {
   PRODUCTS,
   INITIAL_CART,
   COMBO_PACKAGES,
+  REAL_VIDEOS,
   HERO_BG_IMAGE,
   SEO_FAQS,
   CUSTOMER_REVIEWS,
@@ -16,6 +17,9 @@ import {
   STORE_ZALO_URL,
   STORE_FACEBOOK_URL,
   STORE_ADDRESS,
+  STORE_LANDMARK,
+  STORE_MAP_EMBED_URL,
+  STORE_GOOGLE_MAPS_DIRECT_URL,
   Product,
   ProductCategory,
   SortOption,
@@ -24,7 +28,7 @@ import {
   addCartItem,
   updateCartItemQty,
   calculateCartTotals,
-  formatVND
+  formatProductPrice
 } from './lib/store-logic';
 import { ResilientImage } from './components/ResilientImage';
 import { CartDrawer } from './components/CartDrawer';
@@ -132,12 +136,12 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
     }
   };
 
-  // Top 3 items for Hero Quick Price Snapshot
+  // Top 3 items for Hero Quick Snapshot
   const heroSpotlightProducts = useMemo(() => {
     const picked = [
       products.find((p) => p.id === 4) || products[0],
-      products.find((p) => p.id === 1) || products[1],
-      products.find((p) => p.id === 2) || products[2]
+      products.find((p) => p.id === 5) || products[1],
+      products.find((p) => p.id === 1) || products[2]
     ].filter(Boolean) as Product[];
     return picked.slice(0, 3);
   }, [products]);
@@ -261,7 +265,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                 id="searchInput"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm bề bề nõn trứng, mực ống, cá thu khoanh, bạch tuộc..."
+                placeholder="Tìm bề bề nõn trứng, nõn tôm biển, mực ống, cá thu khoanh..."
                 aria-label="Tìm kiếm hải sản tại Vựa Hải Sản Yến Hải"
                 className="w-full pl-10 pr-24 py-2.5 rounded-DEFAULT border border-light-outline-variant bg-light-surface-container-high focus:bg-white focus:outline-none focus:ring-2 focus:ring-light-primary text-body-md transition-all"
               />
@@ -389,7 +393,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               }`}
             >
               <span className="text-base">❄️</span>
-              <span>Bề Bề Nõn &amp; Cấp Đông VIP</span>
+              <span>Bề Bề, Nõn Tôm &amp; Cấp Đông VIP</span>
             </button>
             <button
               type="button"
@@ -404,13 +408,31 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <span>Hải Sản Khô (Quà biếu)</span>
             </button>
             <a
+              href="#videoSection"
+              className="cat-tab px-3 py-1.5 rounded-full hover:bg-rose-50 flex items-center gap-1.5 whitespace-nowrap text-accent font-semibold"
+            >
+              <span className="material-symbols-outlined text-[18px]">
+                smart_display
+              </span>
+              <span>Video Thực Tế Tại Vựa ({REAL_VIDEOS.length})</span>
+            </a>
+            <a
+              href="#mapSection"
+              className="cat-tab px-3 py-1.5 rounded-full hover:bg-emerald-50 flex items-center gap-1.5 whitespace-nowrap text-emerald-800 font-semibold"
+            >
+              <span className="material-symbols-outlined text-[18px]">
+                location_on
+              </span>
+              <span>Bản Đồ Vị Trí Vựa</span>
+            </a>
+            <a
               href="#faqSection"
               className="cat-tab px-3 py-1.5 rounded-full hover:bg-light-surface-container flex items-center gap-1.5 whitespace-nowrap ml-auto text-ocean-blue font-semibold"
             >
               <span className="material-symbols-outlined text-[18px]">
                 verified_user
               </span>
-              <span>Cam Kết &amp; Đánh Giá Khách Hàng</span>
+              <span>Cam Kết &amp; Đánh Giá</span>
             </a>
           </div>
         </nav>
@@ -448,7 +470,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <span className="text-amber-300">Đồ Khô</span>
             </h1>
             <p className="font-body text-body-lg text-white/90 max-w-2xl text-pretty leading-relaxed">
-              Thu mua trực tiếp từ ghe thuyền vùng biển <strong>{STORE_ADDRESS}</strong>: Chuyên Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương Phơi Nắng Tự Nhiên. Cam kết bao tươi ngon 1 đổi 1 tận nơi!
+              Thu mua trực tiếp từ ghe thuyền vùng biển <strong>{STORE_ADDRESS}</strong>: Chuyên Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Tôm He / Tôm Bộp Biển, Nõn Tôm Hấp Bóc Sẵn, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương Phơi Nắng Tự Nhiên. Cam kết bao tươi ngon 1 đổi 1 tận nơi!
             </p>
 
             {/* Guarantee Triad Badges */}
@@ -469,21 +491,21 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   <span className="material-symbols-outlined text-[16px]">
                     ac_unit
                   </span>{' '}
-                  Bề bề nõn full trứng
+                  Bề bề &amp; Nõn tôm VIP
                 </span>
                 <p className="font-body text-body-sm text-white/80 mt-1">
-                  Hấp bóc thủ công, đóng khay VIP giữ ngọt
+                  Hấp bóc thủ công trong ngày, đóng khay giữ ngọt
                 </p>
               </div>
               <div className="bg-white/10 backdrop-blur-xs p-3 rounded-md border border-white/15">
                 <span className="font-label text-label-sm text-amber-300 flex items-center gap-1 font-bold">
                   <span className="material-symbols-outlined text-[16px]">
-                    card_giftcard
+                    videocam
                   </span>{' '}
-                  Đồ khô biển Thanh Hóa
+                  Quay video thực tế
                 </span>
                 <p className="font-body text-body-sm text-white/80 mt-1">
-                  Cá khô rút xương hút chân không sạch sẽ
+                  Gửi video khay hàng thực tế &amp; báo giá qua Zalo
                 </p>
               </div>
             </div>
@@ -498,29 +520,27 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                 <span className="material-symbols-outlined text-[20px]">
                   shopping_bag
                 </span>
-                <span>Chọn Hải Sản Đặt Ngay</span>
+                <span>Xem Hải Sản &amp; Đặt Ngay</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('videoSection')}
+                className="px-5 py-3 rounded-DEFAULT bg-white text-light-primary hover:bg-light-surface-container font-label text-label-lg shadow flex items-center gap-2 cursor-pointer transition-colors"
+              >
+                <span className="material-symbols-outlined text-accent text-[20px]">
+                  smart_display
+                </span>
+                <span>Xem {REAL_VIDEOS.length} Video Thực Tế</span>
               </button>
               <a
                 href={`tel:${STORE_PHONE}`}
                 title={`Gọi trực tiếp Hotline Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-                className="px-5 py-3 rounded-DEFAULT bg-white text-light-primary hover:bg-light-surface-container font-label text-label-lg shadow flex items-center gap-2 transition-colors"
+                className="px-5 py-3 rounded-DEFAULT bg-white/10 hover:bg-white/20 border border-white/30 text-white font-label text-label-lg backdrop-blur-xs flex items-center gap-2 transition-colors"
               >
-                <span className="material-symbols-outlined text-fresh-green text-[20px]">
+                <span className="material-symbols-outlined text-emerald-400 text-[20px]">
                   call
                 </span>
                 <span>Gọi: {STORE_PHONE_DISPLAY}</span>
-              </a>
-              <a
-                href={STORE_ZALO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Nhắn Zalo đặt hải sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-                className="px-5 py-3 rounded-DEFAULT bg-white/10 hover:bg-white/20 border border-white/30 text-white font-label text-label-lg backdrop-blur-xs flex items-center gap-2 transition-colors"
-              >
-                <span className="material-symbols-outlined text-[20px]">
-                  chat
-                </span>
-                <span>Chat Zalo: {STORE_PHONE_DISPLAY}</span>
               </a>
             </div>
           </div>
@@ -532,7 +552,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                 <div className="flex items-center gap-2.5">
                   <span className="w-3 h-3 rounded-full bg-fresh-green animate-ping"></span>
                   <h2 className="font-headline text-title-md font-bold text-light-primary">
-                    Bảng Giá Tại Vựa Hôm Nay
+                    Mặt Hàng Mới Lên Tại Vựa Hôm Nay
                   </h2>
                 </div>
                 <span className="text-body-sm text-light-on-surface/50 font-body">
@@ -567,8 +587,8 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-headline text-title-md font-bold text-accent tabular-nums">
-                        {formatVND(item.price)}
+                      <span className="font-headline text-title-sm font-bold text-accent block">
+                        {formatProductPrice(item)}
                       </span>
                       <span className="block text-body-sm text-light-on-surface/50">
                         {item.unit}
@@ -578,19 +598,19 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                 ))}
               </div>
 
-              <div className="bg-light-primary-container p-3.5 rounded-md flex items-center justify-between">
+              <div className="bg-light-primary-container p-3.5 rounded-md flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-light-primary">
-                    local_shipping
+                    call
                   </span>
                   <span className="font-label text-label-sm text-light-primary font-semibold">
-                    Miễn phí vận chuyển đơn từ 1.000.000₫
+                    Báo giá sỉ &amp; lẻ theo ngày: {STORE_PHONE_DISPLAY}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => scrollToSection('catalog')}
-                  className="text-accent font-label text-label-sm font-bold hover:underline cursor-pointer"
+                  className="text-accent font-label text-label-sm font-bold hover:underline cursor-pointer shrink-0"
                 >
                   Xem tất cả →
                 </button>
@@ -656,7 +676,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm bề bề, mực ống, cá thu, bạch tuộc..."
+              placeholder="Tìm bề bề, nõn tôm, mực ống, cá thu..."
               aria-label="Tìm kiếm hải sản trên di động"
               className="w-full pl-9 pr-4 py-2.5 rounded-DEFAULT border border-light-outline-variant bg-white text-body-md"
             />
@@ -673,7 +693,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               Danh Mục Hải Sản Thực Tế Tại Vựa ({products.length} Món)
             </h2>
             <p className="font-body text-body-md text-light-on-surface/70">
-              Hình ảnh chụp thực tế tại vựa Hải Sản Yến Hải ({STORE_ADDRESS}) — Chọn món đặt online hoặc gọi/Zalo{' '}
+              Hình ảnh &amp; video quay thực tế tại vựa Hải Sản Yến Hải ({STORE_ADDRESS}) — Chọn món nhận báo giá nhanh qua SĐT/Zalo{' '}
               <a
                 href={`tel:${STORE_PHONE}`}
                 className="font-bold text-light-primary underline"
@@ -698,8 +718,6 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               className="py-1.5 px-3 rounded-DEFAULT border border-light-outline-variant bg-white text-body-sm font-label focus:ring-1 focus:ring-light-primary"
             >
               <option value="featured">Nổi bật nhất</option>
-              <option value="price-asc">Giá tăng dần</option>
-              <option value="price-desc">Giá giảm dần</option>
               <option value="rating-desc">Đánh giá cao nhất</option>
             </select>
           </div>
@@ -726,7 +744,8 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <p className="font-body text-body-sm text-emerald-800 mt-0.5">
                 Gồm: <strong>Mực ống biển tươi</strong>,{' '}
                 <strong>Cá thu phấn cắt khoanh giữa</strong>,{' '}
-                <strong>Bạch tuộc tươi</strong>, <strong>Bề bề nõn mới hấp</strong>.
+                <strong>Bạch tuộc tươi</strong>, <strong>Tôm biển tươi</strong>,{' '}
+                <strong>Bề bề nõn mới hấp</strong>.
               </p>
             </div>
           </button>
@@ -747,11 +766,12 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             <span className="text-2xl">❄️</span>
             <div>
               <h3 className="font-label text-label-md font-bold text-sky-950">
-                Nhóm Bề Bề Nõn &amp; Cấp Đông Sâu
+                Nhóm Bề Bề Nõn, Nõn Tôm &amp; Cấp Đông Sâu
               </h3>
               <p className="font-body text-body-sm text-sky-800 mt-0.5">
                 Gồm: <strong>Bề bề bóc nõn Full Trứng</strong>,{' '}
-                <strong>Bề bề nõn đóng khay VIP 500g</strong> giữ trọn 99% độ ngọt tự nhiên.
+                <strong>Nõn tôm biển hấp bóc sẵn</strong>,{' '}
+                <strong>Bề bề nõn đóng khay VIP 500g</strong>.
               </p>
             </div>
           </button>
@@ -826,11 +846,6 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   ? 'bg-sky-50 text-sky-800'
                   : 'bg-amber-50 text-amber-900';
 
-              const showDiscount =
-                Boolean(product.hasDiscount) &&
-                Boolean(product.originalPrice) &&
-                (product.originalPrice ?? 0) > product.price;
-
               return (
                 <article
                   key={product.id}
@@ -862,7 +877,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       onClick={() => setQuickViewProduct(product)}
                     />
                     <figcaption className="sr-only">
-                      {product.seoAlt || `${product.name} - Giá ${formatVND(product.price)} ${product.unit} tại Hải Sản Yến Hải (${STORE_ADDRESS})`}
+                      {product.seoAlt || `${product.name} - ${formatProductPrice(product)} ${product.unit} tại Hải Sản Yến Hải (${STORE_ADDRESS})`}
                     </figcaption>
 
                     <span
@@ -883,16 +898,30 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       {product.badgeRight}
                     </span>
 
+                    {product.videoUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setQuickViewProduct(product)}
+                        title={`Xem video quay thực tế ${product.name}`}
+                        className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded bg-accent/95 hover:bg-accent text-white font-label text-[11px] font-bold flex items-center gap-1 shadow-xs cursor-pointer transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">
+                          play_circle
+                        </span>
+                        <span>Video thực tế</span>
+                      </button>
+                    )}
+
                     <button
                       type="button"
                       onClick={() => setQuickViewProduct(product)}
-                      title={`Xem chi tiết và chọn quy cách ${product.name}`}
+                      title={`Xem trang chi tiết và chọn quy cách ${product.name}`}
                       className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded bg-light-primary/85 hover:bg-light-primary text-white font-label text-[11px] flex items-center gap-1 backdrop-blur-xs cursor-pointer transition-colors"
                     >
                       <span className="material-symbols-outlined text-[14px]">
-                        tune
+                        visibility
                       </span>
-                      <span>Chọn quy cách / Sơ chế</span>
+                      <span>Chi tiết &amp; Quy cách</span>
                     </button>
                   </figure>
 
@@ -935,6 +964,18 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       >
                         {product.description}
                       </p>
+                      {product.bestDishes && product.bestDishes.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {product.bestDishes.slice(0, 2).map((dish) => (
+                            <span
+                              key={dish}
+                              className="px-2 py-0.5 rounded bg-light-surface-container text-[11px] font-label text-light-primary/80"
+                            >
+                              {dish}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <div
@@ -944,21 +985,16 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       className="mt-4 pt-3 border-t border-light-outline-variant"
                     >
                       <meta itemProp="priceCurrency" content="VND" />
-                      <meta itemProp="price" content={String(product.price)} />
+                      <meta itemProp="price" content="0" />
                       <link
                         itemProp="availability"
                         href="https://schema.org/InStock"
                       />
                       <div className="flex items-baseline justify-between mb-3">
                         <div>
-                          <span className="text-accent font-headline text-headline-md font-bold tabular-nums">
-                            {formatVND(product.price)}
+                          <span className="text-accent font-headline text-title-md font-bold">
+                            {formatProductPrice(product)}
                           </span>
-                          {showDiscount && product.originalPrice && (
-                            <span className="text-xs text-light-on-surface/40 line-through ml-1.5 tabular-nums">
-                              {formatVND(product.originalPrice)}
-                            </span>
-                          )}
                         </div>
                         <span className="text-body-sm text-light-on-surface/50">
                           {product.unit}
@@ -979,11 +1015,11 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDirectBuyProduct(product)}
-                          title={`Đặt mua ngay ${product.name}`}
+                          onClick={() => setQuickViewProduct(product)}
+                          title={`Xem chi tiết ${product.name}`}
                           className="w-full py-2 px-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md transition-colors duration-150 flex items-center justify-center gap-1 cursor-pointer"
                         >
-                          <span>Mua ngay</span>
+                          <span>Xem chi tiết</span>
                         </button>
                       </div>
                     </div>
@@ -992,7 +1028,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               );
             })}
 
-            {/* Custom Consultation & Wholesale Quote Card (8th Grid Slot) */}
+            {/* Custom Consultation & Wholesale Quote Card */}
             <article className="bg-gradient-to-br from-light-primary via-[#0E355C] to-light-primary text-white rounded-md p-6 flex flex-col justify-between shadow-md">
               <div>
                 <span className="px-2.5 py-1 rounded-full bg-white/20 text-white font-label text-label-sm inline-block mb-3">
@@ -1002,7 +1038,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   Cần Hải Sản Gì, Yến Hải Cũng Có!
                 </h3>
                 <p className="font-body text-body-sm text-white/80 leading-relaxed">
-                  Nhận cung cấp sỉ &amp; lẻ Bề bề nõn trứng, Mực ống, Cá thu khoanh, Bạch tuộc, Cá khô cho nhà hàng, quán ăn, gia đình và khách du lịch biển Hải Tiến - Hoằng Tiến với giá tận gốc.
+                  Nhận cung cấp sỉ &amp; lẻ Bề bề nõn trứng, Nõn tôm biển, Tôm bộp tươi, Mực ống, Cá thu khoanh, Bạch tuộc, Cá khô cho nhà hàng, quán ăn, gia đình và khách du lịch biển Hải Tiến - Hoằng Tiến với giá tận gốc.
                 </p>
 
                 <ul className="mt-4 space-y-2 text-body-sm text-white/90">
@@ -1053,6 +1089,102 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </div>
         )}
 
+        {/* Real Fishery Videos Showcase Section (All 6 Real Videos) */}
+        <section
+          id="videoSection"
+          aria-labelledby="videoShowcaseHeading"
+          className="mt-12 pt-8 border-t border-light-outline-variant"
+        >
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-label font-bold text-accent uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                Video thực tế 100% không chỉnh sửa tại vựa
+              </span>
+              <h2
+                id="videoShowcaseHeading"
+                className="font-headline text-headline-md text-light-primary font-bold mt-0.5"
+              >
+                Video Quay Trực Tiếp Hải Sản Tại Vựa Yến Hải ({REAL_VIDEOS.length} Video)
+              </h2>
+              <p className="font-body text-body-md text-light-on-surface/70 mt-1">
+                Xem trực tiếp chất lượng Bề bề bóc nõn full trứng, Nõn tôm biển hấp bóc sẵn và Tôm biển tươi đóng hộp vừa lên tại {STORE_ADDRESS}.
+              </p>
+            </div>
+            <a
+              href={STORE_ZALO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-label-sm font-bold flex items-center gap-1.5 shadow-xs"
+            >
+              <span className="material-symbols-outlined text-[18px]">
+                videocam
+              </span>
+              <span>Nhận thêm video qua Zalo {STORE_PHONE_DISPLAY}</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {REAL_VIDEOS.map((vid) => {
+              const linkedProduct =
+                products.find((p) => p.id === vid.productId) || products[0];
+
+              return (
+                <article
+                  key={vid.id}
+                  itemScope
+                  itemType="https://schema.org/VideoObject"
+                  className="bg-white rounded-lg border border-light-outline-variant overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col"
+                >
+                  <meta itemProp="name" content={vid.title} />
+                  <meta itemProp="description" content={vid.description} />
+                  <meta itemProp="thumbnailUrl" content={vid.thumbnailUrl} />
+                  <meta itemProp="contentUrl" content={vid.videoUrl} />
+                  <meta itemProp="uploadDate" content={vid.uploadDate} />
+
+                  <div className="relative aspect-[4/3] bg-slate-950 overflow-hidden">
+                    <video
+                      src={vid.videoUrl}
+                      poster={vid.thumbnailUrl}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-accent text-white font-label text-[11px] font-bold shadow-xs pointer-events-none">
+                      {vid.badge}
+                    </span>
+                  </div>
+
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-title text-title-sm font-bold text-light-primary">
+                        {vid.title}
+                      </h3>
+                      <p className="font-body text-body-sm text-light-on-surface/70 mt-1">
+                        {vid.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-light-outline-variant flex items-center justify-between gap-2">
+                      <span className="font-headline text-label-lg font-extrabold text-accent">
+                        Giá: Liên hệ
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setQuickViewProduct(linkedProduct)}
+                        className="px-3.5 py-1.5 rounded-DEFAULT bg-light-primary hover:bg-light-primary/90 text-white font-label text-label-sm font-semibold cursor-pointer"
+                      >
+                        Đặt món này →
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
         {/* High-Conversion Combo Packages Strip */}
         <section
           id="comboSection"
@@ -1074,88 +1206,76 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {COMBO_PACKAGES.map((combo) => {
-              const showComboDiscount =
-                Boolean(combo.hasDiscount) &&
-                Boolean(combo.originalPrice) &&
-                (combo.originalPrice ?? 0) > combo.price;
-
-              return (
-                <article
-                  key={combo.id}
-                  className="bg-white rounded-lg border border-light-outline-variant p-5 shadow-xs hover:shadow-md transition-shadow flex flex-col sm:flex-row gap-5"
-                >
-                  <figure className="relative w-full sm:w-44 h-44 rounded-md overflow-hidden bg-light-surface-container shrink-0 m-0">
-                    <ResilientImage
-                      src={combo.image}
-                      alt={`${combo.title} - Hải Sản Yến Hải ${STORE_ADDRESS}`}
-                      title={`${combo.title} - Giá ${formatVND(combo.price)}`}
-                      width={320}
-                      height={320}
-                      className="w-full h-full object-cover"
-                    />
-                    <span className="absolute top-2 left-2 px-2.5 py-1 rounded bg-light-primary/90 text-white font-label text-label-sm font-bold shadow-xs">
-                      {combo.saveBadge}
+            {COMBO_PACKAGES.map((combo) => (
+              <article
+                key={combo.id}
+                className="bg-white rounded-lg border border-light-outline-variant p-5 shadow-xs hover:shadow-md transition-shadow flex flex-col sm:flex-row gap-5"
+              >
+                <figure className="relative w-full sm:w-44 h-44 rounded-md overflow-hidden bg-light-surface-container shrink-0 m-0">
+                  <ResilientImage
+                    src={combo.image}
+                    alt={`${combo.title} - Hải Sản Yến Hải ${STORE_ADDRESS}`}
+                    title={`${combo.title} - ${formatProductPrice(combo)}`}
+                    width={320}
+                    height={320}
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute top-2 left-2 px-2.5 py-1 rounded bg-light-primary/90 text-white font-label text-label-sm font-bold shadow-xs">
+                    {combo.saveBadge}
+                  </span>
+                </figure>
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-label text-ocean-blue font-semibold">
+                      {combo.tag}
                     </span>
-                  </figure>
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <span className="text-xs font-label text-ocean-blue font-semibold">
-                        {combo.tag}
-                      </span>
-                      <h3 className="font-headline text-title-lg font-bold text-light-primary mt-0.5">
-                        {combo.title}
-                      </h3>
-                      <p className="text-body-sm text-light-on-surface/70 mt-1">
-                        {combo.subtitle}
-                      </p>
-                      <ul className="mt-2.5 space-y-1 text-body-sm text-light-on-surface">
-                        {combo.itemsIncluded.map((line) => (
-                          <li key={line} className="flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-fresh-green text-[16px]">
-                              check_circle
-                            </span>
-                            <span>{line}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-light-outline-variant flex items-center justify-between gap-3">
-                      <div>
-                        <span className="font-headline text-headline-md font-extrabold text-accent tabular-nums">
-                          {formatVND(combo.price)}
-                        </span>
-                        {showComboDiscount && combo.originalPrice && (
-                          <span className="text-body-sm text-light-on-surface/40 line-through ml-2 tabular-nums">
-                            {formatVND(combo.originalPrice)}
+                    <h3 className="font-headline text-title-lg font-bold text-light-primary mt-0.5">
+                      {combo.title}
+                    </h3>
+                    <p className="text-body-sm text-light-on-surface/70 mt-1">
+                      {combo.subtitle}
+                    </p>
+                    <ul className="mt-2.5 space-y-1 text-body-sm text-light-on-surface">
+                      {combo.itemsIncluded.map((line) => (
+                        <li key={line} className="flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-fresh-green text-[16px]">
+                            check_circle
                           </span>
-                        )}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setCart((prev) =>
-                            addCartItem(prev, {
-                              productId: 99,
-                              name: combo.title,
-                              price: combo.price,
-                              img: combo.image,
-                              unit: '/ combo',
-                              prepNote: 'Đóng thùng xốp giữ lạnh tiêu chuẩn'
-                            })
-                          );
-                          setIsCartOpen(true);
-                        }}
-                        className="px-4 py-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md font-bold shadow-xs cursor-pointer whitespace-nowrap"
-                      >
-                        Đặt Combo Ngay
-                      </button>
-                    </div>
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </article>
-              );
-            })}
+
+                  <div className="mt-4 pt-3 border-t border-light-outline-variant flex items-center justify-between gap-3">
+                    <div>
+                      <span className="font-headline text-title-lg font-extrabold text-accent">
+                        {formatProductPrice(combo)}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCart((prev) =>
+                          addCartItem(prev, {
+                            productId: 99,
+                            name: combo.title,
+                            price: combo.price,
+                            img: combo.image,
+                            unit: '/ combo',
+                            prepNote: 'Đóng thùng xốp giữ lạnh tiêu chuẩn'
+                          })
+                        );
+                        setIsCartOpen(true);
+                      }}
+                      className="px-4 py-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md font-bold shadow-xs cursor-pointer whitespace-nowrap"
+                    >
+                      Đặt Combo Ngay
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -1272,6 +1392,189 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </div>
           </div>
         </section>
+
+        {/* Google Maps Location & Directions Section (#mapSection) */}
+        <section
+          id="mapSection"
+          aria-labelledby="mapSectionHeading"
+          itemScope
+          itemType="https://schema.org/Place"
+          className="mt-12 pt-8 border-t border-light-outline-variant"
+        >
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-label font-bold text-fresh-green uppercase tracking-wider">
+                <span className="material-symbols-outlined text-[16px]">
+                  location_on
+                </span>
+                Vị trí thực tế &amp; Chỉ đường đến Vựa Hải Sản Yến Hải
+              </span>
+              <h2
+                id="mapSectionHeading"
+                itemProp="name"
+                className="font-headline text-headline-md text-light-primary font-bold mt-0.5"
+              >
+                Bản Đồ Vị Trí: Gần Trường Tiểu Học Xã Hoằng Trường — {STORE_ADDRESS}
+              </h2>
+              <p className="font-body text-body-md text-light-on-surface/75 mt-1">
+                Vựa nằm{' '}
+                <strong className="text-light-primary">
+                  gần Trường Tiểu học xã Hoằng Trường
+                </strong>{' '}
+                — <strong className="text-light-primary">{STORE_ADDRESS}</strong>. Quý khách có thể đến tận nơi xem hải sản ghe về hoặc liên hệ Hotline/Zalo{' '}
+                <a
+                  href={`tel:${STORE_PHONE}`}
+                  className="font-bold text-accent underline"
+                >
+                  {STORE_PHONE_DISPLAY}
+                </a>{' '}
+                để nhận ship tận nhà.
+              </p>
+            </div>
+            <a
+              href={STORE_GOOGLE_MAPS_DIRECT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 rounded-DEFAULT bg-light-primary hover:bg-light-primary/90 text-white font-label text-label-sm font-bold flex items-center gap-1.5 shadow-xs"
+            >
+              <span className="material-symbols-outlined text-[18px]">
+                directions
+              </span>
+              <span>Mở Chỉ Đường Trên Google Maps</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            {/* Left 5 Cols: Detailed Location & Landmark Card */}
+            <div className="lg:col-span-5 bg-white rounded-lg border border-light-outline-variant p-6 shadow-xs flex flex-col justify-between space-y-5">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 font-label text-label-sm font-bold">
+                  <span className="w-2 h-2 rounded-full bg-fresh-green animate-pulse"></span>
+                  <span>Mở cửa đón khách &amp; đóng hàng: 05:30 – 22:00</span>
+                </div>
+
+                <div
+                  itemProp="address"
+                  itemScope
+                  itemType="https://schema.org/PostalAddress"
+                  className="space-y-3"
+                >
+                  <div className="p-3.5 rounded-lg bg-light-surface-container border border-light-outline-variant">
+                    <span className="block text-[11px] font-label font-bold uppercase tracking-wider text-ocean-blue">
+                      Điểm mốc định vị trên bản đồ
+                    </span>
+                    <p className="font-headline text-title-md font-bold text-light-primary mt-0.5">
+                      Gần Trường Tiểu học xã Hoằng Trường
+                    </p>
+                    <p className="font-body text-body-sm text-light-on-surface/80 mt-1">
+                      <span itemProp="streetAddress">Thôn Trường Phúc, Xã Hoằng Tiến</span>,{' '}
+                      <span itemProp="addressLocality">Huyện Hoằng Hóa</span>,{' '}
+                      <span itemProp="addressRegion">Tỉnh Thanh Hóa</span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-2.5 text-body-sm text-light-on-surface/85">
+                    <div className="flex items-start gap-2.5">
+                      <span className="material-symbols-outlined text-accent text-[20px] shrink-0 mt-0.5">
+                        pin_drop
+                      </span>
+                      <div>
+                        <strong className="text-light-primary block">
+                          Địa chỉ chi tiết:
+                        </strong>
+                        <span>{STORE_ADDRESS}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <span className="material-symbols-outlined text-fresh-green text-[20px] shrink-0 mt-0.5">
+                        call
+                      </span>
+                      <div>
+                        <strong className="text-light-primary block">
+                          Hotline / Zalo đón khách &amp; báo giá:
+                        </strong>
+                        <a
+                          href={`tel:${STORE_PHONE}`}
+                          className="text-accent font-bold tabular-nums hover:underline"
+                        >
+                          {STORE_PHONE_DISPLAY}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <span className="material-symbols-outlined text-ocean-blue text-[20px] shrink-0 mt-0.5">
+                        local_shipping
+                      </span>
+                      <div>
+                        <strong className="text-light-primary block">
+                          Giao hàng &amp; Gửi xe toàn quốc:
+                        </strong>
+                        <span>
+                          Đóng thùng xốp ủ đá lạnh hút chân không giao nhanh nội tỉnh Thanh Hóa, gửi xe khách đi Hà Nội và các tỉnh lân cận trong ngày.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-light-outline-variant grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <a
+                  href={`tel:${STORE_PHONE}`}
+                  className="py-2.5 px-3 rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    call
+                  </span>
+                  <span>Gọi: {STORE_PHONE_DISPLAY}</span>
+                </a>
+                <a
+                  href={STORE_ZALO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-3 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    chat
+                  </span>
+                  <span>Nhắn Zalo Vị Trí</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right 7 Cols: Embedded Google Map Iframe */}
+            <div className="lg:col-span-7 bg-white rounded-lg border border-light-outline-variant overflow-hidden shadow-xs min-h-[380px] sm:min-h-[450px] flex flex-col">
+              <div className="px-4 py-2.5 bg-light-surface-container border-b border-light-outline-variant flex items-center justify-between gap-2 text-xs font-label text-light-primary">
+                <span className="flex items-center gap-1.5 font-bold truncate">
+                  <span className="material-symbols-outlined text-accent text-[16px]">
+                    map
+                  </span>
+                  <span>
+                    Google Maps: {STORE_LANDMARK}
+                  </span>
+                </span>
+                <span className="text-light-on-surface/60 shrink-0 hidden sm:inline">
+                  Thôn Trường Phúc, Xã Hoằng Tiến
+                </span>
+              </div>
+              <div className="relative flex-1 w-full min-h-[360px] sm:min-h-[420px]">
+                <iframe
+                  src={STORE_MAP_EMBED_URL}
+                  width="600"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Bản đồ vị trí Trường Tiểu học Hoằng Trường - Thôn Trường Phúc, Xã Hoằng Tiến, Huyện Hoằng Hóa, Tỉnh Thanh Hóa"
+                  className="w-full h-full min-h-[360px] sm:min-h-[420px] block"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Multi-Channel Sticky Order Bar (Floating Dock) */}
@@ -1334,13 +1637,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
 
           <button
             type="button"
-            onClick={() => setConsultModalTopic('Tư vấn nhanh')}
+            onClick={() => setConsultModalTopic('Tư vấn & Báo giá nhanh')}
             className="px-3.5 py-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-sm font-semibold flex items-center gap-1.5 shadow cursor-pointer whitespace-nowrap"
           >
             <span className="material-symbols-outlined text-[18px]">
               shopping_cart_checkout
             </span>
-            <span>Đặt nhanh</span>
+            <span>Báo giá nhanh</span>
           </button>
         </div>
       </aside>
@@ -1361,7 +1664,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
         topic={consultModalTopic || 'Tư vấn nhanh'}
         onClose={() => setConsultModalTopic(null)}
         onCallbackSuccess={(phone) =>
-          showToast(`Đã ghi nhận SĐT ${phone}! Yến Hải (${STORE_PHONE_DISPLAY}) sẽ gọi lại ngay.`)
+          showToast(`Đã ghi nhận SĐT ${phone}! Yến Hải (${STORE_PHONE_DISPLAY}) sẽ gọi báo giá ngay.`)
         }
       />
 
@@ -1392,7 +1695,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             {toastMessage || 'Đã thêm vào giỏ hàng thành công!'}
           </p>
           <p className="font-body text-body-sm text-white/80">
-            Bạn có thể mở giỏ hàng để đặt ngay.
+            Bạn có thể mở giỏ hàng để gửi yêu cầu báo giá ngay.
           </p>
         </div>
       </div>
@@ -1411,7 +1714,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               </span>
             </div>
             <p className="font-body text-body-sm text-white/70 leading-relaxed">
-              Vựa Hải Sản Yến Hải ({STORE_ADDRESS}) chuyên bán buôn, bán lẻ đa dạng hải sản: Mực ống, Cá thu phấn, Bạch tuộc tươi, Bề bề bóc nõn full trứng và Cá khô một nắng rút xương làm quà biếu.
+              Vựa Hải Sản Yến Hải ({STORE_ADDRESS}) chuyên bán buôn, bán lẻ đa dạng hải sản: Mực ống, Cá thu phấn, Bạch tuộc tươi, Tôm biển tươi, Nõn tôm hấp, Bề bề bóc nõn full trứng và Cá khô một nắng rút xương làm quà biếu.
             </p>
             <p className="font-label text-label-sm text-emerald-400 flex items-center gap-1 font-semibold">
               <span className="material-symbols-outlined text-[16px]">
@@ -1436,7 +1739,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   }}
                   className="hover:text-accent transition-colors cursor-pointer text-left"
                 >
-                  🦐 Hải sản tươi trong ngày (Mực ống, Cá thu, Bạch tuộc)
+                  🦐 Hải sản tươi trong ngày (Mực ống, Cá thu, Bạch tuộc, Tôm biển)
                 </button>
               </li>
               <li>
@@ -1448,7 +1751,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   }}
                   className="hover:text-sky-300 transition-colors cursor-pointer text-left"
                 >
-                  ❄️ Hải sản cấp đông VIP (Bề bề nõn full trứng, Khay 500g)
+                  ❄️ Hải sản cấp đông VIP (Bề bề nõn full trứng, Nõn tôm biển)
                 </button>
               </li>
               <li>
@@ -1531,7 +1834,14 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   location_on
                 </span>
                 <span>
-                  Địa chỉ: <strong className="text-white">{STORE_ADDRESS}</strong> (Nhận gửi xe &amp; giao hàng toàn quốc)
+                  Địa chỉ:{' '}
+                  <a
+                    href="#mapSection"
+                    className="text-white font-bold hover:underline"
+                  >
+                    {STORE_ADDRESS}
+                  </a>{' '}
+                  (Khu vực Trường Tiểu học xã Hoằng Trường — Nhận gửi xe &amp; giao hàng toàn quốc)
                 </span>
               </li>
             </ul>
@@ -1568,7 +1878,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             <span>•</span>
             <span>Bao ăn 1 đổi 1</span>
             <span>•</span>
-            <span>Giá gốc tận bến</span>
+            <span>Giá: Liên hệ ({STORE_PHONE_DISPLAY})</span>
           </p>
         </div>
       </footer>

@@ -3,13 +3,16 @@ import {
   Product,
   ProductCategory,
   CartItem,
+  REAL_VIDEOS,
   calculateCartTotals,
-  formatVND,
+  formatProductPrice,
   STORE_PHONE,
   STORE_PHONE_DISPLAY,
   STORE_ZALO_URL,
   STORE_FACEBOOK_URL,
-  STORE_ADDRESS
+  STORE_ADDRESS,
+  STORE_LANDMARK,
+  STORE_MAP_EMBED_URL
 } from '../lib/store-logic';
 import { ResilientImage } from './ResilientImage';
 
@@ -105,7 +108,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
           {/* Store Introduction */}
           <div className="mt-3 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 max-w-sm text-center">
             <p className="font-body text-body-sm text-white/90 leading-snug">
-              Chuyên sỉ &amp; lẻ hải sản biển Hoằng Tiến - Thanh Hóa: Mực ống tươi, Cá thu phấn khoanh giữa, Bạch tuộc, Bề bề bóc nõn full trứng &amp; Cá khô rút xương. Bao ăn 1 đổi 1!
+              Chuyên sỉ &amp; lẻ hải sản biển Hoằng Tiến - Thanh Hóa: Mực ống tươi, Cá thu phấn khoanh giữa, Bạch tuộc, Tôm biển tươi, Nõn tôm hấp, Bề bề bóc nõn full trứng &amp; Cá khô rút xương. Bao ăn 1 đổi 1!
             </p>
           </div>
 
@@ -173,7 +176,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
             id="mobileSearch"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm bề bề, mực ống, cá thu, bạch tuộc..."
+            placeholder="Tìm bề bề, nõn tôm, mực ống, cá thu..."
             aria-label="Tìm kiếm hải sản trên di động"
             className="w-full pl-8 pr-3 py-1.5 text-body-sm rounded-full border border-light-outline-variant bg-light-surface-container focus:bg-white focus:outline-none focus:ring-1 focus:ring-light-primary"
           />
@@ -212,7 +215,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               : 'bg-white text-light-on-surface border border-light-outline-variant'
           }`}
         >
-          Tất cả (7)
+          Tất cả (9)
         </button>
         <button
           type="button"
@@ -258,10 +261,6 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               : product.category === 'frozen'
               ? 'bg-sky-600'
               : 'bg-amber-600';
-          const showDiscount =
-            Boolean(product.hasDiscount) &&
-            Boolean(product.originalPrice) &&
-            (product.originalPrice ?? 0) > product.price;
 
           return (
             <article
@@ -290,6 +289,11 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
                 >
                   {product.mobileBadge}
                 </span>
+                {product.videoUrl && (
+                  <span className="absolute top-1 right-1 px-1.5 py-0.5 rounded bg-black/75 text-white font-label text-[9px] font-bold">
+                    ▶ Video
+                  </span>
+                )}
               </button>
               <div className="flex-1 min-w-0 flex flex-col justify-between">
                 <div>
@@ -316,15 +320,10 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
                 </div>
                 <div className="flex items-end justify-between mt-2">
                   <div>
-                    <span className="font-headline text-title-md font-bold text-accent tabular-nums">
-                      {formatVND(product.price)}
+                    <span className="font-headline text-title-sm font-bold text-accent">
+                      {formatProductPrice(product)}
                     </span>
-                    {showDiscount && product.originalPrice && (
-                      <span className="text-[10px] text-light-on-surface/40 line-through ml-1 tabular-nums">
-                        {formatVND(product.originalPrice)}
-                      </span>
-                    )}
-                    <span className="text-[10px] text-light-on-surface/50 ml-0.5">
+                    <span className="text-[10px] text-light-on-surface/50 ml-1">
                       {product.mobileUnit}
                     </span>
                   </div>
@@ -339,7 +338,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
                     <span className="material-symbols-outlined text-[16px]">
                       add_shopping_cart
                     </span>
-                    <span>Mua</span>
+                    <span>Đặt</span>
                   </button>
                 </div>
               </div>
@@ -347,6 +346,81 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
           );
         })}
       </div>
+
+      {/* Real Videos Strip on Mobile Bio */}
+      <section className="px-3 mt-6 space-y-2.5">
+        <div className="flex items-center justify-between">
+          <h2 className="font-headline text-title-md font-bold text-light-primary flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-accent text-[20px]">
+              smart_display
+            </span>
+            <span>Video Quay Trực Tiếp Tại Vựa ({REAL_VIDEOS.length})</span>
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 gap-2.5">
+          {REAL_VIDEOS.map((vid) => (
+            <div
+              key={vid.id}
+              className="bg-white rounded-lg border border-light-outline-variant overflow-hidden shadow-xs flex flex-col"
+            >
+              <div className="relative aspect-[9/12] bg-slate-950">
+                <video
+                  src={vid.videoUrl}
+                  poster={vid.thumbnailUrl}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-accent text-white font-label text-[10px] font-bold pointer-events-none">
+                  {vid.badge}
+                </span>
+              </div>
+              <div className="p-2">
+                <h3 className="font-title text-xs font-bold text-light-primary line-clamp-2">
+                  {vid.title}
+                </h3>
+                <span className="block text-[11px] font-bold text-accent mt-1">
+                  Giá: Liên hệ
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Mobile Bio Embedded Google Map Section */}
+      <section className="px-3 mt-6 space-y-2.5">
+        <div className="bg-white rounded-lg border border-light-outline-variant overflow-hidden shadow-xs">
+          <div className="p-3 border-b border-light-outline-variant">
+            <span className="text-[10px] font-label font-bold uppercase tracking-wider text-fresh-green flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">
+                location_on
+              </span>
+              Bản đồ vị trí vựa Hải Sản Yến Hải
+            </span>
+            <h2 className="font-headline text-title-sm font-bold text-light-primary mt-0.5">
+              {STORE_LANDMARK}
+            </h2>
+            <p className="font-body text-xs text-light-on-surface/75 mt-0.5">
+              Địa chỉ: <strong>{STORE_ADDRESS}</strong>
+            </p>
+          </div>
+          <div className="w-full h-64 bg-slate-100">
+            <iframe
+              src={STORE_MAP_EMBED_URL}
+              width="600"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Bản đồ vị trí Trường Tiểu học Hoằng Trường - Thôn Trường Phúc, Xã Hoằng Tiến, Huyện Hoằng Hóa, Tỉnh Thanh Hóa"
+              className="w-full h-full block"
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Persistent Mobile Bottom Checkout Bar */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md z-40 bg-white border-t border-light-outline-variant px-4 py-2.5 shadow-2xl flex items-center justify-between gap-3">
@@ -369,13 +443,13 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
           </button>
           <div>
             <span className="block text-[11px] text-light-on-surface/60 font-body">
-              Tổng tạm tính:
+              Báo giá ({totals.totalItems} món):
             </span>
             <span
               id="bottomCartTotal"
-              className="font-headline text-label-lg font-bold text-accent tabular-nums"
+              className="font-headline text-label-lg font-bold text-accent"
             >
-              {formatVND(totals.grandTotal)}
+              Giá: Liên hệ
             </span>
           </div>
         </div>
@@ -396,7 +470,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
             <span className="material-symbols-outlined text-[18px]">
               shopping_cart_checkout
             </span>
-            <span>Thanh Toán</span>
+            <span>Nhận Báo Giá</span>
           </button>
         </div>
       </div>

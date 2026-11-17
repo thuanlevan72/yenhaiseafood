@@ -5,12 +5,13 @@
     "sku": "YH-MUC-ONG-01",
     "name": "Mực Ống Biển Tươi Cấp Đông (Size Lớn)",
     "mobileName": "Mực Ống Biển Tươi Size Lớn",
-    "seoTitle": "Mực Ống Biển Tươi Cấp Đông Size Lớn 6-8 Con/Kg Giá 320.000₫ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Mực Ống Biển Tươi Cấp Đông Size Lớn 6-8 Con/Kg Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế Mực Ống Biển Tươi Cấp Đông Size Lớn da sáng mi nơ giòn ngọt tại Vựa Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "fresh",
-    "price": 320000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 360000,
     "unit": "/ kg",
     "mobileUnit": "/ kg",
     "image": "/assets/aistudio/1794885567341_2584028512014311615_2584028512014311615_5156174eb2025c8d42ebf3d33900b3cf_ebfdf389.jpg",
@@ -23,8 +24,21 @@
     "subtitle": "Ghe biển Hoằng Tiến về sáng sớm • Size 6-8 con/kg",
     "rating": 5.0,
     "reviewsCount": 142,
-    "description": "Mực ống câu ghe biển Hoằng Tiến - Thanh Hóa về trong ngày cấp đông sâu ngay tại tàu, da sáng lấp lánh, thịt dày giòn ngọt sần sật. Thích hợp hấp gừng hành, nhồi thịt, xào cần tỏi hoặc nướng muối ớt.",
+    "description": "Mực ống câu ghe biển Hoằng Tiến - Thanh Hóa về trong ngày cấp đông sâu ngay tại tàu, da sáng lấp lánh, thịt dày giòn ngọt sần sật. Cam kết không ngâm nước, khi hấp không bị teo.",
     "mobileDescription": "Mực ống câu tươi rói, thịt dày giòn ngọt sần sật.",
+    "origin": "Ghe câu biển Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Ngăn đá -18°C bảo quản 2 - 3 tháng; rã đông tự nhiên 10 phút trước khi nấu",
+    "highlights": [
+      "Mực câu ghe ngày da sáng nhấp nhánh mi nơ",
+      "Thân mực dày, giòn sần sật, ngọt đậm tự nhiên",
+      "Cam kết 100% không ngâm nước hay hóa chất"
+    ],
+    "bestDishes": [
+      "Hấp gừng hành lá",
+      "Mực nhồi thịt sốt cà",
+      "Xào cần tỏi",
+      "Chiên nước mắm"
+    ],
     "prepOptions": [
       "Giao nguyên con tươi bảo quản đá lạnh",
       "Làm sạch túi mực & khứa vảy rồng miễn phí",
@@ -32,10 +46,10 @@
     ],
     "sizeOptions": [
       { "label": "Size 6 - 8 con/kg", "priceMultiplier": 1 },
-      { "label": "Size Đại 4 - 5 con/kg", "priceMultiplier": 1.15 }
+      { "label": "Size Đại 4 - 5 con/kg", "priceMultiplier": 1 }
     ],
     "featuredOrder": 1,
-    "stockStatus": "Mới về 25kg sáng nay tại vựa"
+    "stockStatus": "Mới về sáng nay tại vựa"
   },
   {
     "id": 2,
@@ -43,12 +57,13 @@
     "sku": "YH-CA-THU-02",
     "name": "Cá Thu Phấn Tươi Cắt Khoanh (Khoanh Giữa)",
     "mobileName": "Cá Thu Phấn Cắt Khoanh",
-    "seoTitle": "Cá Thu Phấn Tươi Cắt Khoanh Giữa Đặc Thịt Giá 280.000₫/kg - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Cá Thu Phấn Tươi Cắt Khoanh Giữa Đặc Thịt Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế Cá Thu Phấn Tươi Cắt Khoanh Giữa thớ thịt hồng tươi đặc ruột tại Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "fresh",
-    "price": 280000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 320000,
     "unit": "/ kg",
     "mobileUnit": "/ kg",
     "image": "/assets/aistudio/1794885720897_2584028512014311615_2584028512014311615_f352292068f3f3d3bed8cecf78f0eea2_6775d16e.jpg",
@@ -61,18 +76,31 @@
     "subtitle": "Khoanh thân giữa • Không xương dăm",
     "rating": 4.9,
     "reviewsCount": 118,
-    "description": "Cá thu phấn biển Thanh Hóa lớn cắt khoanh phần thân giữa dày dặn, thớ thịt hồng tươi đặc ruột, béo thơm giàu Omega-3 và không có xương dăm. Chiên sốt cà chua hoặc kho tiêu cực hao cơm.",
+    "description": "Cá thu phấn biển Thanh Hóa lớn cắt khoanh phần thân giữa dày dặn, thớ thịt hồng tươi đặc ruột, béo thơm giàu Omega-3 và không có xương dăm, rất an toàn cho trẻ nhỏ và người lớn tuổi.",
     "mobileDescription": "Khoanh giữa đặc thịt hồng tươi, chiên sốt cà hoặc kho tiêu.",
+    "origin": "Ghe lưới khơi Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Hút chân không từng khoanh, bảo quản ngăn đông -18°C đến 3 tháng",
+    "highlights": [
+      "Tuyển chọn 100% khoanh thân giữa đặc ruột",
+      "Thớ thịt hồng tươi, béo bùi, không xương dăm",
+      "Cắt lát dày 2.5 - 3cm đóng túi hút chân không"
+    ],
+    "bestDishes": [
+      "Chiên vàng sốt cà chua",
+      "Kho tiêu / Kho riềng",
+      "Áp chảo sốt bơ tỏi",
+      "Làm ruốc cá thu cho bé"
+    ],
     "prepOptions": [
       "Cắt khoanh dày 2-3cm hút chân không từng lát",
       "Đóng thùng giữ lạnh giao tận nơi"
     ],
     "sizeOptions": [
-      { "label": "Khay 500g (2 khoanh lớn)", "priceMultiplier": 0.52 },
+      { "label": "Khay 500g (2 khoanh lớn)", "priceMultiplier": 1 },
       { "label": "Nguyên 1kg (3 - 4 khoanh VIP)", "priceMultiplier": 1 }
     ],
     "featuredOrder": 2,
-    "stockStatus": "Còn 18kg khoanh giữa"
+    "stockStatus": "Sẵn khoanh giữa tươi rói"
   },
   {
     "id": 3,
@@ -80,12 +108,13 @@
     "sku": "YH-BACH-TUOC-03",
     "name": "Bạch Tuộc Biển Tươi Sống Đóng Khay",
     "mobileName": "Bạch Tuộc Biển Tươi Khay",
-    "seoTitle": "Bạch Tuộc Biển Tươi Sống Đóng Khay Làm Sạch Giá 230.000₫/kg - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Bạch Tuộc Biển Tươi Sống Đóng Khay Làm Sạch Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế khay Bạch Tuộc Biển Tươi Sống râu to giòn sần sật không ngâm nước tại Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "fresh",
-    "price": 230000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 265000,
     "unit": "/ kg",
     "mobileUnit": "/ kg",
     "image": "/assets/aistudio/1794885720951_2584028512014311615_2584028512014311615_ed65bf71e4ff7084d87bbdbc66cf2095_2af6846c.jpg",
@@ -100,12 +129,25 @@
     "reviewsCount": 96,
     "description": "Bạch tuộc biển tươi rói đánh bắt tại vùng biển Hoằng Tiến, xúc tu đều đẹp, cam kết tuyệt đối không ngâm nước tăng trọng, khi nướng sa tế BBQ hoặc nhúng lẩu Thái không bị ra nước, giòn sần sật.",
     "mobileDescription": "Cam kết không ngâm nước, nướng sa tế hoặc nhúng lẩu giòn rụm.",
+    "origin": "Vùng biển Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Đóng khay bọc màng thực phẩm, bảo quản ngăn đá 1 - 2 tháng",
+    "highlights": [
+      "Bạch tuộc ghe ngày xúc tu to tròn, giòn sần sật",
+      "Đã làm sạch nội tạng và mắt, về chỉ việc chế biến",
+      "Không ngâm nước — nướng hay xào đều ráo thịt"
+    ],
+    "bestDishes": [
+      "Nướng sa tế BBQ",
+      "Nhúng lẩu Thái chua cay",
+      "Hấp lá ổi / Hấp sả",
+      "Xào cay Hàn Quốc"
+    ],
     "prepOptions": [
       "Làm sạch nội tạng & mắt, đóng khay sạch sẽ",
       "Hút chân không cấp đông gửi đi xa"
     ],
     "sizeOptions": [
-      { "label": "Khay 500g", "priceMultiplier": 0.52 },
+      { "label": "Khay 500g", "priceMultiplier": 1 },
       { "label": "Combo 1kg (2 khay)", "priceMultiplier": 1 }
     ],
     "featuredOrder": 3,
@@ -117,15 +159,17 @@
     "sku": "YH-BEBE-TRUNG-04",
     "name": "Bề Bề (Tôm Tít) Bóc Nõn Full Trứng",
     "mobileName": "Bề Bề Bóc Nõn Full Trứng",
-    "seoTitle": "Bề Bề (Tôm Tít) Bóc Nõn Full Trứng 100% Giá 350.000₫/kg - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Bề Bề (Tôm Tít) Bóc Nõn Full Trứng 100% Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế khay Bề Bề Tôm Tít Bóc Nõn Full Trứng vàng béo dọc sống lưng tại Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "frozen",
-    "price": 350000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 390000,
     "unit": "/ kg (2 khay 500g)",
-    "mobileUnit": "/ kg",
+    "mobileUnit": "/ khay / kg",
     "image": "/assets/aistudio/1794885523462_2584028512014311615_2584028512014311615_f7216f00e0997a58958456d9ff4edad4_c4763147.jpg",
+    "videoUrl": "/assets/aistudio/1794885455088_2584028512014311615_2584028512014311615_b939e0bc.mp4",
     "badgeLeft": "Hấp sơ cấp đông",
     "badgeLeftIcon": "ac_unit",
     "badgeRight": "100% Full trứng",
@@ -138,12 +182,25 @@
     "reviewsCount": 215,
     "description": "Bề bề (tôm tít) biển Hoằng Tiến sống hấp sơ bóc vỏ nguyên con, tuyển chọn 100% con có trứng béo bùi dọc sống lưng. Mua về chỉ việc rã đông nấu bún hải sản, sốt me hoặc chiên giòn.",
     "mobileDescription": "100% con có trứng béo ngậy, bóc vỏ sẵn tiện lợi chế biến.",
+    "origin": "Vựa biển Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Bảo quản ngăn đá -18°C từ 2 - 3 tháng; rã đông tự nhiên 10 - 15 phút",
+    "highlights": [
+      "Bao chuẩn 100% con có dải trứng vàng béo ngậy",
+      "Hấp sơ từ bề bề đang bơi, bóc vỏ nguyên con",
+      "Đóng khay 500g hút chân không sạch sẽ, tiện lợi"
+    ],
+    "bestDishes": [
+      "Bề bề rim me / Sốt bơ tỏi",
+      "Bún hải sản / Bánh đa cua",
+      "Chiên giòn lắc muối ớt",
+      "Làm nhân nem hải sản VIP"
+    ],
     "prepOptions": [
       "Khay cấp đông hút chân không tiêu chuẩn",
       "Đóng thùng xốp giữ nhiệt gửi xe / giao tận nơi"
     ],
     "sizeOptions": [
-      { "label": "1 Khay 500g", "priceMultiplier": 0.52 },
+      { "label": "1 Khay 500g", "priceMultiplier": 1 },
       { "label": "1kg (2 Khay x 500g)", "priceMultiplier": 1 }
     ],
     "featuredOrder": 4,
@@ -151,16 +208,122 @@
   },
   {
     "id": 5,
+    "slug": "non-tom-bien-hap-boc-san-size-dai",
+    "sku": "YH-NON-TOM-05",
+    "name": "Nõn Tôm Biển Hấp Bóc Sẵn (Size Đại Đóng Khay)",
+    "mobileName": "Nõn Tôm Biển Bóc Sẵn",
+    "seoTitle": "Nõn Tôm Biển Hấp Bóc Sẵn Size Đại Đỏ Au Chắc Thịt Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoAlt": "Hình ảnh thực tế khay Nõn Tôm Biển Hấp Bóc Sẵn Size Đại đỏ au chắc thịt tại Vựa Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
+    "category": "frozen",
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
+    "hasDiscount": false,
+    "unit": "/ khay 500g",
+    "mobileUnit": "/ khay",
+    "image": "/assets/aistudio/1794900489014_2584028512014311615_2584028512014311615_f4ccd4933618ac51465c6c744cd40ce6_4d0f4111.jpg",
+    "videoUrl": "/assets/aistudio/1794900489030_2584028512014311615_2584028512014311615_e49d681d.mp4",
+    "badgeLeft": "Hấp bóc thủ công",
+    "badgeLeftIcon": "ac_unit",
+    "badgeRight": "Nõn tôm biển đại",
+    "badgeRightStyle": "coral",
+    "mobileBadge": "Nõn tôm đại",
+    "mobileKicker": "Đỏ au dai ngọt tự nhiên",
+    "mobileKickerColor": "text-accent",
+    "subtitle": "Tôm biển tự nhiên bóc nõn • Rút sạch chỉ lưng",
+    "rating": 5.0,
+    "reviewsCount": 176,
+    "description": "Nõn tôm biển tự nhiên vùng biển Hoằng Tiến vừa hấp chín tới và bóc vỏ thủ công trong ngày. Từng con tôm to tròn, đỏ au, thịt săn chắc ngọt lịm. Cực kỳ tiện lợi để rim mặn ngọt, nấu bún, làm nem hải sản hoặc nấu cháo cho bé.",
+    "mobileDescription": "Tôm biển tự nhiên hấp bóc sẵn, thịt săn chắc ngọt đậm đà.",
+    "origin": "Tôm biển tự nhiên Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Đóng khay 500g cấp đông sâu, để ngăn đá dùng dần trong 2 - 3 tháng",
+    "highlights": [
+      "Nõn tôm biển tự nhiên size đại, thịt dai săn chắc",
+      "Hấp chín tới giữ trọn độ ngọt, đã rút sạch chỉ lưng",
+      "Tiết kiệm 100% thời gian sơ chế cho bữa cơm gia đình"
+    ],
+    "bestDishes": [
+      "Tôm rim nước mắm thịt ba chỉ",
+      "Nấu canh bầu / Canh mồng tơi",
+      "Làm nem rán hải sản",
+      "Xào rau củ / Nấu cháo dinh dưỡng"
+    ],
+    "prepOptions": [
+      "Đóng khay 500g bọc màng thực phẩm / hút chân không",
+      "Đóng thùng xốp giữ lạnh gửi xe / giao tận nơi"
+    ],
+    "sizeOptions": [
+      { "label": "1 Khay 500g", "priceMultiplier": 1 },
+      { "label": "Combo 1kg (2 Khay 500g)", "priceMultiplier": 1 }
+    ],
+    "featuredOrder": 5,
+    "stockStatus": "Vừa bóc xong mẻ mới trong ngày"
+  },
+  {
+    "id": 6,
+    "slug": "tom-he-tom-bop-bien-tuoi-dong-hop",
+    "sku": "YH-TOM-BIEN-06",
+    "name": "Tôm He / Tôm Bộp Biển Tươi Đóng Hộp",
+    "mobileName": "Tôm Biển Tươi Đóng Hộp",
+    "seoTitle": "Tôm He Tôm Bộp Biển Tươi Đóng Hộp Ghe Về Trong Ngày Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoAlt": "Hình ảnh và video thực tế Tôm He Tôm Bộp Biển Tươi Đóng Hộp đầu gạch béo ngọt tại Vựa Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
+    "category": "fresh",
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
+    "hasDiscount": false,
+    "unit": "/ hộp / kg",
+    "mobileUnit": "/ hộp",
+    "image": "/assets/aistudio/1794900489014_2584028512014311615_2584028512014311615_f4ccd4933618ac51465c6c744cd40ce6_4d0f4111.jpg",
+    "videoUrl": "/assets/aistudio/1794900489005_2584028512014311615_2584028512014311615_399ddce0.mp4",
+    "badgeLeft": "Tôm biển lưới ngày",
+    "badgeRight": "Đầu gạch thịt chắc",
+    "badgeRightStyle": "emerald",
+    "mobileBadge": "Tôm biển tươi",
+    "mobileKicker": "Tôm tự nhiên 100%",
+    "mobileKickerColor": "text-fresh-green",
+    "subtitle": "Tôm biển tự nhiên • Đóng hộp sạch sẽ giữ lạnh",
+    "rating": 5.0,
+    "reviewsCount": 154,
+    "description": "Tôm bộp / tôm he biển đánh bắt tự nhiên từ ghe lưới vùng biển Hoằng Tiến, vỏ mỏng bóng, đầu nhiều gạch son béo ngậy, thịt tôm dai ngọt đậm vị biển. Đóng hộp trong suốt cấp đông chuẩn giữ nguyên độ tươi rói.",
+    "mobileDescription": "Tôm biển tự nhiên vỏ mỏng đầu gạch, hấp bia hoặc nướng cực ngon.",
+    "origin": "Ghe lưới ngày Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Đóng hộp bảo quản ngăn đông; rã đông bằng nước mát 5 - 10 phút trước khi nấu",
+    "highlights": [
+      "100% tôm biển đánh bắt tự nhiên, vỏ mỏng mềm",
+      "Đầu tôm đầy gạch béo, thân tôm ngọt đậm vị biển",
+      "Xếp hộp trong suốt sạch sẽ, dễ dàng chia bữa"
+    ],
+    "bestDishes": [
+      "Hấp bia sả gừng",
+      "Nướng muối ớt",
+      "Nhúng lẩu hải sản",
+      "Tôm sốt hoàng kim"
+    ],
+    "prepOptions": [
+      "Đóng hộp trong suốt cấp đông giữ tươi",
+      "Hỗ trợ hấp sơ hoặc bóc nõn theo yêu cầu"
+    ],
+    "sizeOptions": [
+      { "label": "Hộp 500g", "priceMultiplier": 1 },
+      { "label": "Combo 1kg (2 Hộp)", "priceMultiplier": 1 }
+    ],
+    "featuredOrder": 6,
+    "stockStatus": "Hàng ghe mới cập bến"
+  },
+  {
+    "id": 7,
     "slug": "ca-kho-rut-xuong-phoi-nang-tu-nhien",
-    "sku": "YH-CA-KHO-05",
+    "sku": "YH-CA-KHO-07",
     "name": "Cá Khô Rút Xương Phơi Nắng Tự Nhiên",
     "mobileName": "Cá Khô Rút Xương 1 Nắng",
-    "seoTitle": "Cá Khô Rút Xương Phơi Nắng Tự Nhiên Loại 1 Giá 240.000₫/kg - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Cá Khô Rút Xương Phơi Nắng Tự Nhiên Loại 1 Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế Cá Khô Rút Xương Phơi Nắng Tự Nhiên miếng cá vàng trong dẻo thơm tại Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "dried",
-    "price": 240000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 280000,
     "unit": "/ kg (2 túi 500g)",
     "mobileUnit": "/ kg",
     "image": "/assets/aistudio/1794885540351_2584028512014311615_2584028512014311615_e45ee65e3ad148d96937a7c4b14e80e0_025e13e0.jpg",
@@ -176,32 +339,47 @@
     "reviewsCount": 134,
     "description": "Cá biển tươi xẻ phi lê rút sạch xương phơi nắng tự nhiên tại biển Hoằng Tiến - Thanh Hóa. Thịt cá dẻo thơm, vị mặn ngọt hài hòa, chiên giòn hoặc nướng chấm tương ớt cực bắt mồi.",
     "mobileDescription": "Rút xương sạch sẽ, phơi nắng tự nhiên dẻo thơm làm quà biếu.",
+    "origin": "Chế biến thủ công tại Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Ngăn mát 1 tháng hoặc ngăn đá 6 tháng trong túi hút chân không",
+    "highlights": [
+      "Xẻ phi lê từ cá tươi, rút sạch xương rất dễ ăn",
+      "Phơi nắng gió biển tự nhiên, thịt cá vàng trong dẻo thơm",
+      "Vị vừa ăn, đóng túi hút chân không lịch sự đi biếu"
+    ],
+    "bestDishes": [
+      "Nướng than hoa / Nồi chiên không dầu",
+      "Chiên vàng chấm tương ớt",
+      "Rim tỏi ớt chua ngọt",
+      "Trộn gỏi xoài xanh"
+    ],
     "prepOptions": [
       "Đóng 2 túi hút chân không 500g lịch sự",
       "Đóng gói làm quà biếu đặc sản biển Thanh Hóa"
     ],
     "sizeOptions": [
-      { "label": "Túi dùng thử 500g", "priceMultiplier": 0.52 },
+      { "label": "Túi 500g", "priceMultiplier": 1 },
       { "label": "Gói 1kg (2 túi 500g)", "priceMultiplier": 1 }
     ],
-    "featuredOrder": 5,
+    "featuredOrder": 7,
     "stockStatus": "Mẻ phơi nắng mới nhất"
   },
   {
-    "id": 6,
+    "id": 8,
     "slug": "be-be-tom-tit-non-thit-size-dai-moi-hap",
-    "sku": "YH-BEBE-THIT-06",
+    "sku": "YH-BEBE-THIT-08",
     "name": "Bề Bề (Tôm Tít) Nõn Thịt Size Đại Mới Hấp",
     "mobileName": "Bề Bề Nõn Thịt Size Đại",
-    "seoTitle": "Bề Bề (Tôm Tít) Nõn Thịt Size Đại Mới Hấp Giá 290.000₫/kg - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Bề Bề (Tôm Tít) Nõn Thịt Size Đại Mới Hấp Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế rổ Bề Bề Tôm Tít Nõn Thịt Size Đại Mới Hấp nguyên con mập tròn tại Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "fresh",
-    "price": 290000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 330000,
     "unit": "/ kg",
     "mobileUnit": "/ kg",
     "image": "/assets/aistudio/1794885523423_2584028512014311615_2584028512014311615_d8a2a52804059a0b6f1959de7bae94e5_a0fd1f34.jpg",
+    "videoUrl": "/assets/aistudio/1794900489035_2584028512014311615_2584028512014311615_af008604.mp4",
     "badgeLeft": "Hấp bóc trong ngày",
     "badgeRight": "Nõn đại nguyên con",
     "badgeRightStyle": "emerald",
@@ -213,32 +391,47 @@
     "reviewsCount": 168,
     "description": "Bề bề tươi sống vừa hấp chín tới và bóc vỏ thủ công trong ngày tại vựa Yến Hải. Nõn thịt nguyên con to mẩy, ngọt lịm, không bị vụn nát. Rất hợp làm nem hải sản, nấu canh bầu, rang muối.",
     "mobileDescription": "Hấp bóc thủ công trong ngày, thân to mẩy ngọt lịm.",
+    "origin": "Vựa biển Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Dùng ngay trong ngày hoặc cấp đông ngăn đá -18°C được 2 - 3 tháng",
+    "highlights": [
+      "3.5kg bề bề sống tuyển chọn mới bóc được 1kg nõn đại",
+      "Thân nõn nguyên vẹn, dày thịt, ngọt lịm không bở",
+      "Bóc thủ công sạch sẽ mỗi sáng ngay khi ghe về"
+    ],
+    "bestDishes": [
+      "Nấu bún bề bề / Miến xào",
+      "Bề bề rang muối / Cháy tỏi",
+      "Nấu canh bầu ngọt mát",
+      "Cuốn gỏi / Làm nem hải sản"
+    ],
     "prepOptions": [
       "Giao ngay trong ngày (Giữ mát tươi ngon)",
       "Chia 2 hộp 500g hút chân không tiện dùng"
     ],
     "sizeOptions": [
-      { "label": "Hộp 500g", "priceMultiplier": 0.52 },
+      { "label": "Hộp 500g", "priceMultiplier": 1 },
       { "label": "Combo 1kg (2 hộp 500g)", "priceMultiplier": 1 }
     ],
-    "featuredOrder": 6,
-    "stockStatus": "Vừa ra lò 15kg nõn đại"
+    "featuredOrder": 8,
+    "stockStatus": "Vừa ra lò mẻ nõn đại"
   },
   {
-    "id": 7,
+    "id": 9,
     "slug": "be-be-non-dong-khay-vip-500g",
-    "sku": "YH-BEBE-KHAY-07",
+    "sku": "YH-BEBE-KHAY-09",
     "name": "Bề Bề Nõn Đóng Khay VIP (Chuẩn Xuất Khẩu)",
     "mobileName": "Bề Bề Nõn Khay VIP 500g",
-    "seoTitle": "Bề Bề Nõn Đóng Khay VIP 500g Chuẩn Xuất Khẩu Giá 165.000₫ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
+    "seoTitle": "Bề Bề Nõn Đóng Khay VIP 500g Chuẩn Xuất Khẩu Giá Liên Hệ - Hải Sản Yến Hải Hoằng Tiến Thanh Hóa",
     "seoAlt": "Hình ảnh thực tế Bề Bề Nõn Đóng Khay VIP 500g xếp đều con cấp đông giữ ngọt tại Hải Sản Yến Hải xã Hoằng Tiến tỉnh Thanh Hóa",
     "category": "frozen",
-    "price": 165000,
+    "price": 0,
+    "showPrice": false,
+    "priceText": "Giá: Liên hệ",
     "hasDiscount": false,
-    "originalPrice": 190000,
     "unit": "/ khay 500g",
     "mobileUnit": "/ khay 500g",
     "image": "/assets/aistudio/1794885720933_2584028512014311615_2584028512014311615_d7945991a89b97933cca6327cbf2bc3a_b301e1d7.jpg",
+    "videoUrl": "/assets/aistudio/1794885433672_2584028512014311615_2584028512014311615_a7422ec4.mp4",
     "badgeLeft": "Cấp đông giữ ngọt",
     "badgeLeftIcon": "ac_unit",
     "badgeRight": "Khay VIP 500g",
@@ -249,17 +442,30 @@
     "subtitle": "Khay 500g • 10-12 nõn khổng lồ",
     "rating": 5.0,
     "reviewsCount": 189,
-    "description": "Mỗi khay 500g xếp đều 10-12 nõn bề bề đại nguyên vẹn, bọc màng co cấp đông sâu giữ trọn 99% vị ngọt biển cả. Cực kỳ tiện lợi cho bữa cơm gia đình bận rộn.",
+    "description": "Mỗi khay 500g xếp đều 10-12 nõn bề bề đại nguyên vẹn, bọc màng co cấp đông sâu giữ trọn 99% vị ngọt biển cả. Cực kỳ tiện lợi cho bữa cơm gia đình bận rộn hoặc đóng thùng biếu tặng.",
     "mobileDescription": "Khay 500g gồm 10-12 nõn đại xếp đẹp, tiện lợi trữ đông.",
+    "origin": "Vựa biển Xã Hoằng Tiến, Tỉnh Thanh Hóa",
+    "storageGuide": "Ngăn đá -18°C từ 2 - 3 tháng; mỗi khay 500g vừa vặn 1 bữa ăn gia đình",
+    "highlights": [
+      "Xếp khay 500g đều tăm tắp (10 - 12 nõn khổng lồ)",
+      "Hút chân không cấp đông sâu giữ 99% độ ngọt",
+      "Rất đẹp mắt để đóng thùng xốp làm quà biếu"
+    ],
+    "bestDishes": [
+      "Hấp nóng chấm muối tiêu chanh",
+      "Sốt me / Rim mặn ngọt",
+      "Lẩu hải sản gia đình",
+      "Chiên xù cho bé"
+    ],
     "prepOptions": [
       "Đóng khay 500g bọc màng thực phẩm sạch sẽ",
       "Đóng thùng xốp giữ lạnh vận chuyển đi xa"
     ],
     "sizeOptions": [
       { "label": "1 Khay 500g", "priceMultiplier": 1 },
-      { "label": "Combo 2 Khay (1kg)", "priceMultiplier": 2 }
+      { "label": "Combo 2 Khay (1kg)", "priceMultiplier": 1 }
     ],
-    "featuredOrder": 7,
+    "featuredOrder": 9,
     "stockStatus": "Sẵn kho lạnh giao ngay"
   }
 ]
