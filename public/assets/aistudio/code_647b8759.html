@@ -1,0 +1,634 @@
+<!DOCTYPE html><html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hải Sản Yến Hải — Bio &amp; Cửa Hàng Di Động</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#E04F36',
+        'accent-hover': '#C93B24',
+        'fresh-green': '#16A34A',
+        'ocean-blue': '#0284C7',
+        'gold-star': '#F59E0B',
+        'light-primary': '#0A2540',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#E8F0FE',
+        'light-on-primary-container': '#0A2540',
+        'light-secondary': '#E04F36',
+        'light-on-secondary': '#181818',
+        'light-secondary-container': '#FEE2E2',
+        'light-on-secondary-container': '#991B1B',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#1E293B',
+        'light-surface-container': '#F8FAFC',
+        'light-surface-container-high': '#F1F5F9',
+        'light-outline': '#CBD5E1',
+        'light-outline-variant': '#E2E8F0',
+        'dark-primary': '#93C5FD',
+        'dark-on-primary': '#0B2545',
+        'dark-primary-container': '#1E3A8A',
+        'dark-on-primary-container': '#DBEAFE',
+        'dark-secondary': '#FCA5A5',
+        'dark-on-secondary': '#7F1D1D',
+        'dark-secondary-container': '#991B1B',
+        'dark-on-secondary-container': '#FEE2E2',
+        'dark-surface': '#0F172A',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1E293B',
+        'dark-surface-container-high': '#334155',
+        'dark-outline': '#64748B',
+        'dark-outline-variant': '#475569',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '10px',
+        'md': '14px',
+        'lg': '20px',
+        'xl': '28px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Poppins"', 'sans-serif'],
+        'headline': ['"Poppins"', 'sans-serif'],
+        'title': ['"Poppins"', 'sans-serif'],
+        'body': ['"Lato"', 'sans-serif'],
+        'label': ['"Poppins"', 'sans-serif'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-lg': ['32px', { lineHeight: '40px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '32px', letterSpacing: '0px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '32px', fontWeight: '600' }],
+        'title-lg': ['20px', { lineHeight: '28px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '22px', fontWeight: '400' }],
+        'body-sm': ['13px', { lineHeight: '18px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.25px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'surface-enter': '250ms',
+        'surface-exit': '150ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;family=Poppins:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      line-height: 1 !important;
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-light-on-surface antialiased min-h-[884px] pb-24" data-stitch-vh="min-h-[884px]===min-h-screen">
+
+  <!-- Mobile Bio Top Profile Header -->
+  <header class="bg-gradient-to-b from-light-primary via-[#0E355C] to-light-primary text-white pt-8 pb-6 px-4 rounded-b-2xl shadow-md relative overflow-hidden">
+    <!-- Subtle Background Pattern -->
+    <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+      <span class="material-symbols-outlined text-[180px]">sailing</span>
+    </div>
+
+    <div class="flex flex-col items-center text-center relative z-10">
+      <!-- Profile Avatar / Brand Badge -->
+      <div class="relative mb-3">
+        <div class="w-20 h-20 rounded-full border-4 border-white/20 bg-white p-1 shadow-lg flex items-center justify-center">
+          <div class="w-full h-full rounded-full bg-light-primary text-white flex items-center justify-center font-extrabold text-2xl">
+            <span class="material-symbols-outlined text-[36px]">sailing</span>
+          </div>
+        </div>
+        <span class="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-fresh-green border-2 border-white flex items-center justify-center text-white" title="Hồ đang mở cửa">
+          <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <h1 class="font-headline text-headline-lg-mobile font-bold tracking-tight text-white">HẢI SẢN YẾN HẢI</h1>
+        <span class="material-symbols-outlined text-ocean-blue text-[20px]" style="font-variation-settings: &#39;FILL&#39; 1;">verified</span>
+      </div>
+      
+      <p class="font-label text-label-sm text-sky-200 uppercase tracking-wider font-semibold mt-0.5">
+        Vựa Sỉ &amp; Lẻ Hải Sản Toàn Quốc
+      </p>
+
+      <!-- Facebook Bio Summary (Under 255 chars) -->
+      <div class="mt-3 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 max-w-sm text-center">
+        <p class="font-body text-body-sm text-white/90 leading-snug">
+          &#34;Chuyên cung cấp sỉ &amp; lẻ: Tươi sống bơi tại hồ, đồ khô hút chân không làm quà biếu, hàng đông lạnh chuẩn xuất khẩu. Bao tươi ngon, 1 đổi 1 tận nơi!&#34;
+        </p>
+      </div>
+
+      <!-- Quick Trust Indicators -->
+      <div class="flex items-center justify-center gap-3 mt-3 text-[11px] font-label text-white/80">
+        <span class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-fresh-green"></span> Hàng bơi tại hồ
+        </span>
+        <span>•</span>
+        <span class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Bao ăn 1 đổi 1
+        </span>
+        <span>•</span>
+        <span class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span> Giao 1-2h
+        </span>
+      </div>
+
+      <!-- Multi-Channel Fast Contact Bar -->
+      <div class="grid grid-cols-3 gap-2 w-full mt-4">
+        <!-- Call Hotline -->
+        <a href="tel:0988666888" class="py-2.5 px-1 rounded-lg bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-label-sm font-semibold flex flex-col items-center justify-center shadow">
+          <span class="material-symbols-outlined text-[20px]">call</span>
+          <span class="mt-0.5">Gọi Hotline</span>
+        </a>
+
+        <!-- Zalo Chat -->
+        <a href="https://zalo.me" target="_blank" class="py-2.5 px-1 rounded-lg bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-label-sm font-semibold flex flex-col items-center justify-center shadow">
+          <span class="material-symbols-outlined text-[20px]">chat</span>
+          <span class="mt-0.5">Chat Zalo</span>
+        </a>
+
+        <!-- Messenger Direct -->
+        <a href="https://m.me" target="_blank" class="py-2.5 px-1 rounded-lg bg-accent hover:bg-accent-hover text-white font-label text-label-sm font-semibold flex flex-col items-center justify-center shadow">
+          <span class="material-symbols-outlined text-[20px]">send</span>
+          <span class="mt-0.5">Messenger</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Mobile Category & Search Bar -->
+  <div class="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-3 py-2.5 border-b border-light-outline-variant shadow-sm flex items-center gap-2">
+    <div class="flex-1 relative">
+      <input type="text" id="mobileSearch" placeholder="Tìm tôm, cua, mực, cá..." class="w-full pl-8 pr-3 py-1.5 text-body-sm rounded-full border border-light-outline-variant bg-light-surface-container focus:bg-white focus:outline-none focus:ring-1 focus:ring-light-primary">
+      <span class="material-symbols-outlined absolute left-2.5 top-2 text-light-on-surface/40 text-[16px]">search</span>
+    </div>
+
+    <!-- Mobile Cart Trigger with Floating Count -->
+    <button onclick="openMobileCart()" class="relative p-2 rounded-full bg-light-surface-container hover:bg-light-primary-container text-light-primary flex items-center justify-center cursor-pointer">
+      <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+      <span id="mobileCartCount" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent text-white font-bold text-[10px] flex items-center justify-center shadow">
+        3
+      </span>
+    </button>
+  </div>
+
+  <!-- 3 Pillar Category Quick Filter Tabs -->
+  <div class="px-3 py-3 overflow-x-auto flex gap-2 no-scrollbar">
+    <button onclick="filterMobileCategory(&#39;all&#39;, this)" class="mobile-cat-btn px-3 py-1.5 rounded-full bg-light-primary text-white font-label text-label-sm whitespace-nowrap shadow-sm">
+      Tất cả (7)
+    </button>
+    <button onclick="filterMobileCategory(&#39;fresh&#39;, this)" class="mobile-cat-btn px-3 py-1.5 rounded-full bg-white text-light-on-surface border border-light-outline-variant font-label text-label-sm whitespace-nowrap">
+      🦐 Tươi Sống
+    </button>
+    <button onclick="filterMobileCategory(&#39;frozen&#39;, this)" class="mobile-cat-btn px-3 py-1.5 rounded-full bg-white text-light-on-surface border border-light-outline-variant font-label text-label-sm whitespace-nowrap">
+      ❄️ Đông Lạnh
+    </button>
+    <button onclick="filterMobileCategory(&#39;dried&#39;, this)" class="mobile-cat-btn px-3 py-1.5 rounded-full bg-white text-light-on-surface border border-light-outline-variant font-label text-label-sm whitespace-nowrap">
+      🦑 Đồ Khô Biếu
+    </button>
+  </div>
+
+  <!-- Interactive Facebook Bio Copy Card for Mobile Admin -->
+  <div class="mx-3 mb-4 p-3.5 bg-white rounded-lg border border-ocean-blue/30 shadow-sm">
+    <div class="flex items-center justify-between mb-1.5">
+      <span class="font-label text-label-sm font-bold text-ocean-blue flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">content_paste</span>
+        Mẫu Bio Facebook Khuyên Dùng
+      </span>
+      <span class="text-[11px] text-light-on-surface/50">206/255 kt</span>
+    </div>
+    <p id="mobileBioSample" class="font-body text-body-sm text-light-on-surface/80 bg-light-surface-container p-2.5 rounded border border-light-outline-variant/60 leading-relaxed text-xs">
+      Hải Sản Yến Hải chuyên cung cấp sỉ &amp; lẻ đa dạng mặt hàng: Hải sản tươi sống về trong ngày, hải sản khô tuyển chọn và hàng đông lạnh chất lượng cao. Cam kết uy tín, bao tươi ngon. Liên hệ ngay!
+    </p>
+    <button onclick="copyMobileBio(this)" class="mt-2 w-full py-1.5 rounded bg-ocean-blue text-white font-label text-label-sm font-semibold flex items-center justify-center gap-1 shadow-sm">
+      <span class="material-symbols-outlined text-[16px]">content_copy</span>
+      <span>Sao chép vào ô Bio Facebook</span>
+    </button>
+  </div>
+
+  <!-- Mobile Product Feed (Card Stream) -->
+  <div id="mobileProductFeed" class="px-3 space-y-3">
+
+    <!-- Card 1: Tom Hum Bong -->
+    <article data-cat="fresh" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrAPVhZFIOoXvloRweSlWAXmxrAX3SWgkU3NxsrAfx2YwC2upZ_2Ch_8Bw-DQzEV7WVrSv14UpJSc-JhL1PS_zDOEn7Xgn1Krk-Z0ErTJofk1-cTsngh8976A2hM2Lr00GZUMzfNjkbtOrAeURBVSx14ILLxVq2sEj290UsS3CazoIHgkK7MRZvnJ_NACfnSTKIdFVxwUHprlhHEDL6z6yWZGMgVR14Sc-TWiNpU4mkQWUEEFWq6-zUUPA" alt="Tôm Hùm Bông Sống" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-fresh-green text-white font-label text-[10px] font-bold">
+          Đang bơi
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-accent font-semibold">Bao ăn 1 đổi 1</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Tôm Hùm Bông Nha Trang</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Size 1-1.5kg/con. Bơi khỏe, bao chắc thịt gạch béo.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">1.250.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ kg</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Tôm Hùm Bông Nha Trang&#39;, 1250000, &#39;../../images/seafood_tom_hum.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2: Cua Ca Mau -->
+    <article data-cat="fresh" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrBBaXqmLKo2JxUHzpOgPbMFqVADKecx6njXnRrIJ3lLd4NJEOkqgYOyeWcItqtvfwOBIQLyEUajK4bhglkN_4BW99-19f0iaGTMqTjn7K-V5fOTJpadgVDxkp0KEQmzOnqQaXJx3ABqWLu7ILUgbE-C2-G1jWMq9WrbaFFMGY7BT8fCPROdiKeWJhrwTsTxElN_3kLFtf77jUgy9AVAbuoKFi2otxcjq6-PiMs5DLED0_vK3JmIovTCT1gTvw" alt="Cua Cà Mau Gạch Son" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-fresh-green text-white font-label text-[10px] font-bold">
+          Bao óp 1:1
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-fresh-green font-semibold">Dây trói không trọng lượng</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Cua Cà Mau Gạch Son</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Gạch đầy tràn mai, thịt thơm ngọt chắc nịch.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">650.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ kg</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Cua Cà Mau Gạch Son&#39;, 650000, &#39;../../images/seafood_cua_ca_mau.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3: Tom Su Bien -->
+    <article data-cat="fresh" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrAB0HK_4BAU3S8le5PFPr-WVrgfyn-iGpOp2QxNLHT8lbpo634frPL0ycTPRjhVwb-Kv_obWJPDr86suP7iaWBGQcu4r-MhzujYnnvS6E_ikFNy5qeyHVp9PncPyNVBLaXq22KIAjf5eceWfXPR41jSj_MIQQZ-3rItS0O9nEe3p0Q9cs_CWQWKea7N37hr8fQGrNK1qsIdfI2WlgqgB4XWm8v37e-ULojjEW9iqH1U3zhuscQwr0KM6sARfYY" alt="Tôm Sú Cọp" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-fresh-green text-white font-label text-[10px] font-bold">
+          Đang bơi
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-emerald-700 font-semibold">Nhận sơ chế hấp sẵn</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Tôm Sú Biển Cọp Đại</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Size 15-20 con/kg, sủi oxy giao sống tận nhà.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">490.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ kg</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Tôm Sú Biển Cọp Đại&#39;, 490000, &#39;../../images/seafood_tom_su_song.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 4: Muc Ong Dong Lanh -->
+    <article data-cat="frozen" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrBCpRiuPvh2euGMkYdRLmzT6Gtr5hMTFCAcOs7Lw19QQuZuEUAxgCuXDUQSiVyX5JVJQ4I1_LZNoY7hX3xo81gPuHDkeUjBOl0g7rnMluKFBLsOv_PU7J6BnQB095BNtgzg9yi3F_l2GhO6-EKO1Ls5H_Bj_5gvhuzApKcRGu6qpRBNTXHKk7hHgJYfXIfBeaVvJ17KlZ4Rat3Fy1SPEUvSw0ka_UJF2yY2-J0z_jubDseB_YKJwNVazZcOxY7pYg" alt="Mực Côn Đảo Cấp Đông" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-sky-600 text-white font-label text-[10px] font-bold">
+          Cấp đông tại tàu
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-sky-700 font-semibold">Giữ trọn 99% vị ngọt</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Mực Ống Côn Đảo Cấp Đông</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Thân dày giòn sần sật, chuẩn xuất khẩu tiện lợi.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">290.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ kg</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Mực Ống Côn Đảo Cấp Đông&#39;, 290000, &#39;../../images/seafood_muc_dong_lanh.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 5: Ca Hoi File -->
+    <article data-cat="frozen" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrDSdH9rhxkucXVWR9CastK7ePbHGPymekbNRySLYNjSerPOMOSNjp7-e2dnfHSlODVQyXIj1WPfO9IMGAFbrSAjePaiG5-TM4LoeMWCN5mtmj1iFSs7crjmLqSXZ5hGxX2QLWT-zmQntK9HEu4KxRdaLQgDpJMzaQtesnvkdc2Q4W_YUi_5DDvyC3x_lgbhNpsz2Q3h-0gv2OtxDCVMhrua5a-m33zUCBlSS_4Dnb6RepBFeZQi13lJGjFJMLnNurGN2w" alt="Cá Hồi Nauy Fillet" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-sky-600 text-white font-label text-[10px] font-bold">
+          Cấp đông sâu
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-sky-700 font-semibold">Túi hút chân không</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Cá Hồi Nauy Fillet Cấp Đông</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Vân mỡ đều đẹp, không xương, ăn sashimi hoặc áp chảo.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">340.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ 500g</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Cá Hồi Nauy Fillet Cấp Đông&#39;, 340000, &#39;../../images/seafood_ca_hoi_dong_lanh.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 6: Muc 1 Nang -->
+    <article data-cat="dried" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrCbzxMJ6WaDQnE5V7cLhLM9NZngPAO4rIJvYs8AJaYa9h5Mzi-ZwG5ZcGmnAERBu8vABMjK77ynhhD0remuaPQsEA2BiIZsfeiosrCYD-o9MdvOwEkB7ChyW9Rc2D5WEbGv-U43WJ5xdRVMWAIIzlb3iY40TneTRxfUmz3GqQfFRTrYwMZilj_vQGJNiZN50ke5Xwi3ewuUMq8QCXR9uQPADOXgWRnZUAv98hYY62j3wdCIDMRNXrey5nPAwErZGXZS" alt="Mực Một Nắng Hộp Quà" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-amber-600 text-white font-label text-[10px] font-bold">
+          Phơi đủ nắng
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-amber-800 font-semibold">Quà biếu lịch sự</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Mực Câu Một Nắng Đặc Biệt</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Không chất bảo quản, đóng hộp hút chân không cao cấp.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">480.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ kg</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Mực Câu Một Nắng Đặc Biệt&#39;, 480000, &#39;../../images/seafood_muc_kho_mot_nang.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 7: Ca Chi Vang -->
+    <article data-cat="dried" class="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3">
+      <div class="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrAsUNKMbAy-ueXd_qnFMrE1mk6ajwqsdOydaFMpP9_1JOV_HWg_E64RxJLmphp_YubdRREfmjhX-8gUFRzmngwVOoh59gLLr4rDUdIburOzIRRzl8lOL3ZjUEALsgwXPoP4QRm7IMuHTJd-MxrL_pY_tzQjnYWQ6pk2m7RkOetBYDkpo_bxIIVevaU0L9mulc8tZbEZT4bfcy5XVfu6G15dSwsEuFXVlHblTFieznEfj3hp466kcm76nEtO-Q" alt="Cá Chỉ Vàng 1 Nắng" class="w-full h-full object-cover">
+        <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-amber-600 text-white font-label text-[10px] font-bold">
+          Phơi đủ nắng
+        </span>
+      </div>
+      <div class="flex-1 min-w-0 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-label text-amber-800 font-semibold">Túi 500g làm quà</span>
+          <h3 class="font-title text-title-sm font-bold text-light-primary truncate">Cá Chỉ Vàng 1 Nắng Thơm Dẻo</h3>
+          <p class="font-body text-[11px] text-light-on-surface/60 line-clamp-1">Tẩm vị dịu nhẹ, nướng chiên vàng óng thơm lừng.</p>
+        </div>
+        <div class="flex items-end justify-between mt-2">
+          <div>
+            <span class="font-headline text-title-md font-bold text-accent tabular-nums">220.000₫</span>
+            <span class="text-[10px] text-light-on-surface/50">/ 500g</span>
+          </div>
+          <button onclick="addMobileItem(&#39;Cá Chỉ Vàng 1 Nắng&#39;, 220000, &#39;../../images/seafood_ca_chi_vang.jpg&#39;)" class="px-3 py-1.5 rounded bg-accent text-white font-label text-label-sm font-bold flex items-center gap-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+            <span>Mua</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Persistent Mobile Bottom Checkout Bar -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-light-outline-variant px-4 py-2.5 shadow-2xl flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <button onclick="openMobileCart()" class="relative p-2.5 rounded-full bg-light-primary-container text-light-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+        <span id="bottomCartCount" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent text-white font-bold text-[10px] flex items-center justify-center">
+          3
+        </span>
+      </button>
+      <div>
+        <span class="block text-[11px] text-light-on-surface/60 font-body">Tổng tạm tính:</span>
+        <span id="bottomCartTotal" class="font-headline text-label-lg font-bold text-accent tabular-nums">
+          2.390.000₫
+        </span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a href="tel:0988666888" class="p-2.5 rounded-DEFAULT bg-fresh-green text-white flex items-center justify-center shadow" title="Gọi hotline">
+        <span class="material-symbols-outlined text-[20px]">call</span>
+      </a>
+      <button onclick="openMobileCart()" class="py-2.5 px-4 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-sm font-bold shadow flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[18px]">shopping_cart_checkout</span>
+        <span>Thanh Toán</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Cart Sheet Modal -->
+  <div id="mobileCartModal" class="fixed inset-0 z-50 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col justify-end">
+    <div class="bg-white rounded-t-2xl max-h-[751px] flex flex-col shadow-2xl overflow-hidden" data-stitch-vh="max-h-[751px]===max-h-[85vh]">
+      <!-- Sheet Header -->
+      <div class="p-4 border-b border-light-outline-variant flex items-center justify-between bg-light-surface-container">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-light-primary text-[22px]">shopping_bag</span>
+          <h3 class="font-headline text-title-sm font-bold text-light-primary">Giỏ Hàng Hải Sản Yến Hải</h3>
+        </div>
+        <button onclick="closeMobileCart()" class="w-8 h-8 rounded-full hover:bg-light-outline-variant flex items-center justify-center text-light-primary">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Sheet Items -->
+      <div id="mobileCartList" class="p-4 divide-y divide-light-outline-variant overflow-y-auto max-h-64">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Sheet Footer -->
+      <div class="p-4 border-t border-light-outline-variant bg-light-surface-container space-y-3">
+        <div class="flex items-baseline justify-between">
+          <span class="font-body text-body-sm text-light-on-surface/70">Tổng tiền đơn hàng:</span>
+          <span id="sheetCartTotal" class="font-headline text-headline-md font-extrabold text-accent tabular-nums">2.390.000₫</span>
+        </div>
+
+        <button onclick="submitOrder()" class="w-full py-3 rounded-DEFAULT bg-accent text-white font-label text-label-md font-bold shadow flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[20px]">credit_card</span>
+          <span>Đặt Hàng &amp; Thanh Toán Trực Tuyến</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2">
+          <a href="tel:0988666888" class="py-2 px-2 rounded-DEFAULT bg-fresh-green text-white font-label text-label-sm font-semibold flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">call</span>
+            <span>Gọi Hotline Chốt</span>
+          </a>
+          <a href="https://zalo.me" target="_blank" class="py-2 px-2 rounded-DEFAULT bg-ocean-blue text-white font-label text-label-sm font-semibold flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">chat</span>
+            <span>Gửi qua Zalo</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script for Mobile Interaction -->
+  <script>
+    let mobileCart = [
+      { id: 1, name: "Tôm Hùm Bông Nha Trang", price: 1250000, qty: 1, img: "../../images/seafood_tom_hum.jpg" },
+      { id: 2, name: "Cua Cà Mau Gạch Son", price: 650000, qty: 1, img: "../../images/seafood_cua_ca_mau.jpg" },
+      { id: 6, name: "Mực Câu Một Nắng Đặc Biệt", price: 480000, qty: 1, img: "../../images/seafood_muc_kho_mot_nang.jpg" }
+    ];
+
+    function renderMobileCart() {
+      const list = document.getElementById("mobileCartList");
+      const totalCount = mobileCart.reduce((sum, item) => sum + item.qty, 0);
+      const totalMoney = mobileCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      document.getElementById("mobileCartCount").textContent = totalCount;
+      document.getElementById("bottomCartCount").textContent = totalCount;
+      document.getElementById("bottomCartTotal").textContent = totalMoney.toLocaleString("vi-VN") + "₫";
+      document.getElementById("sheetCartTotal").textContent = totalMoney.toLocaleString("vi-VN") + "₫";
+
+      if (mobileCart.length === 0) {
+        list.innerHTML = `<p class="py-8 text-center text-light-on-surface/50 text-body-sm">Giỏ hàng của bạn đang trống</p>`;
+        return;
+      }
+
+      list.innerHTML = mobileCart.map(i => `
+        <div class="py-2.5 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <img src="${i.img}" class="w-12 h-12 rounded object-cover border" />
+            <div class="min-w-0">
+              <p class="font-title text-label-md font-bold text-light-primary truncate">${i.name}</p>
+              <p class="text-xs text-accent font-bold">${(i.price * i.qty).toLocaleString("vi-VN")}₫</p>
+            </div>
+          </div>
+          <div class="flex items-center border rounded bg-light-surface-container">
+            <button onclick="updateMobileQty(${i.id}, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+            <span class="px-2 text-xs font-bold">${i.qty}</span>
+            <button onclick="updateMobileQty(${i.id}, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function updateMobileQty(id, delta) {
+      const itm = mobileCart.find(i => i.id === id);
+      if (itm) {
+        itm.qty += delta;
+        if (itm.qty <= 0) mobileCart = mobileCart.filter(i => i.id !== id);
+      }
+      renderMobileCart();
+    }
+
+    function addMobileItem(name, price, img) {
+      const exist = mobileCart.find(i => i.name === name);
+      if (exist) {
+        exist.qty += 1;
+      } else {
+        mobileCart.push({ id: Date.now(), name, price, qty: 1, img });
+      }
+      renderMobileCart();
+      openMobileCart();
+    }
+
+    function openMobileCart() {
+      const modal = document.getElementById("mobileCartModal");
+      modal.classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function closeMobileCart() {
+      const modal = document.getElementById("mobileCartModal");
+      modal.classList.add("opacity-0", "pointer-events-none");
+    }
+
+    document.getElementById("mobileCartModal").addEventListener("click", function(e) {
+      if (e.target === this) closeMobileCart();
+    });
+
+    function submitOrder() {
+      alert("Đã tiếp nhận đơn hàng của bạn! Yến Hải sẽ gọi hotline 0988.666.888 xác nhận trước khi giao.");
+      closeMobileCart();
+    }
+
+    function filterMobileCategory(cat, btn) {
+      const cards = document.querySelectorAll(".mob-card");
+      cards.forEach(c => {
+        if (cat === "all" || c.getAttribute("data-cat") === cat) {
+          c.style.display = "flex";
+        } else {
+          c.style.display = "none";
+        }
+      });
+      document.querySelectorAll(".mobile-cat-btn").forEach(b => {
+        b.classList.remove("bg-light-primary", "text-white");
+        b.classList.add("bg-white", "text-light-on-surface", "border");
+      });
+      btn.classList.add("bg-light-primary", "text-white");
+      btn.classList.remove("bg-white", "text-light-on-surface", "border");
+    }
+
+    function copyMobileBio(btn) {
+      const text = document.getElementById("mobileBioSample").innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[16px]">check</span><span>Đã sao chép!</span>`;
+        setTimeout(() => btn.innerHTML = orig, 2000);
+      });
+    }
+
+    document.getElementById("mobileSearch").addEventListener("input", function(e) {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll(".mob-card").forEach(c => {
+        const t = c.querySelector("h3").textContent.toLowerCase();
+        c.style.display = t.includes(q) ? "flex" : "none";
+      });
+    });
+
+    renderMobileCart();
+  </script>
+
+
+
+</body></html>

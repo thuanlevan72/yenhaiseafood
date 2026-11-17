@@ -1,0 +1,6 @@
+{
+  "name": "Hải Sản Yến Hải — Vựa Hải Sản Tươi Sống, Đông Lạnh & Đồ Khô Hoằng Tiến Thanh Hóa",
+  "description": "Hải Sản Yến Hải (Xã Hoằng Tiến, Tỉnh Thanh Hóa) chuyên sỉ & lẻ Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương 1 Nắng. Bao ăn 1 đổi 1, Hotline/Zalo: 0356.136.859.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
