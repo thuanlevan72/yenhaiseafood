@@ -596,6 +596,95 @@ export function parseAndValidateProductsJson(jsonText: string): {
   }
 }
 
+/**
+ * Chuẩn hóa chuỗi tiếng Việt để tìm kiếm không phân biệt dấu và chữ hoa/thường.
+ * Ví dụ: "Bề Bề Nõn Trứng" -> "be be non trung", "Đồ Khô" -> "do kho".
+ */
+export function normalizeVietnameseText(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getCategorySearchAliases(category: Product['category']): string {
+  if (category === 'fresh') return 'tươi sống mới về trong ngày ghe lưới';
+  if (category === 'frozen') return 'đông lạnh cấp đông sâu hút chân không';
+  return 'đồ khô hải sản khô một nắng phơi nắng quà biếu';
+}
+
+export function getProductSearchableText(product: Product): string {
+  const raw = [
+    product.name,
+    product.mobileName,
+    product.subtitle,
+    product.description,
+    product.mobileDescription,
+    product.badgeLeft,
+    product.badgeRight,
+    product.origin || '',
+    product.sku || '',
+    getCategorySearchAliases(product.category),
+    ...(product.highlights || []),
+    ...(product.bestDishes || [])
+  ].join(' ');
+  return normalizeVietnameseText(raw);
+}
+
+export function matchesProductQuery(product: Product, normalizedQuery: string): boolean {
+  if (!normalizedQuery) return true;
+  const searchable = getProductSearchableText(product);
+  const words = searchable.split(/[^a-z0-9]+/).filter(Boolean);
+  const tokens = normalizedQuery.split(' ').filter(Boolean);
+  if (tokens.length === 0) return true;
+
+  // Check exact word-boundary phrase first (e.g. "be be" must match adjacent words "be be", not "beo" + "ben")
+  const paddedWords = ` ${words.join(' ')} `;
+  if (paddedWords.includes(` ${tokens.join(' ')} `)) return true;
+
+  // Multi-token unordered fallback: short tokens (<=2 chars like "ca", "be") match exact words;
+  // longer tokens (>=3 chars) also allow prefix match for mid-word typing.
+  const requiredCounts = new Map<string, number>();
+  for (const token of tokens) {
+    requiredCounts.set(token, (requiredCounts.get(token) || 0) + 1);
+  }
+
+  for (const [token, needed] of requiredCounts.entries()) {
+    let matches = 0;
+    for (const word of words) {
+      if (word === token || (token.length >= 3 && word.startsWith(token))) {
+        matches++;
+      }
+    }
+    if (matches < needed) return false;
+  }
+
+  return true;
+}
+
+export function getSearchSuggestions(
+  products: Product[],
+  searchQuery: string,
+  limit = 6
+): Product[] {
+  const normalizedQuery = normalizeVietnameseText(searchQuery);
+  if (!normalizedQuery) return [];
+
+  const matched = products.filter((p) => matchesProductQuery(p, normalizedQuery));
+  matched.sort((a, b) => {
+    const aName = normalizeVietnameseText(`${a.name} ${a.mobileName}`);
+    const bName = normalizeVietnameseText(`${b.name} ${b.mobileName}`);
+    const aNameHit = aName.includes(normalizedQuery) ? 0 : 1;
+    const bNameHit = bName.includes(normalizedQuery) ? 0 : 1;
+    if (aNameHit !== bNameHit) return aNameHit - bNameHit;
+    return a.featuredOrder - b.featuredOrder;
+  });
+  return matched.slice(0, limit);
+}
+
 export function filterAndSortProducts(
   products: Product[],
   options: {
@@ -604,27 +693,14 @@ export function filterAndSortProducts(
     sortBy: SortOption;
   }
 ): Product[] {
-  const query = options.searchQuery.trim().toLowerCase();
+  const normalizedQuery = normalizeVietnameseText(options.searchQuery);
 
   const filtered = products.filter((product) => {
     const matchesCategory =
       options.category === 'all' || product.category === options.category;
     if (!matchesCategory) return false;
 
-    if (!query) return true;
-    const searchable = [
-      product.name,
-      product.mobileName,
-      product.description,
-      product.subtitle,
-      product.badgeLeft,
-      product.badgeRight,
-      ...(product.bestDishes || [])
-    ]
-      .join(' ')
-      .toLowerCase();
-
-    return searchable.includes(query);
+    return matchesProductQuery(product, normalizedQuery);
   });
 
   const sorted = [...filtered];
@@ -765,3 +841,31 @@ export function buildZaloOrderMessage(
 
   return `Chào Hải Sản Yến Hải (${STORE_PHONE_DISPLAY}), tôi muốn đặt và nhận báo giá ${totals.totalItems} phần hải sản:\n${itemsText}\nBáo giá: Liên hệ theo cân thực tế tại vựa.${customerLine}\nNhờ vựa tư vấn và báo giá giúp tôi!`;
 }
+
+export function getProductSlug(product: Product): string {
+  return product.slug?.trim() || `san-pham-${product.id}`;
+}
+
+export function getProductRoutePath(product: Product): string {
+  return `/san-pham/${getProductSlug(product)}`;
+}
+
+export function extractSlugFromPathname(pathname: string): string | null {
+  const cleanPath = (pathname || '/').split('?')[0].split('#')[0];
+  const match = cleanPath.match(/^\/san-pham\/([^/]+)\/?$/);
+  if (!match) return null;
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return match[1];
+  }
+}
+
+export function findProductBySlug(
+  products: Product[],
+  slug: string | null | undefined
+): Product | undefined {
+  if (!slug) return undefined;
+  return products.find((p) => getProductSlug(p) === slug);
+}
+

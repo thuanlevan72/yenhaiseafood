@@ -105,7 +105,10 @@ test('store contact constants match Thôn Trường Phúc, Xã Hoằng Tiến, H
   );
 });
 
-test('filterAndSortProducts filters by category and search query including bestDishes', () => {
+test('filterAndSortProducts filters by category and accent-insensitive Vietnamese search query', async () => {
+  const { normalizeVietnameseText, getSearchSuggestions } = await import('./store-logic');
+  assert.equal(normalizeVietnameseText('Đồ Khô Bề Bề'), 'do kho be be');
+
   const freshOnly = filterAndSortProducts(PRODUCTS, {
     category: 'fresh',
     searchQuery: '',
@@ -119,6 +122,39 @@ test('filterAndSortProducts filters by category and search query including bestD
     sortBy: 'featured'
   });
   assert.ok(searchDish.length >= 1);
+
+  const accentlessSquid = filterAndSortProducts(PRODUCTS, {
+    category: 'all',
+    searchQuery: 'muc ong',
+    sortBy: 'featured'
+  });
+  assert.ok(accentlessSquid.some((p) => p.id === 1));
+
+  const accentlessBebe = filterAndSortProducts(PRODUCTS, {
+    category: 'all',
+    searchQuery: 'be be',
+    sortBy: 'featured'
+  });
+  assert.equal(accentlessBebe.length, 3);
+  assert.ok(accentlessBebe.every((p) => p.name.toLowerCase().includes('bề bề')));
+
+  const accentlessMantis = filterAndSortProducts(PRODUCTS, {
+    category: 'all',
+    searchQuery: 'be be trung',
+    sortBy: 'featured'
+  });
+  assert.ok(accentlessMantis.some((p) => p.id === 4));
+
+  const accentlessDried = filterAndSortProducts(PRODUCTS, {
+    category: 'all',
+    searchQuery: 'do kho',
+    sortBy: 'featured'
+  });
+  assert.ok(accentlessDried.some((p) => p.category === 'dried'));
+
+  const suggestions = getSearchSuggestions(PRODUCTS, 'non tom');
+  assert.ok(suggestions.length >= 1);
+  assert.ok(suggestions[0].name.toLowerCase().includes('nõn tôm'));
 });
 
 test('cart calculations start empty and handle adding and updating items', () => {
@@ -209,3 +245,82 @@ test('SSR renderAppHtml and buildStoreJsonLd generate complete semantic HTML wit
   assert.equal(storeNode.address.streetAddress, 'Thôn Trường Phúc, Xã Hoằng Tiến');
   assert.equal(storeNode.address.addressLocality, 'Huyện Hoằng Hóa');
 });
+
+test('Product detail route (/san-pham/<slug>) renders full Real-DOM HTML, unique SEO meta, JSON-LD, and sitemap entries', async () => {
+  const {
+    extractSlugFromPathname,
+    findProductBySlug,
+    getProductRoutePath
+  } = await import('./store-logic');
+  const { buildPageSeoMeta, buildSitemapXml, injectSeoAndSsrIntoHtml } =
+    await import('./seo-meta');
+  const { renderAppHtml, buildPageJsonLd } = await import('../entry-server');
+
+  const bebe = findProductBySlug(PRODUCTS, 'be-be-tom-tit-boc-non-full-trung');
+  assert.ok(bebe);
+  const routePath = getProductRoutePath(bebe);
+  assert.equal(routePath, '/san-pham/be-be-tom-tit-boc-non-full-trung');
+  assert.equal(
+    extractSlugFromPathname(`${routePath}/?utm=fb`),
+    'be-be-tom-tit-boc-non-full-trung'
+  );
+  assert.equal(extractSlugFromPathname('/'), null);
+
+  const meta = buildPageSeoMeta(PRODUCTS, routePath);
+  assert.equal(meta.ogType, 'product');
+  assert.equal(meta.canonicalPath, routePath);
+  assert.ok(meta.title.includes('Bề Bề'));
+  assert.ok(meta.robots.includes('index'));
+
+  const notFoundMeta = buildPageSeoMeta(PRODUCTS, '/san-pham/khong-ton-tai-123');
+  assert.ok(notFoundMeta.robots.includes('noindex'));
+
+  const detailHtml = renderAppHtml(PRODUCTS, routePath);
+  assert.ok(detailHtml.includes('<h1'));
+  assert.ok(detailHtml.includes(bebe.name));
+  assert.ok(detailHtml.includes(bebe.sku!));
+  assert.ok(detailHtml.includes('Điểm Nổi Bật'));
+  assert.ok(detailHtml.includes('href="/san-pham/'));
+  assert.ok(detailHtml.includes('Giá: Liên hệ'));
+
+  const jsonLdStr = buildPageJsonLd(
+    PRODUCTS,
+    routePath,
+    'https://yenhaiseafood.vercel.app'
+  );
+  const jsonLd = JSON.parse(jsonLdStr);
+  const productSchema = jsonLd['@graph'].find(
+    (n: { '@type': string }) => n['@type'] === 'Product'
+  );
+  const breadcrumbSchema = jsonLd['@graph'].find(
+    (n: { '@type': string }) => n['@type'] === 'BreadcrumbList'
+  );
+  assert.ok(productSchema);
+  assert.equal(productSchema.name, bebe.name);
+  assert.ok(productSchema.subjectOf?.contentUrl?.endsWith('.mp4'));
+  assert.ok(breadcrumbSchema);
+  assert.equal(breadcrumbSchema.itemListElement.length, 3);
+
+  const injected = injectSeoAndSsrIntoHtml({
+    template:
+      '<html><head><title>x</title><meta name="description" content="x" /><meta name="keywords" content="x" /><meta name="robots" content="x" /><meta property="og:type" content="website" /><meta property="og:url" content="/" /><link rel="canonical" href="/" /><meta property="og:title" content="x" /><meta property="og:description" content="x" /><meta property="og:image" content="x" /><meta property="og:image:alt" content="x" /><meta name="twitter:title" content="x" /><meta name="twitter:description" content="x" /><meta name="twitter:image" content="x" /><script id="schema-jsonld" type="application/ld+json"></script></head><body><div id="root"></div><!--ssr-end--></body></html>',
+    meta,
+    baseUrl: 'https://yenhaiseafood.vercel.app',
+    jsonLd: jsonLdStr,
+    appHtml: detailHtml,
+    products: PRODUCTS,
+    pathname: routePath
+  });
+  assert.ok(
+    injected.includes(
+      '<link rel="canonical" href="https://yenhaiseafood.vercel.app/san-pham/be-be-tom-tit-boc-non-full-trung" />'
+    )
+  );
+  assert.ok(injected.includes('window.__INITIAL_PATH__ = "/san-pham/be-be-tom-tit-boc-non-full-trung"'));
+
+  const sitemap = buildSitemapXml(PRODUCTS, 'https://yenhaiseafood.vercel.app');
+  for (const p of PRODUCTS) {
+    assert.ok(sitemap.includes(`https://yenhaiseafood.vercel.app/san-pham/${p.slug}`));
+  }
+});
+

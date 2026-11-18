@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   PRODUCTS,
   INITIAL_CART,
@@ -25,23 +25,42 @@ import {
   SortOption,
   CartItem,
   filterAndSortProducts,
+  getSearchSuggestions,
   addCartItem,
   updateCartItemQty,
   calculateCartTotals,
-  formatProductPrice
+  formatProductPrice,
+  getProductRoutePath,
+  extractSlugFromPathname,
+  findProductBySlug
 } from './lib/store-logic';
+import { buildPageSeoMeta } from './lib/seo-meta';
 import { ResilientImage } from './components/ResilientImage';
 import { CartDrawer } from './components/CartDrawer';
 import { OrderConsultModal } from './components/OrderConsultModal';
-import { ProductQuickModal } from './components/ProductQuickModal';
+import { ProductDetailPage } from './components/ProductDetailPage';
 import { MobileBioStoreView } from './components/MobileBioStoreView';
+
+const QUICK_SEARCH_KEYWORDS = [
+  'Mực ống',
+  'Bề bề nõn',
+  'Nõn tôm',
+  'Cá thu',
+  'Bạch tuộc',
+  'Cá khô'
+];
 
 export interface AppProps {
   initialProducts?: Product[];
+  initialPath?: string;
 }
 
-export default function App({ initialProducts = PRODUCTS }: AppProps) {
+export default function App({
+  initialProducts = PRODUCTS,
+  initialPath = '/'
+}: AppProps) {
   const [products] = useState<Product[]>(initialProducts);
+  const [currentPath, setCurrentPath] = useState<string>(initialPath || '/');
   const [viewMode, setViewMode] = useState<'storefront' | 'mobile-bio'>('storefront');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,8 +68,22 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
   const [cart, setCart] = useState<CartItem[]>(INITIAL_CART);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [consultModalTopic, setConsultModalTopic] = useState<string | null>(null);
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
+
+  const activeSlug = useMemo(
+    () => extractSlugFromPathname(currentPath),
+    [currentPath]
+  );
+  const isProductRoute = activeSlug !== null;
+  const activeProduct = useMemo(
+    () => findProductBySlug(products, activeSlug),
+    [products, activeSlug]
+  );
 
   const filteredProducts = useMemo(
     () =>
@@ -61,6 +94,76 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
       }),
     [products, selectedCategory, searchQuery, sortBy]
   );
+
+  const allQueryMatches = useMemo(
+    () =>
+      filterAndSortProducts(products, {
+        category: 'all',
+        searchQuery,
+        sortBy
+      }),
+    [products, searchQuery, sortBy]
+  );
+
+  const searchSuggestions = useMemo(
+    () => getSearchSuggestions(products, searchQuery, 6),
+    [products, searchQuery]
+  );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchFocused(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobileSearchOpen) {
+      setTimeout(() => mobileSearchInputRef.current?.focus(), 40);
+    }
+  }, [isMobileSearchOpen]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname || '/');
+      setIsSearchFocused(false);
+      setIsMobileSearchOpen(false);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const meta = buildPageSeoMeta(products, currentPath);
+    document.title = meta.title;
+    const descEl = document.querySelector('meta[name="description"]');
+    if (descEl) {
+      descEl.setAttribute('content', meta.description);
+    }
+    const canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (canonicalEl && typeof window !== 'undefined') {
+      canonicalEl.setAttribute(
+        'href',
+        `${window.location.origin}${meta.canonicalPath}`
+      );
+    }
+  }, [products, currentPath]);
 
   const totals = useMemo(() => calculateCartTotals(cart), [cart]);
 
@@ -136,6 +239,78 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
     }
   };
 
+  const navigateHome = (category?: ProductCategory, hash?: string) => {
+    if (category !== undefined) {
+      setSelectedCategory(category);
+    }
+    setViewMode('storefront');
+    setIsSearchFocused(false);
+    setIsMobileSearchOpen(false);
+    setCurrentPath('/');
+    if (typeof window !== 'undefined') {
+      const targetUrl = hash ? `/#${hash}` : '/';
+      if (window.location.pathname !== '/' || window.location.hash !== (hash ? `#${hash}` : '')) {
+        window.history.pushState({}, '', targetUrl);
+      }
+      if (hash) {
+        setTimeout(() => scrollToSection(hash), 60);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const navigateToProduct = (product: Product) => {
+    const targetPath = getProductRoutePath(product);
+    setViewMode('storefront');
+    setIsSearchFocused(false);
+    setIsMobileSearchOpen(false);
+    setCurrentPath(targetPath);
+    if (typeof window !== 'undefined') {
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState({}, '', targetPath);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    if (value.trim() && selectedCategory !== 'all') {
+      setSelectedCategory('all');
+    }
+  };
+
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (searchQuery.trim()) {
+      setSelectedCategory('all');
+    }
+    setIsSearchFocused(false);
+    setIsMobileSearchOpen(false);
+    if (isProductRoute) {
+      navigateHome(undefined, 'catalog');
+    } else {
+      scrollToSection('catalog');
+    }
+  };
+
+  const handlePickSuggestion = (product: Product) => {
+    navigateToProduct(product);
+  };
+
+  const handleSelectQuickKeyword = (keyword: string) => {
+    setSearchQuery(keyword);
+    setSelectedCategory('all');
+    setIsSearchFocused(false);
+    setIsMobileSearchOpen(false);
+    if (isProductRoute) {
+      navigateHome('all', 'catalog');
+    } else {
+      scrollToSection('catalog');
+    }
+  };
+
   // Top 3 items for Hero Quick Snapshot
   const heroSpotlightProducts = useMemo(() => {
     const picked = [
@@ -158,7 +333,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           onSearchChange={setSearchQuery}
           onAddToCart={handleAddProductToCart}
           onOpenCart={() => setIsCartOpen(true)}
-          onOpenProductDetail={(p) => setQuickViewProduct(p)}
+          onOpenProductDetail={(p) => navigateToProduct(p)}
           onSwitchToDesktopView={() => setViewMode('storefront')}
         />
         <CartDrawer
@@ -168,12 +343,6 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           onUpdateQty={handleUpdateCartQty}
           onClearCart={() => setCart([])}
           onShowToast={showToast}
-        />
-        <ProductQuickModal
-          product={quickViewProduct}
-          onClose={() => setQuickViewProduct(null)}
-          onAddToCart={handleAddCustomItem}
-          onBuyNow={handleBuyCustomItem}
         />
       </div>
     );
@@ -245,7 +414,11 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </div>
             <div className="min-w-0 flex-1">
               <a
-                href="#top"
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateHome('all');
+                }}
                 title="Hải Sản Yến Hải — Vựa Hải Sản Tươi Sống, Đông Lạnh & Đồ Khô Xã Hoằng Tiến, Tỉnh Thanh Hóa"
                 className="font-headline text-title-md sm:text-headline-md text-light-primary font-extrabold tracking-tight leading-none flex items-center gap-1.5 whitespace-nowrap"
               >
@@ -260,43 +433,172 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </div>
           </div>
 
-          {/* Live Search Bar */}
-          <div className="flex-1 min-w-[240px] lg:min-w-[300px] max-w-xl hidden md:block">
-            <div className="relative">
+          {/* Live Search Bar (Desktop with Autocomplete Dropdown & Enter/Submit) */}
+          <div
+            ref={searchContainerRef}
+            className="flex-1 min-w-[240px] lg:min-w-[300px] max-w-xl hidden md:block relative"
+          >
+            <form role="search" onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
+                inputMode="search"
+                enterKeyHint="search"
                 id="searchInput"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm bề bề nõn trứng, nõn tôm biển, mực ống, cá thu khoanh..."
+                onFocus={() => setIsSearchFocused(true)}
+                onChange={(e) => {
+                  handleSearchChange(e.target.value);
+                  setIsSearchFocused(true);
+                }}
+                placeholder="Tìm mực ống, bề bề, nõn tôm, cá thu..."
                 aria-label="Tìm kiếm hải sản tại Vựa Hải Sản Yến Hải"
-                className="w-full pl-10 pr-24 py-2.5 rounded-DEFAULT border border-light-outline-variant bg-light-surface-container-high focus:bg-white focus:outline-none focus:ring-2 focus:ring-light-primary text-body-md transition-all"
+                aria-expanded={isSearchFocused}
+                aria-controls="searchSuggestionsDropdown"
+                autoComplete="off"
+                className="w-full pl-10 pr-28 py-2.5 rounded-DEFAULT border border-light-outline-variant bg-light-surface-container-high focus:bg-white focus:outline-none focus:ring-2 focus:ring-light-primary text-body-md transition-all"
               />
-              <span className="material-symbols-outlined absolute left-3 top-3 text-light-on-surface/40 text-[20px]">
+              <span className="material-symbols-outlined absolute left-3 top-3 text-light-on-surface/45 text-[20px] pointer-events-none">
                 search
               </span>
-              {searchQuery ? (
+              {searchQuery && (
                 <button
                   type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-1.5 top-1.5 px-3 py-1.5 bg-slate-200 text-light-primary rounded font-label text-label-sm hover:bg-slate-300 transition-colors cursor-pointer"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setIsSearchFocused(true);
+                  }}
+                  aria-label="Xóa từ khóa tìm kiếm"
+                  className="absolute right-[84px] top-2.5 w-6 h-6 rounded-full bg-slate-200 hover:bg-slate-300 text-light-primary flex items-center justify-center cursor-pointer transition-colors"
                 >
-                  Xóa lọc
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('catalog')}
-                  className="absolute right-1.5 top-1.5 px-3 py-1.5 bg-light-primary text-white rounded font-label text-label-sm hover:bg-light-primary/90 transition-colors cursor-pointer"
-                >
-                  Tìm kiếm
+                  <span className="material-symbols-outlined text-[15px]">close</span>
                 </button>
               )}
-            </div>
+              <button
+                type="submit"
+                className="absolute right-1.5 top-1.5 px-3 py-1.5 bg-light-primary hover:bg-light-primary/90 text-white rounded font-label text-label-sm transition-colors cursor-pointer"
+              >
+                Tìm kiếm
+              </button>
+            </form>
+
+            {/* Instant Search Autocomplete Dropdown */}
+            {isSearchFocused && (
+              <div
+                id="searchSuggestionsDropdown"
+                className="absolute left-0 top-full mt-1.5 w-full min-w-[400px] lg:min-w-[440px] bg-white rounded-lg border border-light-outline-variant shadow-2xl z-50 overflow-hidden"
+              >
+                {searchQuery.trim() === '' ? (
+                  <div className="p-3.5 space-y-2.5">
+                    <p className="text-[11px] font-label uppercase tracking-wider text-light-on-surface/60 font-semibold">
+                      Từ khóa hải sản được tìm nhiều
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {QUICK_SEARCH_KEYWORDS.map((kw) => (
+                        <button
+                          key={kw}
+                          type="button"
+                          onClick={() => handleSelectQuickKeyword(kw)}
+                          className="px-2.5 py-1 rounded-full bg-light-surface-container hover:bg-light-primary hover:text-white text-light-primary text-xs font-label font-medium transition-colors cursor-pointer"
+                        >
+                          {kw}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : searchSuggestions.length === 0 ? (
+                  <div className="p-4 text-center space-y-2">
+                    <p className="font-body text-sm text-light-on-surface/75">
+                      Không tìm thấy sản phẩm khớp với <strong>&quot;{searchQuery}&quot;</strong>
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-1.5 pt-1">
+                      {QUICK_SEARCH_KEYWORDS.slice(0, 4).map((kw) => (
+                        <button
+                          key={kw}
+                          type="button"
+                          onClick={() => handleSelectQuickKeyword(kw)}
+                          className="px-2.5 py-1 rounded-full bg-light-surface-container hover:bg-light-primary hover:text-white text-light-primary text-xs font-label cursor-pointer"
+                        >
+                          Thử: {kw}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="px-3.5 py-2 bg-light-surface-container border-b border-light-outline-variant flex items-center justify-between text-xs">
+                      <span className="font-label font-semibold text-light-primary">
+                        Gợi ý phù hợp ({allQueryMatches.length} món)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleSearchSubmit()}
+                        className="text-accent font-label font-bold hover:underline cursor-pointer"
+                      >
+                        Xem tất cả trong danh mục →
+                      </button>
+                    </div>
+                    <ul className="divide-y divide-light-outline-variant max-h-80 overflow-y-auto">
+                      {searchSuggestions.map((item) => {
+                        const itemUrl = getProductRoutePath(item);
+                        return (
+                          <li key={item.id}>
+                            <a
+                              href={itemUrl}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePickSuggestion(item);
+                              }}
+                              className="w-full px-3.5 py-2.5 flex items-center gap-3 hover:bg-sky-50/60 text-left transition-colors cursor-pointer"
+                            >
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                width={44}
+                                height={44}
+                                className="w-11 h-11 rounded object-cover border border-light-outline-variant shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <span className="font-title text-sm font-bold text-light-primary block truncate">
+                                  {item.name}
+                                </span>
+                                <span className="font-body text-xs text-light-on-surface/65 block truncate">
+                                  {item.subtitle}
+                                </span>
+                              </div>
+                              <span className="font-headline text-xs font-bold text-accent shrink-0 whitespace-nowrap">
+                                {formatProductPrice(item)}
+                              </span>
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Header Action Triggers: Phone hotline, Zalo & Cart */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Header Action Triggers: Mobile Search, Phone hotline, Zalo & Cart */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Compact Mobile Search Toggle Icon */}
+            <button
+              id="mobileSearchToggleBtn"
+              type="button"
+              onClick={() => setIsMobileSearchOpen((prev) => !prev)}
+              aria-label="Mở thanh tìm kiếm hải sản"
+              aria-expanded={isMobileSearchOpen}
+              className={`md:hidden inline-flex items-center justify-center w-10 h-10 rounded-DEFAULT border transition-colors shrink-0 cursor-pointer ${
+                isMobileSearchOpen || searchQuery
+                  ? 'bg-light-primary text-white border-light-primary'
+                  : 'bg-light-surface-container hover:bg-light-outline-variant text-light-primary border-light-outline-variant'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                {isMobileSearchOpen ? 'close' : 'search'}
+              </span>
+            </button>
+
             {/* Compact Mobile Call Icon */}
             <a
               href={`tel:${STORE_PHONE}`}
@@ -377,9 +679,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto py-2 text-xs lg:text-label-md font-label no-scrollbar">
             <button
               type="button"
-              onClick={() => setSelectedCategory('all')}
+              onClick={() =>
+                isProductRoute
+                  ? navigateHome('all', 'catalog')
+                  : setSelectedCategory('all')
+              }
               className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
-                selectedCategory === 'all'
+                !isProductRoute && selectedCategory === 'all'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
@@ -391,9 +697,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </button>
             <button
               type="button"
-              onClick={() => setSelectedCategory('fresh')}
+              onClick={() =>
+                isProductRoute
+                  ? navigateHome('fresh', 'catalog')
+                  : setSelectedCategory('fresh')
+              }
               className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
-                selectedCategory === 'fresh'
+                !isProductRoute && selectedCategory === 'fresh'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
@@ -403,9 +713,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </button>
             <button
               type="button"
-              onClick={() => setSelectedCategory('frozen')}
+              onClick={() =>
+                isProductRoute
+                  ? navigateHome('frozen', 'catalog')
+                  : setSelectedCategory('frozen')
+              }
               className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
-                selectedCategory === 'frozen'
+                !isProductRoute && selectedCategory === 'frozen'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
@@ -415,9 +729,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </button>
             <button
               type="button"
-              onClick={() => setSelectedCategory('dried')}
+              onClick={() =>
+                isProductRoute
+                  ? navigateHome('dried', 'catalog')
+                  : setSelectedCategory('dried')
+              }
               className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
-                selectedCategory === 'dried'
+                !isProductRoute && selectedCategory === 'dried'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
@@ -426,7 +744,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <span>Hải Sản Khô</span>
             </button>
             <a
-              href="#videoSection"
+              href="/#videoSection"
+              onClick={(e) => {
+                if (isProductRoute) {
+                  e.preventDefault();
+                  navigateHome(undefined, 'videoSection');
+                }
+              }}
               className="cat-tab px-2.5 lg:px-3 py-1.5 rounded-full hover:bg-rose-50 flex items-center gap-1.5 whitespace-nowrap text-accent font-semibold"
             >
               <span className="material-symbols-outlined text-[17px]">
@@ -435,7 +759,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <span>Video Tại Vựa ({REAL_VIDEOS.length})</span>
             </a>
             <a
-              href="#mapSection"
+              href="/#mapSection"
+              onClick={(e) => {
+                if (isProductRoute) {
+                  e.preventDefault();
+                  navigateHome(undefined, 'mapSection');
+                }
+              }}
               className="cat-tab px-2.5 lg:px-3 py-1.5 rounded-full hover:bg-emerald-50 flex items-center gap-1.5 whitespace-nowrap text-emerald-800 font-semibold"
             >
               <span className="material-symbols-outlined text-[17px]">
@@ -444,7 +774,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <span>Bản Đồ Vị Trí</span>
             </a>
             <a
-              href="#faqSection"
+              href="/#faqSection"
+              onClick={(e) => {
+                if (isProductRoute) {
+                  e.preventDefault();
+                  navigateHome(undefined, 'faqSection');
+                }
+              }}
               className="cat-tab px-2.5 lg:px-3 py-1.5 rounded-full hover:bg-light-surface-container flex items-center gap-1.5 whitespace-nowrap ml-auto text-ocean-blue font-semibold"
             >
               <span className="material-symbols-outlined text-[17px]">
@@ -454,6 +790,100 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </a>
           </div>
         </nav>
+
+        {/* Expandable Mobile Header Search Bar & Live Results */}
+        {isMobileSearchOpen && (
+          <div className="md:hidden border-t border-light-outline-variant bg-white px-3 py-3 space-y-2.5 shadow-lg">
+            <form role="search" onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+              <div className="relative flex-1 min-w-0">
+                <input
+                  ref={mobileSearchInputRef}
+                  type="text"
+                  inputMode="search"
+                  enterKeyHint="search"
+                  id="mobileHeaderSearchInput"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  placeholder="Tìm mực ống, bề bề, nõn tôm..."
+                  aria-label="Tìm kiếm hải sản trên di động"
+                  autoComplete="off"
+                  className="w-full pl-9 pr-8 py-2 rounded-DEFAULT border border-light-outline-variant bg-light-surface-container text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-light-primary"
+                />
+                <span className="material-symbols-outlined absolute left-2.5 top-2.5 text-light-on-surface/45 text-[18px] pointer-events-none">
+                  search
+                </span>
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Xóa từ khóa tìm kiếm"
+                    className="absolute right-2 top-2 w-5 h-5 rounded-full bg-slate-200 text-light-primary flex items-center justify-center cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">close</span>
+                  </button>
+                )}
+              </div>
+              <button
+                type="submit"
+                className="px-3.5 py-2 rounded-DEFAULT bg-light-primary text-white font-label text-xs font-bold shrink-0 cursor-pointer"
+              >
+                Tìm
+              </button>
+            </form>
+
+            {searchQuery.trim() === '' ? (
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                {QUICK_SEARCH_KEYWORDS.map((kw) => (
+                  <button
+                    key={kw}
+                    type="button"
+                    onClick={() => handleSelectQuickKeyword(kw)}
+                    className="px-2.5 py-1 rounded-full bg-light-surface-container text-light-primary text-xs font-label whitespace-nowrap shrink-0 cursor-pointer"
+                  >
+                    {kw}
+                  </button>
+                ))}
+              </div>
+            ) : searchSuggestions.length === 0 ? (
+              <p className="text-xs text-light-on-surface/70 py-1">
+                Không có món nào khớp với &quot;{searchQuery}&quot;. Thử: Mực ống, Bề bề, Cá thu...
+              </p>
+            ) : (
+              <div className="max-h-60 overflow-y-auto divide-y divide-light-outline-variant border border-light-outline-variant rounded-md">
+                {searchSuggestions.map((item) => (
+                  <a
+                    key={item.id}
+                    href={getProductRoutePath(item)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePickSuggestion(item);
+                    }}
+                    className="w-full px-2.5 py-2 flex items-center gap-2.5 text-left hover:bg-sky-50 cursor-pointer"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      width={38}
+                      height={38}
+                      className="w-9 h-9 rounded object-cover shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <span className="font-title text-xs font-bold text-light-primary block truncate">
+                        {item.mobileName || item.name}
+                      </span>
+                      <span className="text-[11px] text-accent font-bold">
+                        {formatProductPrice(item)}
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-label text-ocean-blue font-semibold shrink-0">
+                      Xem →
+                    </span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </header>
 
       {/* Mobile Category Quick Strip (non-sticky so screen stays uncluttered on mobile) */}
@@ -464,12 +894,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
         <div className="px-3 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs font-label">
           <button
             type="button"
-            onClick={() => {
-              setSelectedCategory('all');
-              scrollToSection('catalog');
-            }}
+            onClick={() =>
+              isProductRoute
+                ? navigateHome('all', 'catalog')
+                : (setSelectedCategory('all'), scrollToSection('catalog'))
+            }
             className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
-              selectedCategory === 'all'
+              !isProductRoute && selectedCategory === 'all'
                 ? 'bg-light-primary text-white font-bold'
                 : 'bg-light-surface-container text-light-on-surface'
             }`}
@@ -478,12 +909,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setSelectedCategory('fresh');
-              scrollToSection('catalog');
-            }}
+            onClick={() =>
+              isProductRoute
+                ? navigateHome('fresh', 'catalog')
+                : (setSelectedCategory('fresh'), scrollToSection('catalog'))
+            }
             className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
-              selectedCategory === 'fresh'
+              !isProductRoute && selectedCategory === 'fresh'
                 ? 'bg-light-primary text-white font-bold'
                 : 'bg-light-surface-container text-light-on-surface'
             }`}
@@ -492,12 +924,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setSelectedCategory('frozen');
-              scrollToSection('catalog');
-            }}
+            onClick={() =>
+              isProductRoute
+                ? navigateHome('frozen', 'catalog')
+                : (setSelectedCategory('frozen'), scrollToSection('catalog'))
+            }
             className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
-              selectedCategory === 'frozen'
+              !isProductRoute && selectedCategory === 'frozen'
                 ? 'bg-light-primary text-white font-bold'
                 : 'bg-light-surface-container text-light-on-surface'
             }`}
@@ -506,12 +939,13 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setSelectedCategory('dried');
-              scrollToSection('catalog');
-            }}
+            onClick={() =>
+              isProductRoute
+                ? navigateHome('dried', 'catalog')
+                : (setSelectedCategory('dried'), scrollToSection('catalog'))
+            }
             className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
-              selectedCategory === 'dried'
+              !isProductRoute && selectedCategory === 'dried'
                 ? 'bg-light-primary text-white font-bold'
                 : 'bg-light-surface-container text-light-on-surface'
             }`}
@@ -519,13 +953,25 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             🦑 Đồ Khô
           </button>
           <a
-            href="#videoSection"
+            href="/#videoSection"
+            onClick={(e) => {
+              if (isProductRoute) {
+                e.preventDefault();
+                navigateHome(undefined, 'videoSection');
+              }
+            }}
             className="px-3 py-1.5 rounded-lg bg-rose-50 text-accent font-semibold whitespace-nowrap shrink-0"
           >
             ▶ Video ({REAL_VIDEOS.length})
           </a>
           <a
-            href="#mapSection"
+            href="/#mapSection"
+            onClick={(e) => {
+              if (isProductRoute) {
+                e.preventDefault();
+                navigateHome(undefined, 'mapSection');
+              }
+            }}
             className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 font-semibold whitespace-nowrap shrink-0"
           >
             📍 Bản Đồ
@@ -533,6 +979,45 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
         </div>
       </nav>
 
+      {isProductRoute ? (
+        activeProduct ? (
+          <ProductDetailPage
+            product={activeProduct}
+            allProducts={products}
+            onNavigateHome={navigateHome}
+            onNavigateProduct={navigateToProduct}
+            onAddToCart={handleAddCustomItem}
+            onBuyNow={handleBuyCustomItem}
+            onOpenConsultModal={(topic) => setConsultModalTopic(topic)}
+          />
+        ) : (
+          <main className="max-w-4xl mx-auto px-4 py-14 text-center flex-1 space-y-4">
+            <span className="material-symbols-outlined text-[56px] text-light-outline">
+              inventory_2
+            </span>
+            <h1 className="font-headline text-headline-md sm:text-headline-lg font-bold text-light-primary">
+              Không tìm thấy sản phẩm hải sản này
+            </h1>
+            <p className="font-body text-body-md text-light-on-surface/75 max-w-lg mx-auto">
+              Đường dẫn sản phẩm có thể đã thay đổi hoặc mặt hàng đang cập nhật. Vui lòng xem danh mục hải sản mới nhất tại Vựa Yến Hải.
+            </p>
+            <div>
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateHome('all');
+                }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md font-bold shadow"
+              >
+                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+                <span>Quay về trang chủ Hải Sản Yến Hải</span>
+              </a>
+            </div>
+          </main>
+        )
+      ) : (
+        <>
       {/* Hero Section: Seafood Quality Guarantee & Value Prop */}
       <section
         aria-label="Giới thiệu Vựa Hải Sản Yến Hải Hoằng Tiến Thanh Hóa"
@@ -661,9 +1146,15 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
 
               <div className="divide-y divide-light-outline-variant my-3 sm:my-4">
                 {heroSpotlightProducts.map((item) => (
-                  <div
+                  <a
                     key={item.id}
-                    className="py-2.5 flex items-center justify-between gap-2.5 sm:gap-3"
+                    href={getProductRoutePath(item)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToProduct(item);
+                    }}
+                    title={item.seoTitle || item.name}
+                    className="py-2.5 flex items-center justify-between gap-2.5 sm:gap-3 hover:bg-sky-50/50 rounded px-1 -mx-1 transition-colors"
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <img
@@ -677,7 +1168,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                         className="w-11 h-11 rounded object-cover border border-light-outline-variant shrink-0"
                       />
                       <div className="min-w-0 flex-1">
-                        <span className="font-label text-xs sm:text-label-md text-light-primary font-bold block truncate">
+                        <span className="font-label text-xs sm:text-label-md text-light-primary font-bold block truncate hover:text-accent">
                           {item.name}
                         </span>
                         <span className="block text-[11px] sm:text-body-sm text-light-on-surface/60 truncate">
@@ -693,7 +1184,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                         {item.mobileUnit || item.unit}
                       </span>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
 
@@ -770,19 +1261,40 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
 
         {/* Mobile Search Input (visible on small screens) */}
         <div className="md:hidden mb-5">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm bề bề, nõn tôm, mực ống, cá thu..."
-              aria-label="Tìm kiếm hải sản trên di động"
-              className="w-full pl-9 pr-4 py-2.5 rounded-DEFAULT border border-light-outline-variant bg-white text-body-md"
-            />
-            <span className="material-symbols-outlined absolute left-3 top-3 text-light-on-surface/40 text-[18px]">
-              search
-            </span>
-          </div>
+          <form role="search" onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+            <div className="relative flex-1 min-w-0">
+              <input
+                type="text"
+                inputMode="search"
+                enterKeyHint="search"
+                id="catalogMobileSearch"
+                value={searchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                placeholder="Tìm bề bề, nõn tôm, mực ống, cá thu..."
+                aria-label="Tìm kiếm hải sản trên di động"
+                className="w-full pl-9 pr-8 py-2.5 rounded-DEFAULT border border-light-outline-variant bg-white text-body-md focus:outline-none focus:ring-2 focus:ring-light-primary"
+              />
+              <span className="material-symbols-outlined absolute left-3 top-3 text-light-on-surface/45 text-[18px] pointer-events-none">
+                search
+              </span>
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Xóa từ khóa tìm kiếm"
+                  className="absolute right-2.5 top-2.5 w-6 h-6 rounded-full bg-slate-200 text-light-primary flex items-center justify-center cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[14px]">close</span>
+                </button>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="px-4 py-2.5 rounded-DEFAULT bg-light-primary text-white font-label text-xs font-bold shrink-0 cursor-pointer"
+            >
+              Tìm
+            </button>
+          </form>
         </div>
 
         {/* Section Title & Sort Select */}
@@ -899,28 +1411,77 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </button>
         </div>
 
-        {/* Empty filter state */}
-        {filteredProducts.length === 0 ? (
-          <div className="bg-white rounded-lg border border-light-outline-variant p-12 text-center my-6">
-            <span className="material-symbols-outlined text-[48px] text-light-outline">
-              search_off
-            </span>
-            <h3 className="font-headline text-title-lg font-bold text-light-primary mt-2">
-              Không tìm thấy mặt hàng phù hợp với &quot;{searchQuery}&quot;
-            </h3>
-            <p className="font-body text-body-md text-light-on-surface/60 mt-1">
-              Thử tìm với từ khóa khác hoặc xem toàn bộ danh mục hải sản Yến Hải.
-            </p>
+        {/* Active Search Feedback Bar */}
+        {searchQuery.trim() && (
+          <div className="mb-5 px-4 py-3 rounded-lg bg-sky-50 border border-sky-200 flex flex-wrap items-center justify-between gap-2 text-sm">
+            <div className="flex items-center gap-2 text-light-primary">
+              <span className="material-symbols-outlined text-ocean-blue text-[20px]">
+                manage_search
+              </span>
+              <span>
+                Tìm thấy <strong>{filteredProducts.length}</strong> sản phẩm cho từ khóa{' '}
+                <strong>&quot;{searchQuery}&quot;</strong>
+              </span>
+            </div>
             <button
               type="button"
               onClick={() => {
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="mt-4 px-5 py-2.5 rounded-DEFAULT bg-light-primary text-white font-label text-label-md cursor-pointer"
+              className="inline-flex items-center gap-1 px-3 py-1 rounded bg-white border border-sky-300 text-light-primary hover:bg-sky-100 font-label text-xs font-bold cursor-pointer"
             >
-              Xem tất cả sản phẩm
+              <span className="material-symbols-outlined text-[14px]">close</span>
+              <span>Xóa tìm kiếm</span>
             </button>
+          </div>
+        )}
+
+        {/* Empty filter state */}
+        {filteredProducts.length === 0 ? (
+          <div className="bg-white rounded-lg border border-light-outline-variant p-8 sm:p-12 text-center my-6">
+            <span className="material-symbols-outlined text-[48px] text-light-outline">
+              search_off
+            </span>
+            <h3 className="font-headline text-title-lg font-bold text-light-primary mt-2">
+              Không tìm thấy mặt hàng phù hợp với &quot;{searchQuery}&quot;
+            </h3>
+            <p className="font-body text-body-md text-light-on-surface/65 mt-1 max-w-md mx-auto">
+              Thử gõ từ khóa khác (có dấu hoặc không dấu như &quot;muc ong&quot;, &quot;be be&quot;, &quot;ca thu&quot;) hoặc chọn nhanh bên dưới.
+            </p>
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
+              {QUICK_SEARCH_KEYWORDS.map((kw) => (
+                <button
+                  key={kw}
+                  type="button"
+                  onClick={() => handleSelectQuickKeyword(kw)}
+                  className="px-3 py-1.5 rounded-full bg-light-surface-container hover:bg-light-primary hover:text-white text-light-primary font-label text-xs font-semibold cursor-pointer transition-colors"
+                >
+                  {kw}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-center gap-3 mt-5">
+              {selectedCategory !== 'all' && allQueryMatches.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory('all')}
+                  className="px-5 py-2.5 rounded-DEFAULT bg-accent text-white font-label text-label-md font-bold cursor-pointer"
+                >
+                  Tìm trong tất cả danh mục ({allQueryMatches.length} món)
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('all');
+                }}
+                className="px-5 py-2.5 rounded-DEFAULT bg-light-primary text-white font-label text-label-md cursor-pointer"
+              >
+                Xem tất cả sản phẩm
+              </button>
+            </div>
           </div>
         ) : (
           /* Product Grid */
@@ -964,23 +1525,32 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   </div>
 
                   <figure className="relative w-full h-56 overflow-hidden bg-light-surface-container m-0">
-                    <ResilientImage
-                      src={product.image}
-                      alt={product.seoAlt || product.name}
+                    <a
+                      href={getProductRoutePath(product)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateToProduct(product);
+                      }}
                       title={product.seoTitle || product.name}
-                      itemProp="image"
-                      width={600}
-                      height={450}
-                      loading={idx < 4 ? 'eager' : 'lazy'}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
-                      onClick={() => setQuickViewProduct(product)}
-                    />
+                      className="block w-full h-full"
+                    >
+                      <ResilientImage
+                        src={product.image}
+                        alt={product.seoAlt || product.name}
+                        title={product.seoTitle || product.name}
+                        itemProp="image"
+                        width={600}
+                        height={450}
+                        loading={idx < 4 ? 'eager' : 'lazy'}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </a>
                     <figcaption className="sr-only">
                       {product.seoAlt || `${product.name} - ${formatProductPrice(product)} ${product.unit} tại Hải Sản Yến Hải (${STORE_ADDRESS})`}
                     </figcaption>
 
                     <span
-                      className={`absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full ${leftBadgeBg} text-white font-label text-[11px] font-semibold shadow-xs flex items-center gap-1 max-w-[52%] truncate`}
+                      className={`absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full ${leftBadgeBg} text-white font-label text-[11px] font-semibold shadow-xs flex items-center gap-1 max-w-[52%] truncate pointer-events-none`}
                     >
                       {product.badgeLeftIcon ? (
                         <span className="material-symbols-outlined text-[13px] shrink-0">
@@ -992,36 +1562,42 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       <span className="truncate">{product.badgeLeft}</span>
                     </span>
                     <span
-                      className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded ${rightBadgeClasses} font-label text-[11px] font-bold shadow-xs max-w-[44%] truncate`}
+                      className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded ${rightBadgeClasses} font-label text-[11px] font-bold shadow-xs max-w-[44%] truncate pointer-events-none`}
                     >
                       {product.badgeRight}
                     </span>
 
                     {product.videoUrl && (
-                      <button
-                        type="button"
-                        onClick={() => setQuickViewProduct(product)}
+                      <a
+                        href={getProductRoutePath(product)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigateToProduct(product);
+                        }}
                         title={`Xem video quay thực tế ${product.name}`}
-                        className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded bg-accent/95 hover:bg-accent text-white font-label text-[11px] font-bold flex items-center gap-1 shadow-xs cursor-pointer transition-colors"
+                        className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded bg-accent/95 hover:bg-accent text-white font-label text-[11px] font-bold flex items-center gap-1 shadow-xs transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">
                           play_circle
                         </span>
                         <span>Video thực tế</span>
-                      </button>
+                      </a>
                     )}
 
-                    <button
-                      type="button"
-                      onClick={() => setQuickViewProduct(product)}
+                    <a
+                      href={getProductRoutePath(product)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateToProduct(product);
+                      }}
                       title={`Xem trang chi tiết và chọn quy cách ${product.name}`}
-                      className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded bg-light-primary/85 hover:bg-light-primary text-white font-label text-[11px] flex items-center gap-1 backdrop-blur-xs cursor-pointer transition-colors"
+                      className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded bg-light-primary/85 hover:bg-light-primary text-white font-label text-[11px] flex items-center gap-1 backdrop-blur-xs transition-colors"
                     >
                       <span className="material-symbols-outlined text-[14px]">
                         visibility
                       </span>
                       <span>Chi tiết &amp; Quy cách</span>
-                    </button>
+                    </a>
                   </figure>
 
                   <div className="p-4 flex-1 flex flex-col justify-between">
@@ -1048,14 +1624,17 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                         itemProp="name"
                         className="font-title text-title-md text-light-primary font-bold group-hover:text-accent transition-colors"
                       >
-                        <button
-                          type="button"
-                          onClick={() => setQuickViewProduct(product)}
+                        <a
+                          href={getProductRoutePath(product)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigateToProduct(product);
+                          }}
                           title={product.seoTitle || product.name}
-                          className="text-left hover:text-accent cursor-pointer"
+                          className="block text-left hover:text-accent"
                         >
                           {product.name}
-                        </button>
+                        </a>
                       </h3>
                       <p
                         itemProp="description"
@@ -1112,14 +1691,17 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                           </span>
                           <span>Thêm giỏ</span>
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => setQuickViewProduct(product)}
-                          title={`Xem chi tiết ${product.name}`}
-                          className="w-full py-2 px-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md transition-colors duration-150 flex items-center justify-center gap-1 cursor-pointer"
+                        <a
+                          href={getProductRoutePath(product)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigateToProduct(product);
+                          }}
+                          title={`Xem trang chi tiết ${product.name}`}
+                          className="w-full py-2 px-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md transition-colors duration-150 flex items-center justify-center gap-1"
                         >
                           <span>Xem chi tiết</span>
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -1269,13 +1851,16 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                       <span className="font-headline text-label-lg font-extrabold text-accent">
                         Giá: Liên hệ
                       </span>
-                      <button
-                        type="button"
-                        onClick={() => setQuickViewProduct(linkedProduct)}
-                        className="px-3.5 py-1.5 rounded-DEFAULT bg-light-primary hover:bg-light-primary/90 text-white font-label text-label-sm font-semibold cursor-pointer"
+                      <a
+                        href={getProductRoutePath(linkedProduct)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigateToProduct(linkedProduct);
+                        }}
+                        className="px-3.5 py-1.5 rounded-DEFAULT bg-light-primary hover:bg-light-primary/90 text-white font-label text-label-sm font-semibold"
                       >
-                        Đặt món này →
-                      </button>
+                        Xem chi tiết →
+                      </a>
                     </div>
                   </div>
                 </article>
@@ -1677,6 +2262,8 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </div>
         </section>
       </main>
+        </>
+      )}
 
       {/* Multi-Channel Sticky Order Bar (Floating Dock) */}
       <aside
@@ -1773,14 +2360,6 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
         onCallbackSuccess={(phone) =>
           showToast(`Đã ghi nhận SĐT ${phone}! Yến Hải (${STORE_PHONE_DISPLAY}) sẽ gọi báo giá ngay.`)
         }
-      />
-
-      {/* Product Quick View & Prep Customization Modal */}
-      <ProductQuickModal
-        product={quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-        onAddToCart={handleAddCustomItem}
-        onBuyNow={handleBuyCustomItem}
       />
 
       {/* Checkout Success Toast / Notification */}

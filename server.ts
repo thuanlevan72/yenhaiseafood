@@ -3,12 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
-import { renderAppHtml, buildStoreJsonLd } from './src/entry-server';
+import { renderAppHtml, buildPageJsonLd } from './src/entry-server';
 import {
   PRODUCTS,
   Product,
   parseAndValidateProductsJson
 } from './src/lib/store-logic';
+import {
+  buildPageSeoMeta,
+  injectSeoAndSsrIntoHtml,
+  buildSitemapXml
+} from './src/lib/seo-meta';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,15 +36,6 @@ function loadProductsFromDisk(): Product[] {
   return PRODUCTS;
 }
 
-function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-}
-
 async function startServer() {
   const app = express();
   app.use(express.json({ limit: '2mb' }));
@@ -57,34 +53,13 @@ async function startServer() {
     res.type('text/plain').send(content);
   });
 
-  // SEO: Dynamic XML Sitemap with Google Image Sitemap extension
+  // SEO: Dynamic Multi-Page XML Sitemap (/ + every /san-pham/<slug> with Google Image Sitemap extension)
   app.get('/sitemap.xml', (req, res) => {
     const baseUrl = (
       process.env.APP_URL || `${req.protocol}://${req.get('host')}`
     ).replace(/\/$/, '');
     const products = loadProductsFromDisk();
-
-    const imageNodes = products
-      .map(
-        (p) => `
-    <image:image>
-      <image:loc>${escapeXml(`${baseUrl}${p.image}`)}</image:loc>
-      <image:title>${escapeXml(p.seoTitle || p.name)}</image:title>
-      <image:caption>${escapeXml(p.seoAlt || p.description)}</image:caption>
-    </image:image>`
-      )
-      .join('');
-
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url>
-    <loc>${escapeXml(`${baseUrl}/`)}</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>${imageNodes}
-  </url>
-</urlset>`;
-
+    const xml = buildSitemapXml(products, baseUrl);
     res.set('Content-Type', 'application/xml; charset=utf-8').send(xml);
   });
 
@@ -132,32 +107,35 @@ async function startServer() {
         return;
       }
       try {
-        const url = req.originalUrl;
+        const pathname =
+          (req.originalUrl || req.url || '/').split('?')[0].split('#')[0] || '/';
+        const baseUrl = (
+          process.env.APP_URL || `${req.protocol}://${req.get('host')}`
+        ).replace(/\/$/, '');
+
         let template = fs.readFileSync(
           path.resolve(__dirname, 'index.html'),
           'utf-8'
         );
-        template = await vite.transformIndexHtml(url, template);
+        template = await vite.transformIndexHtml(req.originalUrl, template);
 
         const products = loadProductsFromDisk();
-        const appHtml = renderAppHtml(products);
-        const jsonLd = buildStoreJsonLd(products, process.env.APP_URL || '');
-        const initialDataScript = `<script>window.__INITIAL_PRODUCTS__ = ${JSON.stringify(
-          products
-        ).replace(/</g, '\\u003c')};</script>`;
+        const meta = buildPageSeoMeta(products, pathname);
+        const appHtml = renderAppHtml(products, pathname);
+        const jsonLd = buildPageJsonLd(products, pathname, baseUrl);
+        const html = injectSeoAndSsrIntoHtml({
+          template,
+          meta,
+          baseUrl,
+          jsonLd,
+          appHtml,
+          products,
+          pathname
+        });
 
-        const html = template
-          .replace(
-            /<script id="schema-jsonld" type="application\/ld\+json">[\s\S]*?<\/script>/,
-            `<script id="schema-jsonld" type="application/ld+json">${jsonLd}</script>`
-          )
-          .replace(
-            /<div id="root">[\s\S]*?<\/div>\s*<!--ssr-end-->/,
-            `<div id="root">${appHtml}</div><!--ssr-end-->${initialDataScript}`
-          );
-
+        const statusCode = meta.robots.startsWith('noindex') ? 404 : 200;
         res
-          .status(200)
+          .status(statusCode)
           .set({ 'Content-Type': 'text/html; charset=utf-8' })
           .end(html);
       } catch (e) {
@@ -169,28 +147,32 @@ async function startServer() {
     const distPath = path.resolve(__dirname, 'dist');
     app.use(express.static(distPath, { index: false }));
 
-    app.use('*', (_req, res) => {
+    app.use('*', (req, res) => {
+      const pathname =
+        (req.originalUrl || req.url || '/').split('?')[0].split('#')[0] || '/';
+      const baseUrl = (
+        process.env.APP_URL || `${req.protocol}://${req.get('host')}`
+      ).replace(/\/$/, '');
+
       const indexPath = path.resolve(distPath, 'index.html');
       const template = fs.readFileSync(indexPath, 'utf-8');
       const products = loadProductsFromDisk();
-      const appHtml = renderAppHtml(products);
-      const jsonLd = buildStoreJsonLd(products, process.env.APP_URL || '');
-      const initialDataScript = `<script>window.__INITIAL_PRODUCTS__ = ${JSON.stringify(
-        products
-      ).replace(/</g, '\\u003c')};</script>`;
+      const meta = buildPageSeoMeta(products, pathname);
+      const appHtml = renderAppHtml(products, pathname);
+      const jsonLd = buildPageJsonLd(products, pathname, baseUrl);
+      const html = injectSeoAndSsrIntoHtml({
+        template,
+        meta,
+        baseUrl,
+        jsonLd,
+        appHtml,
+        products,
+        pathname
+      });
 
-      const html = template
-        .replace(
-          /<script id="schema-jsonld" type="application\/ld\+json">[\s\S]*?<\/script>/,
-          `<script id="schema-jsonld" type="application/ld+json">${jsonLd}</script>`
-        )
-        .replace(
-          /<div id="root">[\s\S]*?<\/div>\s*<!--ssr-end-->/,
-          `<div id="root">${appHtml}</div><!--ssr-end-->${initialDataScript}`
-        );
-
+      const statusCode = meta.robots.startsWith('noindex') ? 404 : 200;
       res
-        .status(200)
+        .status(statusCode)
         .set({ 'Content-Type': 'text/html; charset=utf-8' })
         .end(html);
     });

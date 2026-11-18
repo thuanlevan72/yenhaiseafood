@@ -8,12 +8,135 @@ import {
   SEO_FAQS,
   CUSTOMER_REVIEWS,
   STORE_PHONE,
+  STORE_PHONE_DISPLAY,
   STORE_FACEBOOK_URL,
-  STORE_ZALO_URL
+  STORE_ZALO_URL,
+  extractSlugFromPathname,
+  findProductBySlug,
+  getProductRoutePath,
+  getProductSlug
 } from './lib/store-logic';
 
-export function renderAppHtml(products: Product[] = PRODUCTS): string {
-  return renderToString(<App initialProducts={products} />);
+export function renderAppHtml(
+  products: Product[] = PRODUCTS,
+  pathname = '/'
+): string {
+  return renderToString(
+    <App initialProducts={products} initialPath={pathname} />
+  );
+}
+
+export function buildProductDetailJsonLd(
+  product: Product,
+  appUrl = ''
+): string {
+  const baseUrl = appUrl.replace(/\/$/, '');
+  const productPath = getProductRoutePath(product);
+  const fullUrl = `${baseUrl}${productPath}`;
+  const categoryLabel =
+    product.category === 'fresh'
+      ? 'Hải Sản Tươi Sống'
+      : product.category === 'frozen'
+      ? 'Hải Sản Đông Lạnh'
+      : 'Hải Sản Khô';
+
+  const productNode: Record<string, unknown> = {
+    '@type': 'Product',
+    '@id': `${fullUrl}#product`,
+    url: fullUrl,
+    sku: product.sku || `YH-SP-0${product.id}`,
+    name: product.name,
+    description: product.description,
+    image: [`${baseUrl}${product.image}`],
+    brand: {
+      '@type': 'Brand',
+      name: 'Hải Sản Yến Hải'
+    },
+    category: categoryLabel,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: String(product.rating),
+      bestRating: '5',
+      worstRating: '1',
+      reviewCount: String(product.reviewsCount)
+    },
+    review: CUSTOMER_REVIEWS.map((r) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: r.author
+      },
+      datePublished: r.datePublished,
+      reviewBody: r.comment,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: String(r.rating),
+        bestRating: '5'
+      }
+    })),
+    offers: {
+      '@type': 'Offer',
+      url: fullUrl,
+      price: '0',
+      priceCurrency: 'VND',
+      description: `Giá: Liên hệ trực tiếp qua Hotline/Zalo ${STORE_PHONE_DISPLAY}`,
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: 'https://schema.org/InStock',
+      seller: {
+        '@type': 'Organization',
+        name: 'Hải Sản Yến Hải',
+        telephone: `+84${STORE_PHONE.replace(/^0/, '')}`
+      }
+    }
+  };
+
+  if (product.videoUrl) {
+    productNode.subjectOf = {
+      '@type': 'VideoObject',
+      name: product.name,
+      description: product.description,
+      thumbnailUrl: [`${baseUrl}${product.image}`],
+      contentUrl: `${baseUrl}${product.videoUrl}`,
+      uploadDate: '2026-11-16'
+    };
+  }
+
+  const graph: unknown[] = [
+    productNode,
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${fullUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Trang chủ Hải Sản Yến Hải',
+          item: `${baseUrl}/`
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: categoryLabel,
+          item: `${baseUrl}/#catalog`
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: product.name,
+          item: fullUrl
+        }
+      ]
+    }
+  ];
+
+  return JSON.stringify(
+    {
+      '@context': 'https://schema.org',
+      '@graph': graph
+    },
+    null,
+    2
+  );
 }
 
 export function buildStoreJsonLd(
@@ -22,60 +145,64 @@ export function buildStoreJsonLd(
 ): string {
   const baseUrl = appUrl.replace(/\/$/, '');
 
-  const productEntities = products.map((p, idx) => ({
-    '@type': 'ListItem',
-    position: idx + 1,
-    item: {
-      '@type': 'Product',
-      '@id': `${baseUrl}/#${p.slug || `product-${p.id}`}`,
-      sku: p.sku || `YH-SP-0${p.id}`,
-      name: p.name,
-      description: p.description,
-      image: [`${baseUrl}${p.image}`],
-      ...(p.videoUrl
-        ? {
-            subjectOf: {
-              '@type': 'VideoObject',
-              name: p.name,
-              description: p.description,
-              thumbnailUrl: [`${baseUrl}${p.image}`],
-              contentUrl: `${baseUrl}${p.videoUrl}`,
-              uploadDate: '2026-11-16'
+  const productEntities = products.map((p, idx) => {
+    const itemUrl = `${baseUrl}/san-pham/${getProductSlug(p)}`;
+    return {
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'Product',
+        '@id': `${itemUrl}#product`,
+        url: itemUrl,
+        sku: p.sku || `YH-SP-0${p.id}`,
+        name: p.name,
+        description: p.description,
+        image: [`${baseUrl}${p.image}`],
+        ...(p.videoUrl
+          ? {
+              subjectOf: {
+                '@type': 'VideoObject',
+                name: p.name,
+                description: p.description,
+                thumbnailUrl: [`${baseUrl}${p.image}`],
+                contentUrl: `${baseUrl}${p.videoUrl}`,
+                uploadDate: '2026-11-16'
+              }
             }
-          }
-        : {}),
-      brand: {
-        '@type': 'Brand',
-        name: 'Hải Sản Yến Hải'
-      },
-      category:
-        p.category === 'fresh'
-          ? 'Hải Sản Tươi Sống'
-          : p.category === 'frozen'
-          ? 'Hải Sản Đông Lạnh'
-          : 'Hải Sản Khô',
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: String(p.rating),
-        bestRating: '5',
-        worstRating: '1',
-        reviewCount: String(p.reviewsCount)
-      },
-      offers: {
-        '@type': 'Offer',
-        url: `${baseUrl}/#${p.slug || `product-${p.id}`}`,
-        price: '0',
-        priceCurrency: 'VND',
-        description: 'Giá: Liên hệ trực tiếp qua Hotline/Zalo 0356.136.859',
-        itemCondition: 'https://schema.org/NewCondition',
-        availability: 'https://schema.org/InStock',
-        seller: {
-          '@type': 'Organization',
+          : {}),
+        brand: {
+          '@type': 'Brand',
           name: 'Hải Sản Yến Hải'
+        },
+        category:
+          p.category === 'fresh'
+            ? 'Hải Sản Tươi Sống'
+            : p.category === 'frozen'
+            ? 'Hải Sản Đông Lạnh'
+            : 'Hải Sản Khô',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: String(p.rating),
+          bestRating: '5',
+          worstRating: '1',
+          reviewCount: String(p.reviewsCount)
+        },
+        offers: {
+          '@type': 'Offer',
+          url: itemUrl,
+          price: '0',
+          priceCurrency: 'VND',
+          description: `Giá: Liên hệ trực tiếp qua Hotline/Zalo ${STORE_PHONE_DISPLAY}`,
+          itemCondition: 'https://schema.org/NewCondition',
+          availability: 'https://schema.org/InStock',
+          seller: {
+            '@type': 'Organization',
+            name: 'Hải Sản Yến Hải'
+          }
         }
       }
-    }
-  }));
+    };
+  });
 
   const videoEntities = REAL_VIDEOS.map((vid) => ({
     '@type': 'VideoObject',
@@ -100,8 +227,8 @@ export function buildStoreJsonLd(
         name: 'Hải Sản Yến Hải — Vựa Hải Sản Tươi Sống, Đông Lạnh & Đồ Khô',
         alternateName: 'Yến Hải Seafood Hoằng Tiến Hoằng Hóa Thanh Hóa',
         description:
-          'Hải Sản Yến Hải (Khu vực Trường Tiểu học xã Hoằng Trường — Thôn Trường Phúc, Xã Hoằng Tiến, Huyện Hoằng Hóa, Tỉnh Thanh Hóa) chuyên cung cấp sỉ & lẻ Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Tôm He Tôm Bộp Biển, Nõn Tôm Biển Hấp Bóc Sẵn, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương Phơi Nắng Tự Nhiên. Cam kết bao ăn 1 đổi 1, giao hàng toàn quốc.',
-        url: baseUrl || 'https://haisanyenhai.vn',
+          'Hải Sản Yến Hải (Gần Trường Tiểu học xã Hoằng Trường — Thôn Trường Phúc, Xã Hoằng Tiến, Huyện Hoằng Hóa, Tỉnh Thanh Hóa) chuyên cung cấp sỉ & lẻ Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Tôm He Tôm Bộp Biển, Nõn Tôm Biển Hấp Bóc Sẵn, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương Phơi Nắng Tự Nhiên. Cam kết bao ăn 1 đổi 1, giao hàng toàn quốc.',
+        url: baseUrl || 'https://yenhaiseafood.vercel.app',
         telephone: `+84${STORE_PHONE.replace(/^0/, '')}`,
         sameAs: [STORE_FACEBOOK_URL, STORE_ZALO_URL],
         priceRange: 'Giá: Liên hệ',
@@ -195,4 +322,19 @@ export function buildStoreJsonLd(
   };
 
   return JSON.stringify(schema, null, 2);
+}
+
+export function buildPageJsonLd(
+  products: Product[] = PRODUCTS,
+  pathname = '/',
+  appUrl = ''
+): string {
+  const slug = extractSlugFromPathname(pathname);
+  if (slug !== null) {
+    const product = findProductBySlug(products, slug);
+    if (product) {
+      return buildProductDetailJsonLd(product, appUrl);
+    }
+  }
+  return buildStoreJsonLd(products, appUrl);
 }

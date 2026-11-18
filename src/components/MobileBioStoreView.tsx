@@ -12,7 +12,8 @@ import {
   STORE_FACEBOOK_URL,
   STORE_ADDRESS,
   STORE_LANDMARK,
-  STORE_MAP_EMBED_URL
+  STORE_MAP_EMBED_URL,
+  getProductRoutePath
 } from '../lib/store-logic';
 import { ResilientImage } from './ResilientImage';
 
@@ -161,20 +162,45 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
 
       {/* Sticky Mobile Category & Search Bar */}
       <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-3 py-2.5 border-b border-light-outline-variant shadow-sm flex items-center gap-2">
-        <div className="flex-1 relative">
+        <form
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            document.getElementById('mobileProductFeed')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="flex-1 relative"
+        >
           <input
             type="text"
+            inputMode="search"
+            enterKeyHint="search"
             id="mobileSearch"
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm bề bề, nõn tôm, mực ống, cá thu..."
+            onChange={(e) => {
+              const val = e.target.value;
+              onSearchChange(val);
+              if (val.trim() && selectedCategory !== 'all') {
+                onSelectCategory('all');
+              }
+            }}
+            placeholder="Tìm bề bề, nõn tôm, mực ống..."
             aria-label="Tìm kiếm hải sản trên di động"
-            className="w-full pl-8 pr-3 py-1.5 text-body-sm rounded-full border border-light-outline-variant bg-light-surface-container focus:bg-white focus:outline-none focus:ring-1 focus:ring-light-primary"
+            className="w-full pl-8 pr-8 py-1.5 text-body-sm rounded-full border border-light-outline-variant bg-light-surface-container focus:bg-white focus:outline-none focus:ring-1 focus:ring-light-primary"
           />
-          <span className="material-symbols-outlined absolute left-2.5 top-2 text-light-on-surface/40 text-[16px]">
+          <span className="material-symbols-outlined absolute left-2.5 top-2 text-light-on-surface/40 text-[16px] pointer-events-none">
             search
           </span>
-        </div>
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => onSearchChange('')}
+              aria-label="Xóa từ khóa tìm kiếm"
+              className="absolute right-2 top-1.5 w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-light-primary flex items-center justify-center cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[13px]">close</span>
+            </button>
+          )}
+        </form>
 
         {/* Mobile Cart Trigger with Floating Count */}
         <button
@@ -245,7 +271,32 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
 
       {/* Mobile Product Feed (Card Stream) */}
       <div id="mobileProductFeed" className="px-3 space-y-3">
-        {products.map((product) => {
+        {products.length === 0 ? (
+          <div className="bg-white rounded-lg border border-light-outline-variant p-6 text-center space-y-3">
+            <span className="material-symbols-outlined text-[40px] text-light-outline">
+              search_off
+            </span>
+            <div>
+              <p className="font-title text-title-sm font-bold text-light-primary">
+                Không tìm thấy món phù hợp với &quot;{searchQuery}&quot;
+              </p>
+              <p className="font-body text-xs text-light-on-surface/65 mt-1">
+                Thử gõ không dấu (vd: muc ong, be be, non tom) hoặc xem tất cả hải sản.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                onSearchChange('');
+                onSelectCategory('all');
+              }}
+              className="px-4 py-2 rounded-DEFAULT bg-light-primary text-white font-label text-xs font-bold cursor-pointer"
+            >
+              Xem tất cả hải sản
+            </button>
+          </div>
+        ) : (
+          products.map((product) => {
           const badgeBg =
             product.category === 'fresh'
               ? 'bg-fresh-green'
@@ -261,11 +312,14 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               itemType="https://schema.org/Product"
               className="mob-card bg-white rounded-lg border border-light-outline-variant p-3 shadow-sm flex gap-3"
             >
-              <button
-                type="button"
-                onClick={() => onOpenProductDetail(product)}
+              <a
+                href={getProductRoutePath(product)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpenProductDetail(product);
+                }}
                 title={product.seoTitle || product.name}
-                className="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden cursor-pointer text-left"
+                className="relative w-28 h-28 rounded-md bg-light-surface-container flex-shrink-0 overflow-hidden cursor-pointer text-left block"
               >
                 <ResilientImage
                   src={product.image}
@@ -285,7 +339,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
                     ▶ Video
                   </span>
                 )}
-              </button>
+              </a>
               <div className="flex-1 min-w-0 flex flex-col justify-between">
                 <div>
                   <span
@@ -297,13 +351,16 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
                     itemProp="name"
                     className="font-title text-title-sm font-bold text-light-primary truncate"
                   >
-                    <button
-                      type="button"
-                      onClick={() => onOpenProductDetail(product)}
-                      className="hover:text-accent text-left truncate w-full cursor-pointer"
+                    <a
+                      href={getProductRoutePath(product)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onOpenProductDetail(product);
+                      }}
+                      className="hover:text-accent text-left truncate block w-full"
                     >
                       {product.mobileName}
-                    </button>
+                    </a>
                   </h3>
                   <p className="font-body text-[11px] text-light-on-surface/60 line-clamp-1">
                     {product.mobileDescription}
@@ -335,7 +392,8 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               </div>
             </article>
           );
-        })}
+        })
+        )}
       </div>
 
       {/* Real Videos Strip on Mobile Bio */}
