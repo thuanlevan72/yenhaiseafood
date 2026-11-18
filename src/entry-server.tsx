@@ -229,6 +229,7 @@ export function buildStoreJsonLd(
         description:
           'Hải Sản Yến Hải (Gần Trường Tiểu học xã Hoằng Trường — Thôn Trường Phúc, Xã Hoằng Tiến, Huyện Hoằng Hóa, Tỉnh Thanh Hóa) chuyên cung cấp sỉ & lẻ Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Tôm He Tôm Bộp Biển, Nõn Tôm Biển Hấp Bóc Sẵn, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương Phơi Nắng Tự Nhiên. Cam kết bao ăn 1 đổi 1, giao hàng toàn quốc.',
         url: baseUrl || 'https://yenhaiseafood.vercel.app',
+        logo: `${baseUrl || 'https://yenhaiseafood.vercel.app'}/logo.jpg`,
         telephone: `+84${STORE_PHONE.replace(/^0/, '')}`,
         sameAs: [STORE_FACEBOOK_URL, STORE_ZALO_URL],
         priceRange: 'Giá: Liên hệ',

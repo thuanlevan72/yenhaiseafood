@@ -407,11 +407,24 @@ export default function App({
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2.5 sm:gap-4 lg:gap-6">
           {/* Brand Logo / Name */}
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 md:flex-initial">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg bg-gradient-to-br from-light-primary to-[#184878] text-white flex items-center justify-center shadow-md shrink-0">
-              <span className="material-symbols-outlined text-[22px] sm:text-[26px]">
-                sailing
-              </span>
-            </div>
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateHome('all');
+              }}
+              aria-label="Trang chủ Hải Sản Yến Hải"
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-[#0A2540] border-2 border-light-primary/20 shadow-md shrink-0 block"
+            >
+              <img
+                src="/logo.jpg"
+                alt="Logo Hải Sản Yến Hải"
+                width={44}
+                height={44}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover scale-[1.16]"
+              />
+            </a>
             <div className="min-w-0 flex-1">
               <a
                 href="/"
@@ -2391,9 +2404,16 @@ export default function App({
         <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand & Mission */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-md bg-accent text-white flex items-center justify-center font-bold">
-                <span className="material-symbols-outlined">sailing</span>
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-[#0A2540] border border-white/25 shadow-sm shrink-0">
+                <img
+                  src="/logo.jpg"
+                  alt="Logo Hải Sản Yến Hải"
+                  width={40}
+                  height={40}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover scale-[1.16]"
+                />
               </div>
               <span className="font-headline text-title-lg font-bold">
                 HẢI SẢN YẾN HẢI

@@ -63,6 +63,11 @@ async function startServer() {
     res.set('Content-Type', 'application/xml; charset=utf-8').send(xml);
   });
 
+  // Brand Favicon fallback for legacy /favicon.ico requests
+  app.get('/favicon.ico', (_req, res) => {
+    res.type('image/svg+xml').sendFile(path.resolve(__dirname, 'public/favicon.svg'));
+  });
+
   // API to get current products JSON
   app.get('/api/products', (_req, res) => {
     const products = loadProductsFromDisk();

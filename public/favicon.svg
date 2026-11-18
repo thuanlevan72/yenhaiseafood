@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="seaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A2540" />
+      <stop offset="100%" stop-color="#143D66" />
+    </linearGradient>
+    <linearGradient id="coralGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B4A" />
+      <stop offset="100%" stop-color="#E63E21" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#seaGrad)" />
+  <!-- Stylized Ocean Wave -->
+  <path
+    d="M11 38c6-13 21-20 31-11 4 4 4 10-2 12-5 2-8-3-13-2-5 1-8 6-6 11 2 4 7 6 14 5 7-1 13-5 17-10-2 9-11 16-22 16-12 0-22-8-19-21z"
+    fill="url(#coralGrad)"
+    stroke="#FFFFFF"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+  <!-- Stylized White Sail -->
+  <path
+    d="M41 18l11 17H40z"
+    fill="#FFFFFF"
+    stroke="#0A2540"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+  <!-- Stylized Prawn / Seafood Emblem -->
+  <path
+    d="M36 27c-6-2-13 1-15 7-1 4 1 9 6 10l4-4c-3-1-4-3-3-5 1-3 4-4 7-3 2 1 4 0 5-2 0-2-2-3-4-3z"
+    fill="#FFFFFF"
+    stroke="#0A2540"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+  <circle cx="33" cy="29.5" r="1.4" fill="#0A2540" />
+</svg>

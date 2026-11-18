@@ -75,12 +75,15 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
         <div className="flex flex-col items-center text-center relative z-10">
           {/* Profile Avatar / Brand Badge */}
           <div className="relative mb-3">
-            <div className="w-20 h-20 rounded-full border-4 border-white/20 bg-white p-1 shadow-lg flex items-center justify-center">
-              <div className="w-full h-full rounded-full bg-light-primary text-white flex items-center justify-center font-extrabold text-2xl">
-                <span className="material-symbols-outlined text-[36px]">
-                  sailing
-                </span>
-              </div>
+            <div className="w-20 h-20 rounded-full border-4 border-white/25 bg-[#0A2540] shadow-lg overflow-hidden flex items-center justify-center">
+              <img
+                src="/logo.jpg"
+                alt="Logo Hải Sản Yến Hải"
+                width={80}
+                height={80}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover scale-[1.16]"
+              />
             </div>
             <span
               className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-fresh-green border-2 border-white flex items-center justify-center text-white"
