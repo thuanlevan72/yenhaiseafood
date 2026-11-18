@@ -182,23 +182,26 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
   return (
     <div
       id="top"
-      className="bg-light-surface-container font-body text-light-on-surface antialiased min-h-screen flex flex-col"
+      className="bg-light-surface-container font-body text-light-on-surface antialiased min-h-screen flex flex-col overflow-x-clip"
     >
       {/* Top Announcement Bar */}
-      <div className="bg-light-primary text-white text-body-sm py-2 px-4 border-b border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 font-label text-label-sm text-emerald-400 bg-white/10 px-2.5 py-0.5 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Vựa biển {STORE_ADDRESS} • Ghe về sáng sớm
+      <div className="bg-light-primary text-white text-xs sm:text-body-sm py-2 px-3 sm:px-4 border-b border-white/10">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="inline-flex items-center gap-1.5 font-label text-[11px] sm:text-label-sm text-emerald-300 leading-snug">
+              <span className="material-symbols-outlined text-[14px] text-emerald-400 shrink-0">
+                location_on
+              </span>
+              <span className="sm:hidden">Vựa biển Hoằng Tiến, Hoằng Hóa, Thanh Hóa • Ghe về sáng sớm</span>
+              <span className="hidden sm:inline">Vựa biển {STORE_ADDRESS} • Ghe về sáng sớm</span>
             </span>
-            <span className="hidden md:inline text-white/80">
-              🚀 Đóng thùng xốp cấp đông giữ lạnh giao tận nơi &amp; gửi xe toàn quốc
+            <span className="hidden lg:inline text-white/75 text-xs">
+              · Đóng thùng xốp giữ lạnh giao tận nơi &amp; gửi xe toàn quốc
             </span>
           </div>
-          <div className="flex items-center gap-3 sm:gap-5 text-white/90 text-label-sm font-label">
-            <span className="hidden sm:flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-accent">
+          <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-4 text-white/90 text-[11px] sm:text-label-sm font-label shrink-0">
+            <span className="hidden md:flex items-center gap-1">
+              <span className="material-symbols-outlined text-[15px] text-accent">
                 verified
               </span>{' '}
               Bao ăn 1 đổi 1
@@ -208,9 +211,9 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               target="_blank"
               rel="noopener noreferrer"
               title="Trang Facebook chính thức Hải Sản Yến Hải"
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-[#1877F2]/30 hover:bg-[#1877F2]/50 border border-sky-400/30 text-sky-200 transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#1877F2]/35 hover:bg-[#1877F2]/55 border border-sky-400/30 text-sky-100 transition-colors whitespace-nowrap"
             >
-              <span className="material-symbols-outlined text-[15px]">
+              <span className="material-symbols-outlined text-[14px]">
                 thumb_up
               </span>
               <span>Facebook Yến Hải</span>
@@ -218,10 +221,10 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             <button
               type="button"
               onClick={() => setViewMode('mobile-bio')}
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-white/15 hover:bg-white/25 text-sky-200 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white/15 hover:bg-white/25 text-sky-100 transition-colors cursor-pointer whitespace-nowrap"
               title="Chuyển sang giao diện Bio & Cửa hàng Di động"
             >
-              <span className="material-symbols-outlined text-[15px]">
+              <span className="material-symbols-outlined text-[14px]">
                 smartphone
               </span>
               <span>Xem bản Bio Mobile</span>
@@ -232,33 +235,33 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
 
       {/* Main Store Header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-light-outline-variant shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3.5 flex items-center justify-between gap-4 lg:gap-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2.5 sm:gap-4 lg:gap-6">
           {/* Brand Logo / Name */}
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-light-primary to-[#184878] text-white flex items-center justify-center shadow-md">
-              <span className="material-symbols-outlined text-[26px]">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 md:flex-initial">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg bg-gradient-to-br from-light-primary to-[#184878] text-white flex items-center justify-center shadow-md shrink-0">
+              <span className="material-symbols-outlined text-[22px] sm:text-[26px]">
                 sailing
               </span>
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
               <a
                 href="#top"
                 title="Hải Sản Yến Hải — Vựa Hải Sản Tươi Sống, Đông Lạnh & Đồ Khô Xã Hoằng Tiến, Tỉnh Thanh Hóa"
-                className="font-headline text-headline-md text-light-primary font-extrabold tracking-tight leading-none flex items-center gap-1.5"
+                className="font-headline text-title-md sm:text-headline-md text-light-primary font-extrabold tracking-tight leading-none flex items-center gap-1.5 whitespace-nowrap"
               >
                 <span>YẾN HẢI</span>
-                <span className="text-accent text-body-sm font-semibold uppercase tracking-wider bg-rose-50 px-2 py-0.5 rounded">
+                <span className="text-accent text-[10px] sm:text-body-sm font-semibold uppercase tracking-wider bg-rose-50 px-1.5 sm:px-2 py-0.5 rounded shrink-0">
                   SEAFOOD
                 </span>
               </a>
-              <p className="font-body text-body-sm text-light-on-surface/65 mt-0.5">
+              <p className="font-body text-[11px] sm:text-body-sm text-light-on-surface/65 mt-0.5 truncate max-w-full md:max-w-[230px] lg:max-w-[280px] xl:max-w-[340px]">
                 {STORE_ADDRESS} • Tươi Sống • Đông Lạnh • Đồ Khô
               </p>
             </div>
           </div>
 
           {/* Live Search Bar */}
-          <div className="flex-1 max-w-xl hidden md:block">
+          <div className="flex-1 min-w-[240px] lg:min-w-[300px] max-w-xl hidden md:block">
             <div className="relative">
               <input
                 type="text"
@@ -292,9 +295,24 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </div>
           </div>
 
-          {/* Header Action Triggers: Phone hotline, Zalo, Facebook & Cart */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            {/* Hotline Call Direct */}
+          {/* Header Action Triggers: Phone hotline, Zalo & Cart */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Compact Mobile Call Icon */}
+            <a
+              href={`tel:${STORE_PHONE}`}
+              aria-label={`Gọi Hotline ${STORE_PHONE_DISPLAY}`}
+              title={`Gọi Hotline tư vấn nhanh: ${STORE_PHONE_DISPLAY}`}
+              className="lg:hidden inline-flex items-center justify-center w-10 h-10 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-DEFAULT bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition-colors shrink-0"
+            >
+              <span className="material-symbols-outlined text-[20px] text-fresh-green">
+                call
+              </span>
+              <span className="hidden sm:inline lg:hidden ml-1.5 font-label text-label-sm font-bold tabular-nums">
+                {STORE_PHONE_DISPLAY}
+              </span>
+            </a>
+
+            {/* Desktop Hotline Call Direct */}
             <a
               href={`tel:${STORE_PHONE}`}
               className="hidden lg:flex items-center gap-2.5 px-3.5 py-2 rounded-DEFAULT bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 transition-colors"
@@ -335,9 +353,9 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               type="button"
               onClick={() => setIsCartOpen(true)}
               aria-label={`Mở giỏ hàng (${totals.totalItems} sản phẩm)`}
-              className="relative inline-flex items-center gap-2 px-4 py-2.5 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-md shadow-xs transition-all cursor-pointer whitespace-nowrap"
+              className="relative inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 h-10 sm:h-auto sm:py-2.5 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-sm sm:text-label-md shadow-xs transition-all cursor-pointer whitespace-nowrap shrink-0"
             >
-              <span className="material-symbols-outlined text-[20px]">
+              <span className="material-symbols-outlined text-[19px] sm:text-[20px]">
                 shopping_cart
               </span>
               <span className="hidden sm:inline">Giỏ hàng</span>
@@ -351,97 +369,174 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           </div>
         </div>
 
-        {/* Category Quick Bar */}
+        {/* Category Quick Bar (Desktop inside sticky header) */}
         <nav
           aria-label="Danh mục hải sản chính"
-          className="border-t border-light-outline-variant bg-white"
+          className="hidden md:block border-t border-light-outline-variant bg-white"
         >
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center gap-3 sm:gap-5 overflow-x-auto py-2 text-label-md font-label no-scrollbar">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto py-2 text-xs lg:text-label-md font-label no-scrollbar">
             <button
               type="button"
               onClick={() => setSelectedCategory('all')}
-              className={`cat-tab px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
+              className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
                 selectedCategory === 'all'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
             >
-              <span className="material-symbols-outlined text-[18px]">
+              <span className="material-symbols-outlined text-[17px]">
                 grid_view
               </span>
-              <span>Tất cả sản phẩm ({products.length})</span>
+              <span>Tất cả ({products.length})</span>
             </button>
             <button
               type="button"
               onClick={() => setSelectedCategory('fresh')}
-              className={`cat-tab px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
+              className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
                 selectedCategory === 'fresh'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
             >
               <span className="text-base">🦐</span>
-              <span>Hải Sản Tươi Trong Ngày</span>
+              <span>Tươi Trong Ngày</span>
             </button>
             <button
               type="button"
               onClick={() => setSelectedCategory('frozen')}
-              className={`cat-tab px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
+              className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
                 selectedCategory === 'frozen'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
             >
               <span className="text-base">❄️</span>
-              <span>Bề Bề, Nõn Tôm &amp; Cấp Đông VIP</span>
+              <span>Bề Bề, Nõn Tôm &amp; Đông VIP</span>
             </button>
             <button
               type="button"
               onClick={() => setSelectedCategory('dried')}
-              className={`cat-tab px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
+              className={`cat-tab px-2.5 lg:px-3 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors ${
                 selectedCategory === 'dried'
                   ? 'bg-light-primary text-white'
                   : 'hover:bg-light-surface-container text-light-on-surface'
               }`}
             >
               <span className="text-base">🦑</span>
-              <span>Hải Sản Khô (Quà biếu)</span>
+              <span>Hải Sản Khô</span>
             </button>
             <a
               href="#videoSection"
-              className="cat-tab px-3 py-1.5 rounded-full hover:bg-rose-50 flex items-center gap-1.5 whitespace-nowrap text-accent font-semibold"
+              className="cat-tab px-2.5 lg:px-3 py-1.5 rounded-full hover:bg-rose-50 flex items-center gap-1.5 whitespace-nowrap text-accent font-semibold"
             >
-              <span className="material-symbols-outlined text-[18px]">
+              <span className="material-symbols-outlined text-[17px]">
                 smart_display
               </span>
-              <span>Video Thực Tế Tại Vựa ({REAL_VIDEOS.length})</span>
+              <span>Video Tại Vựa ({REAL_VIDEOS.length})</span>
             </a>
             <a
               href="#mapSection"
-              className="cat-tab px-3 py-1.5 rounded-full hover:bg-emerald-50 flex items-center gap-1.5 whitespace-nowrap text-emerald-800 font-semibold"
+              className="cat-tab px-2.5 lg:px-3 py-1.5 rounded-full hover:bg-emerald-50 flex items-center gap-1.5 whitespace-nowrap text-emerald-800 font-semibold"
             >
-              <span className="material-symbols-outlined text-[18px]">
+              <span className="material-symbols-outlined text-[17px]">
                 location_on
               </span>
-              <span>Bản Đồ Vị Trí Vựa</span>
+              <span>Bản Đồ Vị Trí</span>
             </a>
             <a
               href="#faqSection"
-              className="cat-tab px-3 py-1.5 rounded-full hover:bg-light-surface-container flex items-center gap-1.5 whitespace-nowrap ml-auto text-ocean-blue font-semibold"
+              className="cat-tab px-2.5 lg:px-3 py-1.5 rounded-full hover:bg-light-surface-container flex items-center gap-1.5 whitespace-nowrap ml-auto text-ocean-blue font-semibold"
             >
-              <span className="material-symbols-outlined text-[18px]">
+              <span className="material-symbols-outlined text-[17px]">
                 verified_user
               </span>
-              <span>Cam Kết &amp; Đánh Giá</span>
+              <span>Cam Kết &amp; FAQ</span>
             </a>
           </div>
         </nav>
       </header>
 
+      {/* Mobile Category Quick Strip (non-sticky so screen stays uncluttered on mobile) */}
+      <nav
+        aria-label="Danh mục hải sản trên di động"
+        className="md:hidden bg-white border-b border-light-outline-variant w-full overflow-hidden"
+      >
+        <div className="px-3 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs font-label">
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('all');
+              scrollToSection('catalog');
+            }}
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              selectedCategory === 'all'
+                ? 'bg-light-primary text-white font-bold'
+                : 'bg-light-surface-container text-light-on-surface'
+            }`}
+          >
+            Tất cả ({products.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('fresh');
+              scrollToSection('catalog');
+            }}
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              selectedCategory === 'fresh'
+                ? 'bg-light-primary text-white font-bold'
+                : 'bg-light-surface-container text-light-on-surface'
+            }`}
+          >
+            🦐 Tươi Sống
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('frozen');
+              scrollToSection('catalog');
+            }}
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              selectedCategory === 'frozen'
+                ? 'bg-light-primary text-white font-bold'
+                : 'bg-light-surface-container text-light-on-surface'
+            }`}
+          >
+            ❄️ Bề Bề &amp; Nõn Tôm
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCategory('dried');
+              scrollToSection('catalog');
+            }}
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
+              selectedCategory === 'dried'
+                ? 'bg-light-primary text-white font-bold'
+                : 'bg-light-surface-container text-light-on-surface'
+            }`}
+          >
+            🦑 Đồ Khô
+          </button>
+          <a
+            href="#videoSection"
+            className="px-3 py-1.5 rounded-lg bg-rose-50 text-accent font-semibold whitespace-nowrap shrink-0"
+          >
+            ▶ Video ({REAL_VIDEOS.length})
+          </a>
+          <a
+            href="#mapSection"
+            className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 font-semibold whitespace-nowrap shrink-0"
+          >
+            📍 Bản Đồ
+          </a>
+        </div>
+      </nav>
+
       {/* Hero Section: Seafood Quality Guarantee & Value Prop */}
       <section
         aria-label="Giới thiệu Vựa Hải Sản Yến Hải Hoằng Tiến Thanh Hóa"
-        className="relative bg-gradient-to-r from-light-primary via-[#0E355C] to-light-primary text-white py-12 lg:py-16 overflow-hidden"
+        className="relative bg-gradient-to-r from-light-primary via-[#0E355C] to-light-primary text-white py-7 sm:py-12 lg:py-16 overflow-hidden"
       >
         <div className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none">
           <ResilientImage
@@ -453,15 +548,17 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-label text-label-sm">
-              <span className="material-symbols-outlined text-[16px] text-accent">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          <div className="lg:col-span-7 space-y-3.5 sm:space-y-4 min-w-0">
+            <div className="inline-flex items-start sm:items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white font-label text-xs sm:text-label-sm max-w-full">
+              <span className="material-symbols-outlined text-[16px] text-accent shrink-0 mt-0.5 sm:mt-0">
                 location_on
               </span>
-              <span>Vựa gốc biển {STORE_ADDRESS} • Sỉ &amp; lẻ toàn quốc</span>
+              <span className="leading-snug">
+                Vựa gốc biển {STORE_ADDRESS} • Sỉ &amp; lẻ toàn quốc
+              </span>
             </div>
-            <h1 className="font-headline text-display-lg-mobile sm:text-display-lg text-balance font-extrabold leading-tight tracking-tight text-white">
+            <h1 className="font-headline text-[26px] leading-[34px] sm:text-display-lg text-balance font-extrabold tracking-tight text-white">
               Hải Sản Yến Hải: <br />
               <span className="text-accent underline decoration-white/30">
                 Tươi Sống
@@ -469,104 +566,106 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               • <span className="text-sky-300">Đông Lạnh</span> •{' '}
               <span className="text-amber-300">Đồ Khô</span>
             </h1>
-            <p className="font-body text-body-lg text-white/90 max-w-2xl text-pretty leading-relaxed">
+            <p className="font-body text-body-md sm:text-body-lg text-white/90 max-w-2xl text-pretty leading-relaxed">
               Thu mua trực tiếp từ ghe thuyền vùng biển <strong>{STORE_ADDRESS}</strong>: Chuyên Mực Ống Biển Tươi, Cá Thu Phấn Cắt Khoanh Giữa, Bạch Tuộc Tươi, Tôm He / Tôm Bộp Biển, Nõn Tôm Hấp Bóc Sẵn, Bề Bề (Tôm Tít) Bóc Nõn Full Trứng và Cá Khô Rút Xương Phơi Nắng Tự Nhiên. Cam kết bao tươi ngon 1 đổi 1 tận nơi!
             </p>
 
-            {/* Guarantee Triad Badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              <div className="bg-white/10 backdrop-blur-xs p-3 rounded-md border border-white/15">
-                <span className="font-label text-label-sm text-emerald-400 flex items-center gap-1 font-bold">
-                  <span className="material-symbols-outlined text-[16px]">
-                    check_circle
-                  </span>{' '}
-                  Bao ăn bao tươi
-                </span>
-                <p className="font-body text-body-sm text-white/80 mt-1">
-                  1 đổi 1 tận nơi nếu không đúng chất lượng
-                </p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xs p-3 rounded-md border border-white/15">
-                <span className="font-label text-label-sm text-sky-300 flex items-center gap-1 font-bold">
-                  <span className="material-symbols-outlined text-[16px]">
-                    ac_unit
-                  </span>{' '}
-                  Bề bề &amp; Nõn tôm VIP
-                </span>
-                <p className="font-body text-body-sm text-white/80 mt-1">
-                  Hấp bóc thủ công trong ngày, đóng khay giữ ngọt
-                </p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xs p-3 rounded-md border border-white/15">
-                <span className="font-label text-label-sm text-amber-300 flex items-center gap-1 font-bold">
-                  <span className="material-symbols-outlined text-[16px]">
-                    videocam
-                  </span>{' '}
-                  Quay video thực tế
-                </span>
-                <p className="font-body text-body-sm text-white/80 mt-1">
-                  Gửi video khay hàng thực tế &amp; báo giá qua Zalo
-                </p>
-              </div>
-            </div>
-
             {/* Multi-Channel CTA Row */}
-            <div className="flex flex-wrap items-center gap-3 pt-4">
+            <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
               <button
                 type="button"
                 onClick={() => scrollToSection('catalog')}
-                className="px-6 py-3 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-lg shadow-lg flex items-center gap-2 cursor-pointer transition-colors"
+                className="w-full sm:w-auto min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-lg shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-colors"
               >
                 <span className="material-symbols-outlined text-[20px]">
                   shopping_bag
                 </span>
                 <span>Xem Hải Sản &amp; Đặt Ngay</span>
               </button>
-              <button
-                type="button"
-                onClick={() => scrollToSection('videoSection')}
-                className="px-5 py-3 rounded-DEFAULT bg-white text-light-primary hover:bg-light-surface-container font-label text-label-lg shadow flex items-center gap-2 cursor-pointer transition-colors"
-              >
-                <span className="material-symbols-outlined text-accent text-[20px]">
-                  smart_display
+              <div className="grid grid-cols-2 sm:flex gap-2.5 sm:gap-3">
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('videoSection')}
+                  className="min-h-[44px] px-3 sm:px-5 py-2.5 sm:py-3 rounded-DEFAULT bg-white text-light-primary hover:bg-light-surface-container font-label text-xs sm:text-label-lg shadow flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-colors"
+                >
+                  <span className="material-symbols-outlined text-accent text-[18px] sm:text-[20px] shrink-0">
+                    smart_display
+                  </span>
+                  <span className="truncate">Xem {REAL_VIDEOS.length} Video</span>
+                </button>
+                <a
+                  href={`tel:${STORE_PHONE}`}
+                  title={`Gọi trực tiếp Hotline Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
+                  className="min-h-[44px] px-3 sm:px-5 py-2.5 sm:py-3 rounded-DEFAULT bg-white/10 hover:bg-white/20 border border-white/30 text-white font-label text-xs sm:text-label-lg backdrop-blur-xs flex items-center justify-center gap-1.5 sm:gap-2 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-emerald-400 text-[18px] sm:text-[20px] shrink-0">
+                    call
+                  </span>
+                  <span className="tabular-nums truncate">{STORE_PHONE_DISPLAY}</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Guarantee Triad Badges */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-1 sm:pt-2">
+              <div className="bg-white/10 backdrop-blur-xs p-2.5 sm:p-3 rounded-md border border-white/15">
+                <span className="font-label text-label-sm text-emerald-400 flex items-center gap-1 font-bold">
+                  <span className="material-symbols-outlined text-[16px] shrink-0">
+                    check_circle
+                  </span>{' '}
+                  Bao ăn bao tươi
                 </span>
-                <span>Xem {REAL_VIDEOS.length} Video Thực Tế</span>
-              </button>
-              <a
-                href={`tel:${STORE_PHONE}`}
-                title={`Gọi trực tiếp Hotline Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-                className="px-5 py-3 rounded-DEFAULT bg-white/10 hover:bg-white/20 border border-white/30 text-white font-label text-label-lg backdrop-blur-xs flex items-center gap-2 transition-colors"
-              >
-                <span className="material-symbols-outlined text-emerald-400 text-[20px]">
-                  call
+                <p className="font-body text-body-sm text-white/80 mt-0.5 sm:mt-1">
+                  1 đổi 1 tận nơi nếu không đúng chất lượng
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xs p-2.5 sm:p-3 rounded-md border border-white/15">
+                <span className="font-label text-label-sm text-sky-300 flex items-center gap-1 font-bold">
+                  <span className="material-symbols-outlined text-[16px] shrink-0">
+                    ac_unit
+                  </span>{' '}
+                  Bề bề &amp; Nõn tôm VIP
                 </span>
-                <span>Gọi: {STORE_PHONE_DISPLAY}</span>
-              </a>
+                <p className="font-body text-body-sm text-white/80 mt-0.5 sm:mt-1">
+                  Hấp bóc thủ công trong ngày, đóng khay giữ ngọt
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xs p-2.5 sm:p-3 rounded-md border border-white/15">
+                <span className="font-label text-label-sm text-amber-300 flex items-center gap-1 font-bold">
+                  <span className="material-symbols-outlined text-[16px] shrink-0">
+                    videocam
+                  </span>{' '}
+                  Quay video thực tế
+                </span>
+                <p className="font-body text-body-sm text-white/80 mt-0.5 sm:mt-1">
+                  Gửi video khay hàng thực tế &amp; báo giá qua Zalo
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Hero Visual Card: Quick Order Snapshot */}
-          <div className="lg:col-span-5">
-            <div className="bg-white text-light-on-surface p-6 rounded-lg shadow-2xl border border-white/30 relative">
-              <div className="flex items-center justify-between pb-4 border-b border-light-outline-variant">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-3 h-3 rounded-full bg-fresh-green animate-ping"></span>
-                  <h2 className="font-headline text-title-md font-bold text-light-primary">
+          <div className="lg:col-span-5 min-w-0">
+            <div className="bg-white text-light-on-surface p-4 sm:p-6 rounded-lg shadow-2xl border border-white/30 relative">
+              <div className="flex items-center justify-between gap-2 pb-3 sm:pb-4 border-b border-light-outline-variant">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="w-2.5 h-2.5 rounded-full bg-fresh-green shrink-0"></span>
+                  <h2 className="font-headline text-title-sm sm:text-title-md font-bold text-light-primary truncate">
                     Mặt Hàng Mới Lên Tại Vựa Hôm Nay
                   </h2>
                 </div>
-                <span className="text-body-sm text-light-on-surface/50 font-body">
+                <span className="text-xs sm:text-body-sm text-light-on-surface/55 font-body shrink-0">
                   Ghe về sáng nay
                 </span>
               </div>
 
-              <div className="divide-y divide-light-outline-variant my-4">
+              <div className="divide-y divide-light-outline-variant my-3 sm:my-4">
                 {heroSpotlightProducts.map((item) => (
                   <div
                     key={item.id}
-                    className="py-2.5 flex items-center justify-between gap-3"
+                    className="py-2.5 flex items-center justify-between gap-2.5 sm:gap-3"
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <img
                         src={item.image}
                         alt={item.seoAlt || item.name}
@@ -577,40 +676,40 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                         decoding="async"
                         className="w-11 h-11 rounded object-cover border border-light-outline-variant shrink-0"
                       />
-                      <div className="min-w-0">
-                        <span className="font-label text-label-md text-light-primary font-bold block truncate">
+                      <div className="min-w-0 flex-1">
+                        <span className="font-label text-xs sm:text-label-md text-light-primary font-bold block truncate">
                           {item.name}
                         </span>
-                        <span className="block text-body-sm text-light-on-surface/60 truncate">
+                        <span className="block text-[11px] sm:text-body-sm text-light-on-surface/60 truncate">
                           {item.subtitle}
                         </span>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-headline text-title-sm font-bold text-accent block">
+                      <span className="font-headline text-xs sm:text-title-sm font-bold text-accent block whitespace-nowrap">
                         {formatProductPrice(item)}
                       </span>
-                      <span className="block text-body-sm text-light-on-surface/50">
-                        {item.unit}
+                      <span className="block text-[11px] sm:text-body-sm text-light-on-surface/50 whitespace-nowrap">
+                        {item.mobileUnit || item.unit}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-light-primary-container p-3.5 rounded-md flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-light-primary">
+              <div className="bg-light-primary-container p-3 sm:p-3.5 rounded-md flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="material-symbols-outlined text-light-primary text-[18px] shrink-0">
                     call
                   </span>
-                  <span className="font-label text-label-sm text-light-primary font-semibold">
-                    Báo giá sỉ &amp; lẻ theo ngày: {STORE_PHONE_DISPLAY}
+                  <span className="font-label text-xs sm:text-label-sm text-light-primary font-semibold truncate">
+                    Báo giá sỉ &amp; lẻ: {STORE_PHONE_DISPLAY}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => scrollToSection('catalog')}
-                  className="text-accent font-label text-label-sm font-bold hover:underline cursor-pointer shrink-0"
+                  className="text-accent font-label text-xs sm:text-label-sm font-bold hover:underline cursor-pointer shrink-0 whitespace-nowrap"
                 >
                   Xem tất cả →
                 </button>
@@ -1399,12 +1498,12 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
           aria-labelledby="mapSectionHeading"
           itemScope
           itemType="https://schema.org/Place"
-          className="mt-12 pt-8 border-t border-light-outline-variant"
+          className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-light-outline-variant"
         >
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
-            <div>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-5 sm:mb-6">
+            <div className="min-w-0">
               <span className="inline-flex items-center gap-1.5 text-xs font-label font-bold text-fresh-green uppercase tracking-wider">
-                <span className="material-symbols-outlined text-[16px]">
+                <span className="material-symbols-outlined text-[16px] shrink-0">
                   location_on
                 </span>
                 Vị trí thực tế &amp; Chỉ đường đến Vựa Hải Sản Yến Hải
@@ -1412,11 +1511,11 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               <h2
                 id="mapSectionHeading"
                 itemProp="name"
-                className="font-headline text-headline-md text-light-primary font-bold mt-0.5"
+                className="font-headline text-[19px] leading-snug sm:text-headline-md text-light-primary font-bold mt-1 text-balance"
               >
                 Bản Đồ Vị Trí: Gần Trường Tiểu Học Xã Hoằng Trường — {STORE_ADDRESS}
               </h2>
-              <p className="font-body text-body-md text-light-on-surface/75 mt-1">
+              <p className="font-body text-body-sm sm:text-body-md text-light-on-surface/75 mt-1.5 leading-relaxed">
                 Vựa nằm{' '}
                 <strong className="text-light-primary">
                   gần Trường Tiểu học xã Hoằng Trường
@@ -1424,7 +1523,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                 — <strong className="text-light-primary">{STORE_ADDRESS}</strong>. Quý khách có thể đến tận nơi xem hải sản ghe về hoặc liên hệ Hotline/Zalo{' '}
                 <a
                   href={`tel:${STORE_PHONE}`}
-                  className="font-bold text-accent underline"
+                  className="font-bold text-accent underline tabular-nums"
                 >
                   {STORE_PHONE_DISPLAY}
                 </a>{' '}
@@ -1435,7 +1534,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
               href={STORE_GOOGLE_MAPS_DIRECT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2.5 rounded-DEFAULT bg-light-primary hover:bg-light-primary/90 text-white font-label text-label-sm font-bold flex items-center gap-1.5 shadow-xs"
+              className="w-full sm:w-auto min-h-[44px] px-4 py-2.5 rounded-DEFAULT bg-light-primary hover:bg-light-primary/90 text-white font-label text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs shrink-0"
             >
               <span className="material-symbols-outlined text-[18px]">
                 directions
@@ -1444,12 +1543,14 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             </a>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
             {/* Left 5 Cols: Detailed Location & Landmark Card */}
-            <div className="lg:col-span-5 bg-white rounded-lg border border-light-outline-variant p-6 shadow-xs flex flex-col justify-between space-y-5">
-              <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 font-label text-label-sm font-bold">
-                  <span className="w-2 h-2 rounded-full bg-fresh-green animate-pulse"></span>
+            <div className="lg:col-span-5 bg-white rounded-lg border border-light-outline-variant p-4 sm:p-6 shadow-xs flex flex-col justify-between space-y-4 sm:space-y-5 min-w-0">
+              <div className="space-y-3.5 sm:space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 font-label text-xs sm:text-label-sm font-bold">
+                  <span className="material-symbols-outlined text-[16px] text-fresh-green shrink-0">
+                    schedule
+                  </span>
                   <span>Mở cửa đón khách &amp; đóng hàng: 05:30 – 22:00</span>
                 </div>
 
@@ -1459,11 +1560,11 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   itemType="https://schema.org/PostalAddress"
                   className="space-y-3"
                 >
-                  <div className="p-3.5 rounded-lg bg-light-surface-container border border-light-outline-variant">
+                  <div className="p-3 sm:p-3.5 rounded-lg bg-light-surface-container border border-light-outline-variant">
                     <span className="block text-[11px] font-label font-bold uppercase tracking-wider text-ocean-blue">
                       Điểm mốc định vị trên bản đồ
                     </span>
-                    <p className="font-headline text-title-md font-bold text-light-primary mt-0.5">
+                    <p className="font-headline text-title-sm sm:text-title-md font-bold text-light-primary mt-0.5">
                       Gần Trường Tiểu học xã Hoằng Trường
                     </p>
                     <p className="font-body text-body-sm text-light-on-surface/80 mt-1">
@@ -1520,38 +1621,38 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-light-outline-variant grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="pt-3.5 sm:pt-4 border-t border-light-outline-variant grid grid-cols-2 gap-2.5">
                 <a
                   href={`tel:${STORE_PHONE}`}
-                  className="py-2.5 px-3 rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs"
+                  className="min-h-[44px] py-2.5 px-2 sm:px-3 rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-xs sm:text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs whitespace-nowrap"
                 >
-                  <span className="material-symbols-outlined text-[18px]">
+                  <span className="material-symbols-outlined text-[18px] shrink-0">
                     call
                   </span>
-                  <span>Gọi: {STORE_PHONE_DISPLAY}</span>
+                  <span className="tabular-nums">{STORE_PHONE_DISPLAY}</span>
                 </a>
                 <a
                   href={STORE_ZALO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="py-2.5 px-3 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs"
+                  className="min-h-[44px] py-2.5 px-2 sm:px-3 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-xs sm:text-label-sm font-bold flex items-center justify-center gap-1.5 shadow-xs whitespace-nowrap"
                 >
-                  <span className="material-symbols-outlined text-[18px]">
+                  <span className="material-symbols-outlined text-[18px] shrink-0">
                     chat
                   </span>
-                  <span>Nhắn Zalo Vị Trí</span>
+                  <span>Zalo Vị Trí</span>
                 </a>
               </div>
             </div>
 
             {/* Right 7 Cols: Embedded Google Map Iframe */}
-            <div className="lg:col-span-7 bg-white rounded-lg border border-light-outline-variant overflow-hidden shadow-xs min-h-[380px] sm:min-h-[450px] flex flex-col">
-              <div className="px-4 py-2.5 bg-light-surface-container border-b border-light-outline-variant flex items-center justify-between gap-2 text-xs font-label text-light-primary">
-                <span className="flex items-center gap-1.5 font-bold truncate">
-                  <span className="material-symbols-outlined text-accent text-[16px]">
+            <div className="lg:col-span-7 bg-white rounded-lg border border-light-outline-variant overflow-hidden shadow-xs flex flex-col min-w-0">
+              <div className="px-3 sm:px-4 py-2.5 bg-light-surface-container border-b border-light-outline-variant flex items-center justify-between gap-2 text-xs font-label text-light-primary">
+                <span className="flex items-center gap-1.5 font-bold min-w-0">
+                  <span className="material-symbols-outlined text-accent text-[16px] shrink-0">
                     map
                   </span>
-                  <span>
+                  <span className="truncate">
                     Google Maps: {STORE_LANDMARK}
                   </span>
                 </span>
@@ -1559,7 +1660,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   Thôn Trường Phúc, Xã Hoằng Tiến
                 </span>
               </div>
-              <div className="relative flex-1 w-full min-h-[360px] sm:min-h-[420px]">
+              <div className="relative flex-1 w-full h-[300px] sm:h-[420px]">
                 <iframe
                   src={STORE_MAP_EMBED_URL}
                   width="600"
@@ -1569,7 +1670,7 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
                   loading="lazy"
                   referrerPolicy="strict-origin-when-cross-origin"
                   title="Bản đồ vị trí Trường Tiểu học Hoằng Trường - Thôn Trường Phúc, Xã Hoằng Tiến, Huyện Hoằng Hóa, Tỉnh Thanh Hóa"
-                  className="w-full h-full min-h-[360px] sm:min-h-[420px] block"
+                  className="w-full h-full block"
                 />
               </div>
             </div>
@@ -1580,31 +1681,33 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
       {/* Multi-Channel Sticky Order Bar (Floating Dock) */}
       <aside
         aria-label="Thanh công cụ đặt hàng nhanh"
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 w-11/12 max-w-2xl bg-light-primary text-white p-2.5 sm:p-3 rounded-xl shadow-2xl border border-white/20 backdrop-blur-md flex items-center justify-between gap-3"
+        className="fixed bottom-2 left-2 right-2 sm:bottom-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-30 sm:w-11/12 sm:max-w-2xl bg-light-primary/95 text-white p-1.5 sm:p-3 rounded-xl shadow-2xl border border-white/20 backdrop-blur-md flex items-center justify-between gap-1.5 sm:gap-3"
       >
-        <div className="flex items-center gap-3 pl-2">
+        <div className="hidden sm:flex items-center gap-3 pl-2 min-w-0">
           <div className="w-9 h-9 rounded-full bg-fresh-green text-white flex items-center justify-center shadow shrink-0">
             <span className="material-symbols-outlined text-[20px]">
               headset_mic
             </span>
           </div>
-          <div className="hidden sm:block">
-            <span className="block text-xs font-label text-white/70">
+          <div className="min-w-0">
+            <span className="block text-xs font-label text-white/70 truncate max-w-[230px]">
               Vựa biển {STORE_ADDRESS}
             </span>
-            <span className="font-headline text-label-lg font-bold text-white">
+            <span className="font-headline text-label-lg font-bold text-white tabular-nums">
               Yến Hải: {STORE_PHONE_DISPLAY}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="grid grid-cols-4 sm:flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
           <a
             href={`tel:${STORE_PHONE}`}
             title={`Gọi trực tiếp Hotline Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-            className="px-3.5 py-2 rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-label-sm font-semibold flex items-center gap-1.5 shadow whitespace-nowrap"
+            className="min-h-[42px] px-1.5 sm:px-3.5 py-2 rounded-lg sm:rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-[11px] sm:text-label-sm font-semibold flex items-center justify-center gap-1 sm:gap-1.5 shadow whitespace-nowrap"
           >
-            <span className="material-symbols-outlined text-[18px]">call</span>
+            <span className="material-symbols-outlined text-[17px] sm:text-[18px] shrink-0">
+              call
+            </span>
             <span className="hidden md:inline tabular-nums">
               {STORE_PHONE_DISPLAY}
             </span>
@@ -1616,9 +1719,11 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             target="_blank"
             rel="noopener noreferrer"
             title={`Nhắn Zalo Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-            className="px-3.5 py-2 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-label-sm font-semibold flex items-center gap-1.5 shadow whitespace-nowrap"
+            className="min-h-[42px] px-1.5 sm:px-3.5 py-2 rounded-lg sm:rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-[11px] sm:text-label-sm font-semibold flex items-center justify-center gap-1 sm:gap-1.5 shadow whitespace-nowrap"
           >
-            <span className="material-symbols-outlined text-[18px]">chat</span>
+            <span className="material-symbols-outlined text-[17px] sm:text-[18px] shrink-0">
+              chat
+            </span>
             <span>Zalo</span>
           </a>
 
@@ -1627,23 +1732,25 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
             target="_blank"
             rel="noopener noreferrer"
             title="Facebook Hải Sản Yến Hải"
-            className="px-3 py-2 rounded-DEFAULT bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-label text-label-sm font-semibold flex items-center gap-1.5 shadow whitespace-nowrap"
+            className="min-h-[42px] px-1.5 sm:px-3 py-2 rounded-lg sm:rounded-DEFAULT bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-label text-[11px] sm:text-label-sm font-semibold flex items-center justify-center gap-1 sm:gap-1.5 shadow whitespace-nowrap"
           >
-            <span className="material-symbols-outlined text-[18px]">
+            <span className="material-symbols-outlined text-[17px] sm:text-[18px] shrink-0">
               thumb_up
             </span>
+            <span className="sm:hidden">FB</span>
             <span className="hidden sm:inline">Facebook</span>
           </a>
 
           <button
             type="button"
             onClick={() => setConsultModalTopic('Tư vấn & Báo giá nhanh')}
-            className="px-3.5 py-2 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-label-sm font-semibold flex items-center gap-1.5 shadow cursor-pointer whitespace-nowrap"
+            className="min-h-[42px] px-1.5 sm:px-3.5 py-2 rounded-lg sm:rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-[11px] sm:text-label-sm font-semibold flex items-center justify-center gap-1 sm:gap-1.5 shadow cursor-pointer whitespace-nowrap"
           >
-            <span className="material-symbols-outlined text-[18px]">
+            <span className="material-symbols-outlined text-[17px] sm:text-[18px] shrink-0">
               shopping_cart_checkout
             </span>
-            <span>Báo giá nhanh</span>
+            <span className="sm:hidden">Báo giá</span>
+            <span className="hidden sm:inline">Báo giá nhanh</span>
           </button>
         </div>
       </aside>
@@ -1681,27 +1788,27 @@ export default function App({ initialProducts = PRODUCTS }: AppProps) {
         id="toastNotification"
         role="status"
         aria-live="polite"
-        className={`fixed top-5 right-5 z-50 bg-light-primary text-white px-5 py-3 rounded-lg shadow-xl border border-white/20 flex items-center gap-3 transition-all duration-300 ${
+        className={`fixed top-4 left-3 right-3 sm:left-auto sm:top-5 sm:right-5 sm:max-w-sm z-50 bg-light-primary text-white px-4 py-3 rounded-lg shadow-xl border border-white/20 flex items-center gap-3 transition-all duration-300 ${
           toastMessage
             ? 'translate-y-0 opacity-100'
             : 'translate-y-[-100px] opacity-0 pointer-events-none'
         }`}
       >
-        <span className="material-symbols-outlined text-fresh-green text-[24px]">
+        <span className="material-symbols-outlined text-fresh-green text-[24px] shrink-0">
           check_circle
         </span>
-        <div>
-          <p id="toastMessage" className="font-label text-label-md font-bold">
+        <div className="min-w-0">
+          <p id="toastMessage" className="font-label text-xs sm:text-label-md font-bold">
             {toastMessage || 'Đã thêm vào giỏ hàng thành công!'}
           </p>
-          <p className="font-body text-body-sm text-white/80">
+          <p className="font-body text-[11px] sm:text-body-sm text-white/80">
             Bạn có thể mở giỏ hàng để gửi yêu cầu báo giá ngay.
           </p>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-light-primary text-white mt-16 pt-12 pb-24 lg:pb-16 border-t border-white/10">
+      <footer className="bg-light-primary text-white mt-12 sm:mt-16 pt-10 sm:pt-12 pb-24 lg:pb-16 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand & Mission */}
           <div className="space-y-3">

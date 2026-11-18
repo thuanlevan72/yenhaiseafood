@@ -53,6 +53,15 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
     }
   }, [product]);
 
+  useEffect(() => {
+    if (!product) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [product, onClose]);
+
   if (!product) return null;
 
   const sizeObj = product.sizeOptions[selectedSizeIdx] || {
@@ -97,7 +106,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="quickViewTitle"
@@ -108,7 +117,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
       <article
         itemScope
         itemType="https://schema.org/Product"
-        className="bg-white rounded-xl border border-light-outline-variant shadow-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto flex flex-col"
+        className="bg-white rounded-t-2xl sm:rounded-xl border border-light-outline-variant shadow-2xl max-w-4xl w-full max-h-[92dvh] overflow-y-auto flex flex-col"
       >
         <meta itemProp="sku" content={product.sku || `YH-SP-0${product.id}`} />
         <div itemProp="brand" itemScope itemType="https://schema.org/Brand">
@@ -116,13 +125,13 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
         </div>
 
         {/* Sticky Top Breadcrumb & Close Header */}
-        <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md px-4 sm:px-6 py-3 border-b border-light-outline-variant flex items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-1.5 text-xs font-label text-light-on-surface/70">
-            <span className="font-bold text-light-primary">Hải Sản Yến Hải</span>
-            <span>/</span>
-            <span className="text-ocean-blue font-semibold">{categoryLabel}</span>
-            <span>/</span>
-            <span className="px-2 py-0.5 rounded bg-light-surface-container text-light-primary font-mono text-[11px]">
+        <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md px-3.5 sm:px-6 py-3 border-b border-light-outline-variant flex items-center justify-between gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 text-xs font-label text-light-on-surface/70 min-w-0 overflow-hidden">
+            <span className="font-bold text-light-primary shrink-0">Yến Hải</span>
+            <span className="shrink-0">/</span>
+            <span className="text-ocean-blue font-semibold truncate">{categoryLabel}</span>
+            <span className="hidden sm:inline shrink-0">/</span>
+            <span className="hidden sm:inline px-2 py-0.5 rounded bg-light-surface-container text-light-primary font-mono text-[11px] shrink-0">
               Mã: {product.sku || `YH-0${product.id}`}
             </span>
           </div>
@@ -130,7 +139,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Đóng trang chi tiết sản phẩm"
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-light-surface-container hover:bg-light-outline-variant text-light-primary font-label text-xs font-bold cursor-pointer transition-colors"
+            className="inline-flex items-center justify-center gap-1 px-3 min-h-[36px] rounded-full bg-light-surface-container hover:bg-light-outline-variant text-light-primary font-label text-xs font-bold cursor-pointer transition-colors shrink-0"
           >
             <span>Đóng</span>
             <span className="material-symbols-outlined text-[18px]">close</span>
@@ -138,10 +147,10 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
         </div>
 
         {/* Main 2-Column Product Detail Body */}
-        <div className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="p-3.5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           {/* Left 5 Columns: Real Media Gallery & Concise 4-Spec Grid */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
-            <div className="relative rounded-lg overflow-hidden bg-slate-950 border border-light-outline-variant aspect-[4/3] sm:aspect-square">
+          <div className="lg:col-span-5 flex flex-col gap-3 sm:gap-4">
+            <div className="relative rounded-lg overflow-hidden bg-slate-950 border border-light-outline-variant aspect-[16/10] sm:aspect-square">
               {product.videoUrl && mediaTab === 'video' ? (
                 <video
                   key={product.videoUrl}
@@ -209,7 +218,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
             )}
 
             {/* Concise 4-Item Specification Table for UX & SEO */}
-            <dl className="bg-light-surface-container rounded-lg p-3.5 border border-light-outline-variant space-y-2.5 text-xs">
+            <dl className="bg-light-surface-container rounded-lg p-3 sm:p-3.5 border border-light-outline-variant space-y-2 sm:space-y-2.5 text-xs">
               <div className="flex items-start justify-between gap-2 pb-2 border-b border-light-outline-variant/70">
                 <dt className="font-label text-light-on-surface/65 flex items-center gap-1 shrink-0">
                   <span className="material-symbols-outlined text-[15px] text-ocean-blue">
@@ -297,7 +306,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
                 itemProp="offers"
                 itemScope
                 itemType="https://schema.org/Offer"
-                className="p-3.5 rounded-lg bg-rose-50/70 border border-rose-200 flex flex-wrap items-center justify-between gap-3"
+                className="p-3 sm:p-3.5 rounded-lg bg-rose-50/70 border border-rose-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <meta itemProp="priceCurrency" content="VND" />
                 <meta itemProp="price" content="0" />
@@ -306,26 +315,26 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
                   <span className="block text-[11px] font-label uppercase font-bold text-light-on-surface/60">
                     Báo giá gốc tại vựa theo ngày ({product.unit.replace('/', '').trim()}):
                   </span>
-                  <span className="font-headline text-headline-md font-extrabold text-accent">
+                  <span className="font-headline text-title-lg sm:text-headline-md font-extrabold text-accent">
                     {priceDisplay}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto">
                   <a
                     href={`tel:${STORE_PHONE}`}
                     title={`Gọi trực tiếp nhận báo giá ${product.name}`}
-                    className="px-3 py-2 rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-xs font-bold flex items-center gap-1 shadow-xs"
+                    className="min-h-[42px] px-3 py-2 rounded-DEFAULT bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-xs font-bold flex items-center justify-center gap-1 shadow-xs whitespace-nowrap"
                   >
                     <span className="material-symbols-outlined text-[16px]">call</span>
-                    <span>Gọi {STORE_PHONE_DISPLAY}</span>
+                    <span className="tabular-nums">{STORE_PHONE_DISPLAY}</span>
                   </a>
                   <a
                     href={STORE_ZALO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     title={`Nhắn Zalo nhận video và báo giá ${product.name}`}
-                    className="px-3 py-2 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-xs font-bold flex items-center gap-1 shadow-xs"
+                    className="min-h-[42px] px-3 py-2 rounded-DEFAULT bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-xs font-bold flex items-center justify-center gap-1 shadow-xs whitespace-nowrap"
                   >
                     <span className="material-symbols-outlined text-[16px]">chat</span>
                     <span>Zalo Báo Giá</span>
@@ -468,7 +477,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
                 <button
                   type="button"
                   onClick={handleAdd}
-                  className="py-2.5 px-3 rounded-DEFAULT bg-light-primary-container text-light-primary hover:bg-light-primary hover:text-white font-label text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="min-h-[44px] py-2.5 px-3 rounded-DEFAULT bg-light-primary-container text-light-primary hover:bg-light-primary hover:text-white font-label text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[18px]">
                     add_shopping_cart
@@ -478,7 +487,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
                 <button
                   type="button"
                   onClick={handleBuy}
-                  className="py-2.5 px-3 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+                  className="min-h-[44px] py-2.5 px-3 rounded-DEFAULT bg-accent hover:bg-accent-hover text-white font-label text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[18px]">
                     shopping_cart_checkout
@@ -489,7 +498,7 @@ export const ProductQuickModal: React.FC<ProductQuickModalProps> = ({
                   href={STORE_FACEBOOK_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="py-2.5 px-3 rounded-DEFAULT bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-label text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                  className="min-h-[44px] py-2.5 px-3 rounded-DEFAULT bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-label text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                 >
                   <span className="material-symbols-outlined text-[18px]">
                     thumb_up

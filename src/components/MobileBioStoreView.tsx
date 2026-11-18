@@ -44,28 +44,28 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
   const totals = calculateCartTotals(cart);
 
   return (
-    <div className="bg-light-surface-container font-body text-light-on-surface antialiased min-h-screen pb-24 max-w-md mx-auto shadow-2xl border-x border-light-outline-variant relative">
+    <div className="bg-light-surface-container font-body text-light-on-surface antialiased min-h-screen pb-24 max-w-md w-full mx-auto shadow-2xl border-x border-light-outline-variant relative overflow-x-clip">
       {/* Top bar to return to Full Storefront View when previewing on desktop */}
       {onSwitchToDesktopView && (
-        <div className="bg-light-primary/95 text-white px-3 py-2 flex items-center justify-between text-xs border-b border-white/15">
-          <span className="font-label flex items-center gap-1 text-sky-200">
-            <span className="material-symbols-outlined text-[15px]">
+        <div className="bg-light-primary/95 text-white px-3 py-2 flex items-center justify-between gap-2 text-xs border-b border-white/15">
+          <span className="font-label flex items-center gap-1 text-sky-200 truncate">
+            <span className="material-symbols-outlined text-[15px] shrink-0">
               smartphone
             </span>
-            Giao diện Bio Link &amp; Cửa Hàng Di Động
+            <span className="truncate">Bio Link &amp; Di Động</span>
           </span>
           <button
             type="button"
             onClick={onSwitchToDesktopView}
-            className="px-2.5 py-1 rounded bg-white/15 hover:bg-white/25 text-white font-label text-[11px] font-semibold cursor-pointer"
+            className="px-2.5 py-1.5 rounded bg-white/15 hover:bg-white/25 text-white font-label text-[11px] font-semibold cursor-pointer shrink-0 whitespace-nowrap"
           >
-            Xem bản Website Đầy Đủ →
+            Website Đầy Đủ →
           </button>
         </div>
       )}
 
       {/* Mobile Bio Top Profile Header */}
-      <header className="bg-gradient-to-b from-light-primary via-[#0E355C] to-light-primary text-white pt-8 pb-6 px-4 rounded-b-2xl shadow-md relative overflow-hidden">
+      <header className="bg-gradient-to-b from-light-primary via-[#0E355C] to-light-primary text-white pt-6 pb-5 px-3.5 rounded-b-2xl shadow-md relative overflow-hidden">
         {/* Subtle Background Pattern */}
         <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
           <span className="material-symbols-outlined text-[180px]">sailing</span>
@@ -85,7 +85,7 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-fresh-green border-2 border-white flex items-center justify-center text-white"
               title="Vựa đang mở cửa"
             >
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-white"></span>
             </span>
           </div>
 
@@ -101,33 +101,24 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
             </span>
           </div>
 
-          <p className="font-label text-label-sm text-sky-200 uppercase tracking-wider font-semibold mt-0.5">
+          <p className="font-label text-[11px] text-sky-200 uppercase tracking-wide font-semibold mt-1 leading-snug max-w-xs">
             {STORE_ADDRESS} • Sỉ &amp; Lẻ Toàn Quốc
           </p>
 
           {/* Store Introduction */}
-          <div className="mt-3 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 max-w-sm text-center">
+          <div className="mt-3 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 w-full max-w-sm text-center">
             <p className="font-body text-body-sm text-white/90 leading-snug">
               Chuyên sỉ &amp; lẻ hải sản biển Hoằng Tiến - Thanh Hóa: Mực ống tươi, Cá thu phấn khoanh giữa, Bạch tuộc, Tôm biển tươi, Nõn tôm hấp, Bề bề bóc nõn full trứng &amp; Cá khô rút xương. Bao ăn 1 đổi 1!
             </p>
           </div>
 
           {/* Quick Trust Indicators */}
-          <div className="flex items-center justify-center gap-3 mt-3 text-[11px] font-label text-white/80">
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-fresh-green"></span>{' '}
-              Tươi từ ghe biển
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent"></span> Bao ăn
-              1 đổi 1
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-300"></span>{' '}
-              {STORE_PHONE_DISPLAY}
-            </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 mt-3 text-[11px] font-label text-white/85">
+            <span className="whitespace-nowrap">Tươi từ ghe biển</span>
+            <span aria-hidden="true">·</span>
+            <span className="whitespace-nowrap">Bao ăn 1 đổi 1</span>
+            <span aria-hidden="true">·</span>
+            <span className="tabular-nums whitespace-nowrap">{STORE_PHONE_DISPLAY}</span>
           </div>
 
           {/* Multi-Channel Fast Contact Bar */}
@@ -135,10 +126,10 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
             <a
               href={`tel:${STORE_PHONE}`}
               title={`Gọi Hotline Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-              className="py-2.5 px-1 rounded-lg bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-label-sm font-semibold flex flex-col items-center justify-center shadow"
+              className="min-h-[48px] py-2 px-1 rounded-lg bg-fresh-green hover:bg-fresh-green/90 text-white font-label text-[11px] font-semibold flex flex-col items-center justify-center shadow"
             >
-              <span className="material-symbols-outlined text-[20px]">call</span>
-              <span className="mt-0.5">Gọi {STORE_PHONE_DISPLAY}</span>
+              <span className="material-symbols-outlined text-[19px]">call</span>
+              <span className="mt-0.5 tabular-nums">{STORE_PHONE_DISPLAY}</span>
             </a>
 
             <a
@@ -146,9 +137,9 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               title={`Nhắn Zalo Hải Sản Yến Hải ${STORE_PHONE_DISPLAY}`}
-              className="py-2.5 px-1 rounded-lg bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-label-sm font-semibold flex flex-col items-center justify-center shadow"
+              className="min-h-[48px] py-2 px-1 rounded-lg bg-ocean-blue hover:bg-ocean-blue/90 text-white font-label text-[11px] font-semibold flex flex-col items-center justify-center shadow"
             >
-              <span className="material-symbols-outlined text-[20px]">chat</span>
+              <span className="material-symbols-outlined text-[19px]">chat</span>
               <span className="mt-0.5">Chat Zalo</span>
             </a>
 
@@ -157,9 +148,9 @@ export const MobileBioStoreView: React.FC<MobileBioStoreViewProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               title="Facebook Hải Sản Yến Hải"
-              className="py-2.5 px-1 rounded-lg bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-label text-label-sm font-semibold flex flex-col items-center justify-center shadow"
+              className="min-h-[48px] py-2 px-1 rounded-lg bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-label text-[11px] font-semibold flex flex-col items-center justify-center shadow"
             >
-              <span className="material-symbols-outlined text-[20px]">
+              <span className="material-symbols-outlined text-[19px]">
                 thumb_up
               </span>
               <span className="mt-0.5">Facebook</span>

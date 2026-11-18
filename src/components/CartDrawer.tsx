@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   CartItem,
   calculateCartTotals,
@@ -33,12 +33,21 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const totals = calculateCartTotals(cart);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose();
     setTimeout(() => {
       setShowDevelopingNotice(false);
     }, 250);
-  };
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleClose]);
 
   const handleCopyZaloOrder = () => {
     const msg = buildZaloOrderMessage(cart);
